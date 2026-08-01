@@ -1535,24 +1535,37 @@ body.editor-minimized .min-cta:hover {
   filter: brightness(1.1);
 }
 
-/* ── KPI strip (trust row): horizontal + vertical dividers ─ */
+/* ── KPI strip (trust row): 2×2 — 4-up overflows the hero copy column ─ */
 .hero-kpi-strip {
   align-items: stretch;
-  display: flex;
-  flex-wrap: nowrap;
+  display: grid;
   gap: 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   justify-content: flex-start;
   margin-top: 6px;
   padding-top: 20px;
+  width: 100%;
 }
 
 .hero-kpi-strip .kpi-item {
   display: flex;
-  flex: 1 1 0;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
   min-width: 0;
-  padding: 0 24px;
+  overflow: hidden;
+  padding: 10px 14px 10px 0;
+}
+
+.hero-kpi-strip .kpi-item:nth-child(even) {
+  border-left: 1px solid var(--landing-border-strong);
+  padding-left: 14px;
+  padding-right: 0;
+}
+
+.hero-kpi-strip .kpi-item:nth-child(n + 3) {
+  border-top: 1px solid var(--landing-border-strong);
+  margin-top: 2px;
+  padding-top: 12px;
 }
 
 .hero-kpi-strip .kpi-item:first-child {
@@ -1563,30 +1576,37 @@ body.editor-minimized .min-cta:hover {
   padding-right: 0;
 }
 
+/* Kill leftover 4-up adjacent borders from older rules */
 .hero-kpi-strip .kpi-item + .kpi-item {
-  border-left: 1px solid var(--landing-border-strong);
-  margin-left: 24px;
-  padding-left: 24px;
+  margin-left: 0;
 }
 
 .kpi-value {
   color: var(--landing-fg);
+  display: block;
   font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  white-space: nowrap;
+  line-height: 1.2;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .kpi-label {
   color: var(--landing-muted);
+  display: block;
   font-size: 12px;
   letter-spacing: 0;
+  line-height: 1.35;
+  max-width: 100%;
+  overflow-wrap: anywhere;
   text-transform: none;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 body.editor-minimized .hero-kpi-strip .kpi-value {
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
   font-weight: 700;
 }
 
@@ -2537,60 +2557,76 @@ body.editor-minimized .min-link-home:hover {
 
 @media (max-width: 640px) {
   body.editor-minimized {
-    --landing-gutter: 16px;
-    --landing-content-max: min(100vw - 32px, 1600px);
+    --landing-gutter: 20px;
+    --landing-content-max: min(100vw - 40px, 1600px);
   }
 
   .hero-layout {
-    gap: 24px;
-    padding: 28px var(--landing-gutter) 20px;
+    gap: 28px;
+    padding: 24px var(--landing-gutter) 24px;
   }
 
   body.editor-minimized .hero-col-left .landing-hero-title {
     font-size: clamp(1.875rem, 9vw, 2.5rem);
-    line-height: 1.02;
+    line-height: 1.05;
+    margin-bottom: 0;
   }
 
   body.editor-minimized .hero-col-left .min-lead {
     font-size: 0.9375rem;
-    line-height: 1.55;
+    line-height: 1.6;
+    margin: 16px 0 28px;
   }
 
   body.editor-minimized .hero-eyebrow {
     font-size: 11px;
+    margin-bottom: 18px;
     max-width: 100%;
-    padding: 6px 11px;
+    padding: 7px 12px;
+  }
+
+  body.editor-minimized .minimized-actions {
+    gap: 10px;
+    margin: 0 0 28px;
   }
 
   body.editor-minimized .min-cta {
     flex: 1 1 100%;
-    font-size: 14px;
-    min-height: 46px;
-    padding: 12px 18px;
+    font-size: 15px;
+    min-height: 48px;
+    padding: 13px 18px;
     width: 100%;
+  }
+
+  body.editor-minimized .min-cta.tertiary {
+    font-size: 12.5px;
+    letter-spacing: -0.01em;
+    min-height: 44px;
+    overflow-wrap: anywhere;
+    padding: 12px 14px;
   }
 
   .hero-kpi-strip {
     display: grid;
     gap: 0;
     grid-template-columns: 1fr 1fr;
-    padding-top: 16px;
+    padding-top: 4px;
   }
 
   .hero-kpi-strip .kpi-item {
     border-left: 0 !important;
     margin-left: 0 !important;
-    padding: 12px 8px 12px 0;
+    padding: 14px 8px 14px 0;
     width: auto;
   }
 
   .hero-kpi-strip .kpi-item:nth-child(odd) {
-    padding-right: 12px;
+    padding-right: 14px;
   }
 
   .hero-kpi-strip .kpi-item:nth-child(even) {
     border-left: 1px solid var(--landing-border-strong) !important;
-    padding-left: 12px;
+    padding-left: 14px;
   }
 
   .hero-kpi-strip .kpi-item:nth-child(n + 3) {
@@ -2633,5 +2669,10 @@ body.editor-minimized .min-link-home:hover {
 
   .site-logo-text {
     font-size: 16px;
+  }
+
+  body.editor-minimized {
+    --landing-gutter: 18px;
+    --landing-content-max: min(100vw - 36px, 1600px);
   }
 }

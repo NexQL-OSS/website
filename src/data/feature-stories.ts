@@ -1,5 +1,5 @@
 /**
- * Canonical feature stories — sourced from nexql-core + nexql-pro product surfaces.
+ * Feature story content — one interactive walkthrough per capability.
  * Used by /features/* pages and the homepage workspace map.
  */
 
@@ -38,10 +38,23 @@ export interface FeatureStory {
   tier: FeatureTier;
   tierLabel: string;
   caps: string[];
+  /** Short monogram for hub cards */
+  mark: string;
+  /** Accent for hub / story chrome */
+  ink: string;
+  tint: string;
   steps: FeatureStep[];
   tryDemo: { file: string; panel?: string };
   related: string[];
 }
+
+export const SPINE_BEATS: { id: SpineBeat | "all"; n: string; label: string; body: string }[] = [
+  { id: "all", n: "00", label: "All", body: "Eight workflows in one editor." },
+  { id: "connect", n: "01", label: "Connect", body: "Know which DB you're on." },
+  { id: "explore", n: "02", label: "Explore", body: "One tree for the schema." },
+  { id: "query", n: "03", label: "Query", body: "Notebooks + schema-aware AI." },
+  { id: "analyze", n: "04", label: "Analyze", body: "Plans, metrics, fixes." },
+];
 
 export const FEATURES: FeatureStory[] = [
   {
@@ -58,6 +71,9 @@ export const FEATURES: FeatureStory[] = [
     tier: "free",
     tierLabel: "Free · Core",
     caps: ["Write & run", "Inline results", "Export", "Query history"],
+    mark: "NB",
+    ink: "#7aa3f5",
+    tint: "rgba(61,111,224,.16)",
     steps: [
       {
         title: "Create a notebook bound to a connection",
@@ -99,6 +115,9 @@ export const FEATURES: FeatureStory[] = [
     tier: "free",
     tierLabel: "Free · Core",
     caps: ["16+ objects", "Column insights", "Schema search", "Generated SQL"],
+    mark: "EX",
+    ink: "#4ade80",
+    tint: "rgba(34,197,94,.14)",
     steps: [
       {
         title: "Connect with platform presets",
@@ -139,6 +158,9 @@ export const FEATURES: FeatureStory[] = [
     tier: "sponsor",
     tierLabel: "Pro · Free AI included",
     caps: ["Text → SQL", "Explain", "Optimize", "Agentic tools"],
+    mark: "AI",
+    ink: "#f06ab0",
+    tint: "rgba(224,56,143,.16)",
     steps: [
       {
         title: "Open SQL Assistant beside your code",
@@ -182,6 +204,9 @@ export const FEATURES: FeatureStory[] = [
     tier: "free",
     tierLabel: "Free · Core",
     caps: ["Env labels", "Risk scoring", "Read-only", "Theme swap"],
+    mark: "SG",
+    ink: "#f58a5c",
+    tint: "rgba(242,107,58,.16)",
     steps: [
       {
         title: "Tag connections DEV / STAGE / PROD",
@@ -222,6 +247,9 @@ export const FEATURES: FeatureStory[] = [
     tier: "sponsor",
     tierLabel: "Pro · Sponsor",
     caps: ["Table designer", "Schema diff", "ERD", "Import wizard"],
+    mark: "ER",
+    ink: "#a78bfa",
+    tint: "rgba(167,139,250,.16)",
     steps: [
       {
         title: "Create or alter tables visually",
@@ -261,6 +289,9 @@ export const FEATURES: FeatureStory[] = [
     tier: "sponsor",
     tierLabel: "Pro · Sponsor",
     caps: ["Visual EXPLAIN", "Plan diff", "Flame graph", "Index hints"],
+    mark: "PL",
+    ink: "#f5b23a",
+    tint: "rgba(245,178,58,.16)",
     steps: [
       {
         title: "Run EXPLAIN from a notebook cell",
@@ -303,6 +334,9 @@ export const FEATURES: FeatureStory[] = [
     tier: "sponsor",
     tierLabel: "Pro · Sponsor",
     caps: ["Connections", "Locks", "Top queries", "AI health chat"],
+    mark: "DB",
+    ink: "#38bdf8",
+    tint: "rgba(56,189,248,.16)",
     steps: [
       {
         title: "Open dashboard from connection or database",
@@ -342,6 +376,9 @@ export const FEATURES: FeatureStory[] = [
     tier: "singularity",
     tierLabel: "Pro · Singularity",
     caps: ["Encrypted sync", "Team sharing", "Audit log", "BYO Postgres"],
+    mark: "SY",
+    ink: "#e0388f",
+    tint: "rgba(224,56,143,.14)",
     steps: [
       {
         title: "Run sync setup walkthrough",

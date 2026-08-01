@@ -1,17 +1,21 @@
 ---
 import FeatureLayout from "../../layouts/FeatureLayout.astro";
-import { FEATURES } from "../../data/feature-stories";
+import FeatureMocks from "../../components/FeatureMocks.astro";
+import { FEATURES, SPINE_BEATS } from "../../data/feature-stories";
 
 const title = "NexQL Features — Interactive product stories";
 const description =
   "Step through how NexQL notebooks, explorer, AI assistant, Sentinel safety, schema tools, Plan Studio, dashboard, and cloud sync work inside VS Code.";
 const canonical = "https://nexql.astrx.dev/features/";
+
+const marketplace =
+  "https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer";
 ---
 
 <FeatureLayout {title} {description} {canonical}>
-  <main class="feature-page">
-    <header class="feature-page-header">
-      <p class="story-kicker">Product stories</p>
+  <main class="feature-page feature-page--hub">
+    <header class="feature-page-header feature-hub-hero">
+      <p class="nx-kicker">Product stories</p>
       <h1 class="story-title">
         Eight workflows.<br /><em>One editor window.</em>
       </h1>
@@ -20,27 +24,120 @@ const canonical = "https://nexql.astrx.dev/features/";
         capability — sourced from core and pro surfaces, not marketing fluff.
       </p>
       <div class="feature-page-actions">
-        <a class="min-cta primary" href="/">← Back to homepage</a>
-        <a class="min-cta secondary" href="/#install">Install NexQL</a>
+        <a class="min-cta primary" href="/">← Homepage</a>
+        <a class="min-cta secondary" href={marketplace} target="_blank" rel="noopener noreferrer"
+          >Install free</a
+        >
       </div>
     </header>
 
-    <div class="feature-hub" id="feature-content">
-      <p class="story-kicker">Pick a workflow</p>
-      <div class="feature-hub-grid">
-        {
-          FEATURES.map((f) => (
-            <a class="feature-hub-card" href={`/features/${f.slug}/`}>
-              <span class="feature-hub-path">{f.path}</span>
-              <span class="feature-tier" data-tier={f.tier}>{f.tierLabel}</span>
-              <h3>
-                {f.title}
-                {f.titleEm ? ` ${f.titleEm}` : ""}
-              </h3>
-              <p>{f.lede}</p>
-            </a>
-          ))
-        }
+    <div class="feature-hub" id="feature-content" data-feature-hub>
+      <div class="feature-hub-toolbar">
+        <p class="nx-kicker">Pick a workflow</p>
+        <div
+          class="feature-hub-filters"
+          role="tablist"
+          aria-label="Filter by loop stage"
+          data-hub-filters
+        >
+          {
+            SPINE_BEATS.map((b, i) => (
+              <button
+                type="button"
+                class:list={["feature-hub-filter", i === 0 && "is-active"]}
+                role="tab"
+                data-hub-filter={b.id}
+                aria-selected={i === 0 ? "true" : "false"}
+              >
+                <span class="feature-hub-filter-n">{b.n}</span>
+                <span class="feature-hub-filter-label">{b.label}</span>
+              </button>
+            ))
+          }
+        </div>
+        <p class="feature-hub-filter-hint" data-hub-hint>{SPINE_BEATS[0].body}</p>
+      </div>
+
+      <div class="feature-hub-layout">
+        <div class="feature-hub-grid" data-hub-grid>
+          {
+            FEATURES.map((f, i) => (
+              <a
+                class:list={["feature-hub-card", i === 0 && "is-active"]}
+                href={`/features/${f.slug}/`}
+                data-hub-card
+                data-beat={f.spineBeat}
+                data-slug={f.slug}
+                data-title={`${f.title}${f.titleEm ? ` ${f.titleEm}` : ""}`}
+                data-lede={f.lede}
+                data-mark={f.mark}
+                data-ink={f.ink}
+                data-tint={f.tint}
+                data-path={f.path}
+                data-caps={f.caps.join("·")}
+                data-steps={String(f.steps.length)}
+                data-tier={f.tier}
+                data-tier-label={f.tierLabel}
+                data-kicker={f.kicker}
+                style={`--hub-ink:${f.ink};--hub-tint:${f.tint}`}
+              >
+                <div class="feature-hub-card-top">
+                  <span class="feature-hub-mark" aria-hidden="true">
+                    {f.mark}
+                  </span>
+                  <span class="feature-hub-beat">{f.spineN} · {f.spineBeat}</span>
+                </div>
+                <span class="feature-hub-path">{f.path}</span>
+                <span class="feature-tier" data-tier={f.tier}>
+                  {f.tierLabel}
+                </span>
+                <h3>
+                  {f.title}
+                  {f.titleEm ? ` ${f.titleEm}` : ""}
+                </h3>
+                <p>{f.lede}</p>
+                <div class="feature-hub-card-meta">
+                  <div class="feature-hub-caps">
+                    {f.caps.slice(0, 3).map((c) => (
+                      <span>{c}</span>
+                    ))}
+                  </div>
+                  <span class="feature-hub-steps">{f.steps.length} steps →</span>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+
+        <aside class="feature-hub-preview" data-hub-preview aria-live="polite">
+          <div class="feature-hub-preview-chrome">
+            <span class="dot" aria-hidden="true"></span>
+            <span data-preview-path>{FEATURES[0].path}</span>
+          </div>
+          <div class="feature-hub-preview-body">
+            <div
+              class="feature-hub-preview-mark"
+              data-preview-mark
+              style={`background:${FEATURES[0].tint};color:${FEATURES[0].ink}`}
+            >
+              {FEATURES[0].mark}
+            </div>
+            <p class="nx-kicker" data-preview-kicker>{FEATURES[0].kicker}</p>
+            <h2 data-preview-title>
+              {FEATURES[0].title}{FEATURES[0].titleEm ? ` ${FEATURES[0].titleEm}` : ""}
+            </h2>
+            <p data-preview-lede>{FEATURES[0].lede}</p>
+            <div class="feature-hub-preview-caps" data-preview-caps>
+              {FEATURES[0].caps.map((c) => <span>{c}</span>)}
+            </div>
+            <div class="feature-hub-preview-mock" data-preview-mock data-visual="notebook">
+              <FeatureMocks mode="hub" />
+            </div>
+            <a class="min-cta primary feature-hub-preview-cta" data-preview-cta href={`/features/${FEATURES[0].slug}/`}
+              >Open story →</a
+            >
+          </div>
+        </aside>
       </div>
     </div>
   </main>

@@ -1335,11 +1335,6 @@
 }
 
 @media (max-width: 720px) {
-  .topbar-github-btn,
-  .topbar-install-btn {
-    display: none;
-  }
-
   .nx-ai-banner-media {
     border-left: 0;
     border-top: 1px solid var(--nx-line);
@@ -1348,4 +1343,46 @@
   .nx-footer-bottom span:last-child {
     margin-left: 0;
   }
+
+  .nx-section {
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+}
+
+/* Hero KPI strip — last in cascade; 2×2 so labels never collide */
+.hero-kpi-strip.hero-kpis {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0;
+  width: 100%;
+}
+
+.hero-kpi-strip.hero-kpis .kpi-item {
+  flex: unset;
+  min-width: 0;
+  overflow: hidden;
+  border-left: 0 !important;
+  margin-left: 0 !important;
+  padding: 10px 14px 10px 0;
+}
+
+.hero-kpi-strip.hero-kpis .kpi-item:nth-child(even) {
+  border-left: 1px solid var(--landing-border-strong, var(--border)) !important;
+  padding-left: 14px;
+  padding-right: 0;
+}
+
+.hero-kpi-strip.hero-kpis .kpi-item:nth-child(n + 3) {
+  border-top: 1px solid var(--landing-border-strong, var(--border));
+  padding-top: 12px;
+}
+
+.hero-kpi-strip.hero-kpis .kpi-value,
+.hero-kpi-strip.hero-kpis .kpi-label {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

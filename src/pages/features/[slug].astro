@@ -22,8 +22,11 @@ const demoPanel = feature.tryDemo.panel ?? "nexql";
 ---
 
 <FeatureLayout {title} {description} {canonical}>
-  <main class="feature-page">
+  <main class="feature-page" style={`--story-ink:${feature.ink};--story-tint:${feature.tint}`}>
     <header class="feature-page-header">
+      <div class="feature-story-hero-mark" style={`background:${feature.tint};color:${feature.ink}`}
+        >{feature.mark}</div
+      >
       <p class="story-kicker">{feature.kicker}</p>
       <span class="feature-tier" data-tier={feature.tier}>{feature.tierLabel}</span>
       <h1 class="story-title">
