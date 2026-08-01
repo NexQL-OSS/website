@@ -5,3 +5,9 @@ node_modules/
 *.log
 .DS_Store
 .vercel
+
+# Astro
+dist/
+.astro/
+graphify-out/
+_legacy/

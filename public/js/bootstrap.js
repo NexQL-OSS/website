@@ -1,3 +1,15 @@
+/** ?demo=1&file=query&panel=nexql — deep-link from /features/* into the workbench. */
+function openDemoFromQueryParams() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("demo") !== "1") return false;
+  const file = params.get("file") || "query";
+  const panel = params.get("panel") || "nexql";
+  setEditorMinimizedState(false);
+  openFile(file);
+  switchSidebarPanel(panel);
+  return true;
+}
+
 function scrollToLandingAnchor(anchorId) {
   const target = document.getElementById(anchorId);
   if (!target) return;
@@ -48,9 +60,13 @@ function wireLandingChrome() {
   document.querySelectorAll("[data-landing-open-demo]").forEach((node) => {
     node.addEventListener("click", (e) => {
       e.preventDefault();
-      setEditorMinimizedState(false);
-      openFile("query");
-      switchSidebarPanel("nexql");
+      if (typeof openLandingDemo === "function") {
+        openLandingDemo();
+      } else {
+        setEditorMinimizedState(false);
+        openFile("query");
+        switchSidebarPanel("nexql");
+      }
     });
   });
 }
@@ -129,7 +145,9 @@ function initializeDesktopExperience() {
   hydrateMarketplaceStats();
   showStartupToast();
   preloadAssistantConversation();
-  openFile("query");
+  if (!openDemoFromQueryParams()) {
+    openFile("query");
+  }
 
   document.addEventListener("click", (e) => {
     const tab = e.target.closest("[data-open='query']");
@@ -210,11 +228,16 @@ function wireMobileUiToggles() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
+async function bootDemoExperience() {
+  if (window.__nexqlDemoExperienceBooted) return;
+  window.__nexqlDemoExperienceBooted = true;
+
   if (window.NexqlThemes?.ready) {
     await window.NexqlThemes.ready.catch(() => {});
   }
 
+  // Optional: legacy pages still using data-partial placeholders.
+  // Astro DemoShell inlines partials at build time, so this is a no-op there.
   if (typeof loadHtmlPartials === "function") {
     await loadHtmlPartials();
   }
@@ -223,4 +246,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   wireMobileUiToggles();
   syncSiteHeaderOffset();
   window.addEventListener("resize", syncSiteHeaderOffset, { passive: true });
-});
+}
+
+// Astro/DemoBoot may inject this script after DOMContentLoaded has already
+// fired — run immediately in that case so the demo still initializes.
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => {
+    void bootDemoExperience();
+  });
+} else {
+  void bootDemoExperience();
+}

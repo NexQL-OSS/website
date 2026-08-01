@@ -1,0 +1,1174 @@
+    <header class="site-header landing-topbar" role="banner">
+      <div class="release-banner" id="release-banner">
+        <span>NexQL v2.2.3 — <strong>MCP server ships over stdio</strong> — your DB as agent tools.
+          <a href="https://github.com/dev-asterix/NexQL/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer">See what's new →</a></span>
+        <button class="banner-close-btn" id="btn-close-banner" aria-label="Dismiss banner">&times;</button>
+      </div>
+      <div class="site-header-inner">
+        <button class="site-header-menu-btn mobile-menu-btn" id="btn-toggle-topbar" type="button"
+          aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav"><svg viewBox="0 0 24 24"
+            stroke="currentColor" stroke-width="2" fill="none" aria-hidden="true">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg></button>
+        <a href="#top" class="site-logo" aria-label="NexQL — back to top">
+          <img class="site-logo-img" src="/assets/NexQL.png" alt="" width="34" height="34">
+          <span class="site-logo-text brand-gradient">NexQL</span>
+          <span class="site-logo-badge">v2.2.3</span>
+        </a>
+        <nav class="site-nav landing-topbar-nav-collapsible" id="site-nav" aria-label="Page sections">
+          <a href="#playground">Playground</a>
+          <a href="#features">Features</a>
+          <a href="#mcp">MCP</a>
+          <a href="#compare">Compare</a>
+          <a href="#pricing">Pricing</a>
+          <a href="/features/">Stories</a>
+          <a href="https://nexql-themes.astrx.dev/" target="_blank" rel="noopener noreferrer"
+            class="site-nav-external">Themes ↗</a>
+        </nav>
+        <div class="site-header-actions">
+          <div class="theme-picker" id="theme-picker">
+            <button type="button" class="theme-picker-trigger" id="theme-picker-trigger" aria-haspopup="listbox"
+              aria-expanded="false" aria-controls="theme-picker-menu" aria-label="NexQL color theme">
+              <span class="theme-picker-dot" id="theme-picker-dot" aria-hidden="true"></span>
+              <span class="theme-picker-label" id="theme-picker-label">Loading…</span>
+              <svg class="theme-picker-chevron" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </button>
+            <div class="theme-picker-menu" id="theme-picker-menu" role="listbox" aria-label="NexQL themes" hidden>
+            </div>
+          </div>
+          <a class="topbar-github-btn" href="https://github.com/dev-asterix/NexQL" target="_blank"
+            rel="noopener noreferrer" aria-label="NexQL on GitHub">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38l-.01-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.93-.89-1.18-.89-1.18-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.83-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.52.56.83 1.28.83 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48l-.01 2.19c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"/></svg>
+            GitHub
+          </a>
+          <a class="min-cta primary topbar-install-btn" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer"
+            target="_blank" rel="noopener noreferrer">Install — free</a>
+          <button class="topbar-icon-btn play-tour-btn" id="play-tour" type="button"
+            aria-label="Start guided product tour" data-tooltip="Play product tour">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <polygon points="9,7 18,12 9,17"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero-shell" aria-label="NexQL interactive homepage demo">
+      <!-- Immersive decorative layer: bg-grid, orbit ring, context nodes -->
+      <div class="workbench-bg-grid" aria-hidden="true"></div>
+      <div class="shell-orbit" aria-hidden="true"></div>
+
+      <!-- Floating context node pills (decorative, pointer-events:none) -->
+      <div class="ctx-node ctx-one" aria-hidden="true">
+        <span class="ctx-node-label">Schema context</span>
+        <span class="ctx-node-value">orders, customers</span>
+      </div>
+      <div class="ctx-node ctx-two" aria-hidden="true">
+        <span class="ctx-node-label">Safe env labels</span>
+        <span class="ctx-node-value"><span class="ctx-env-dev">DEV</span> / <span class="ctx-env-prod">PROD</span></span>
+      </div>
+      <div class="ctx-node ctx-three" aria-hidden="true">
+        <span class="ctx-node-label">Plan insight</span>
+        <span class="ctx-node-value">Index recommendation</span>
+      </div>
+
+      <div class="demo-shell-stage">
+        <div class="demo-shell-frame">
+        <div class="demo-shell-halo" aria-hidden="true"></div>
+      <div class="shell" role="application" aria-label="Mac style NexQL editor demo" aria-hidden="true">
+        <header class="titlebar">
+          <div class="mobile-menu-btn" id="btn-toggle-left"><svg viewBox="0 0 24 24" width="16" stroke="currentColor"
+              stroke-width="2" fill="none">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg></div>
+          <img class="titlebar-brand-icon" src="/assets/NexQL.png" alt="NexQL" aria-hidden="true">
+          <div class="window-controls" aria-hidden="true">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <p class="title-text">NexQL Workspace - Demo Project</p>
+          <div class="tour-progress" id="tour-progress" aria-live="polite">
+            <span class="tour-dot active" data-step="0"></span>
+            <span class="tour-dot" data-step="1"></span>
+            <span class="tour-dot" data-step="2"></span>
+            <span class="tour-dot" data-step="3"></span>
+            <span class="tour-label" id="tour-label"></span>
+          </div>
+          <button class="mobile-menu-btn" id="btn-toggle-right" aria-label="Toggle Assistant"><svg viewBox="0 0 24 24"
+              stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg></button>
+          <button class="shell-close-btn" id="btn-close-editor" aria-label="Close editor"><svg viewBox="0 0 24 24"
+              stroke="currentColor" stroke-width="2" fill="none">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg></button>
+        </header>
+
+        <div class="workbench">
+          <!-- Decorative command palette overlay — auto-hides on first interaction -->
+          <div class="cmd-palette-demo" aria-hidden="true">
+            <div class="cmd-palette-header">
+              <span class="cmd-palette-prompt">⌘K</span>
+              <span class="cmd-palette-title">NexQL Commands</span>
+              <span class="cmd-palette-badge">Demo</span>
+            </div>
+            <div class="cmd-palette-rows">
+              <div class="cmd-palette-row">
+                <span class="cmd-palette-icon">⬡</span>
+                <span class="cmd-palette-text">&gt; NexQL: optimize current query</span>
+              </div>
+              <div class="cmd-palette-row is-active">
+                <span class="cmd-palette-icon">✦</span>
+                <span class="cmd-palette-text">Ask AI with schema context</span>
+              </div>
+              <div class="cmd-palette-row">
+                <span class="cmd-palette-icon">▷</span>
+                <span class="cmd-palette-text">Run selected SQL cell</span>
+              </div>
+            </div>
+          </div>
+
+          <aside class="activity-bar" aria-label="Primary navigation">
+            <!-- Explorer: shows file-tree sidebar panel -->
+            <button class="activity-icon active" type="button" data-panel="explorer" title="Explorer"
+              aria-label="Explorer">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true">
+                <path d="M3 5a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5z"
+                  stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <!-- Search: shows search sidebar panel -->
+            <button class="activity-icon" type="button" data-panel="search" title="Search" aria-label="Search">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5" />
+                <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </button>
+            <!-- Source Control: opens GitHub in a new tab -->
+            <a class="activity-icon" href="https://github.com/dev-asterix/NexQL" target="_blank"
+              rel="noopener noreferrer" title="View Source on GitHub" aria-label="GitHub source">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true">
+                <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"
+                  d="M12 2C6.476 2 2 6.58 2 12.231c0 4.522 2.865 8.36 6.84 9.713.5.093.682-.22.682-.49 0-.242-.01-.885-.014-1.736-2.782.617-3.37-1.376-3.37-1.376-.455-1.187-1.11-1.503-1.11-1.503-.908-.636.069-.624.069-.624 1.004.072 1.532 1.05 1.532 1.05.892 1.567 2.34 1.115 2.91.852.091-.662.35-1.115.635-1.371-2.22-.258-4.555-1.139-4.555-5.07 0-1.12.39-2.037 1.03-2.755-.103-.258-.447-1.297.098-2.705 0 0 .84-.275 2.75 1.052A9.31 9.31 0 0 1 12 6.84c.85.004 1.706.117 2.505.343 1.91-1.327 2.748-1.052 2.748-1.052.547 1.408.203 2.447.1 2.705.64.718 1.029 1.635 1.029 2.755 0 3.94-2.34 4.808-4.566 5.06.36.314.679.93.679 1.873 0 1.352-.012 2.442-.012 2.774 0 .273.18.59.688.49C19.137 20.59 22 16.754 22 12.231 22 6.58 17.524 2 12 2z" />
+              </svg>
+            </a>
+            <!-- NexQL icon: shows NexQL panel + opens query.pgsql -->
+            <button class="activity-icon nexql" type="button" data-panel="nexql" data-open="query"
+              title="NexQL" aria-label="NexQL">
+              <img src="/assets/NexQL.png" alt="NexQL icon">
+              <span class="activity-badge" aria-label="1 notification">1</span>
+            </button>
+            <span class="activity-spacer"></span>
+          </aside>
+
+          <aside class="sidebar" aria-label="Sidebar">
+
+            <!-- ── Panel 1: Explorer ── -->
+            <div class="sidebar-panel active" id="sidebar-explorer" aria-label="Explorer panel">
+              <div class="sidebar-header">EXPLORER</div>
+              <div class="sidebar-panel-scroll">
+                <div class="sidebar-group">
+                  <div class="sidebar-group-title">NEXQL</div>
+
+                  <button class="tree-row depth-1" data-open="readme">
+                    <span class="tree-arrow">▶</span>
+                    <span class="tree-label"><span class="tree-file-icon readme"
+                        aria-hidden="true"></span>README.md</span>
+                    <span class="git-badge git-new">U</span>
+                  </button>
+
+                  <div class="sidebar-group-title" style="padding-left:20px;font-size:9.5px;padding-top:6px;">NOTEBOOKS
+                  </div>
+                  <button class="tree-row depth-2 active" data-open="query">
+                    <span class="tree-arrow">▶</span>
+                    <span class="tree-label"><span class="tree-file-icon notebook"
+                        aria-hidden="true"></span>query.pgsql</span>
+                    <span class="git-badge git-mod">M</span>
+                  </button>
+
+                  <div class="sidebar-group-title" style="padding-left:20px;font-size:9.5px;padding-top:6px;">
+                    DOCUMENTATION</div>
+                  <button class="tree-row depth-2" data-open="features">
+                    <span class="tree-arrow">▶</span>
+                    <span class="tree-label"><span class="tree-file-icon doc"
+                        aria-hidden="true"></span>features.md</span>
+                  </button>
+                  <button class="tree-row depth-2" data-open="doc-notebooks">
+                    <span class="tree-arrow">▶</span>
+                    <span class="tree-label"><span class="tree-file-icon doc"
+                        aria-hidden="true"></span>01_notebooks.md</span>
+                  </button>
+                  <button class="tree-row depth-2" data-open="doc-explorer">
+                    <span class="tree-arrow">▶</span>
+                    <span class="tree-label"><span class="tree-file-icon doc"
+                        aria-hidden="true"></span>02_explorer.md</span>
+                  </button>
+                  <button class="tree-row depth-2" data-open="doc-ai">
+                    <span class="tree-arrow">▶</span>
+                    <span class="tree-label"><span class="tree-file-icon doc"
+                        aria-hidden="true"></span>03_ai-assist.md</span>
+                  </button>
+                  <button class="tree-row depth-2" data-open="doc-schema">
+                    <span class="tree-arrow">▶</span>
+                    <span class="tree-label"><span class="tree-file-icon doc"
+                        aria-hidden="true"></span>04_schema-tools.md</span>
+                  </button>
+                  <button class="tree-row depth-2" data-open="doc-safety">
+                    <span class="tree-arrow">▶</span>
+                    <span class="tree-label"><span class="tree-file-icon doc"
+                        aria-hidden="true"></span>05_safety.md</span>
+                  </button>
+
+                  <div class="tree-row depth-1 tree-folder">
+                    <span class="tree-arrow">▼</span>
+                    <span class="tree-label">demos</span>
+                  </div>
+                  <button class="tree-row depth-2" data-open="gif-setup">
+                    <span class="tree-label"><span class="tree-file-icon gif-icon"
+                        aria-hidden="true"></span>01-setup.gif</span>
+                  </button>
+                  <button class="tree-row depth-2" data-open="gif-ai-setup">
+                    <span class="tree-label"><span class="tree-file-icon gif-icon"
+                        aria-hidden="true"></span>02-more-settings.gif</span>
+                  </button>
+                  <button class="tree-row depth-2" data-open="gif-explorer">
+                    <span class="tree-label"><span class="tree-file-icon gif-icon"
+                        aria-hidden="true"></span>03-ai-assist.gif</span>
+                  </button>
+                  <button class="tree-row depth-2" data-open="gif-ai">
+                    <span class="tree-label"><span class="tree-file-icon gif-icon"
+                        aria-hidden="true"></span>04-ai-copilot.gif</span>
+                  </button>
+                  <button class="tree-row depth-2" data-open="gif-dashboard">
+                    <span class="tree-label"><span class="tree-file-icon gif-icon"
+                        aria-hidden="true"></span>05-dashboard.gif</span>
+                  </button>
+                  <button class="tree-row depth-2" data-open="gif-db-ops">
+                    <span class="tree-label"><span class="tree-file-icon gif-icon"
+                        aria-hidden="true"></span>06-db-ops.gif</span>
+                  </button>
+                  <button class="tree-row depth-2" data-open="gif-power-editor">
+                    <span class="tree-label"><span class="tree-file-icon gif-icon"
+                        aria-hidden="true"></span>07-power-editor.gif</span>
+                  </button>
+                  <button class="tree-row depth-2" data-open="gif-more-features">
+                    <span class="tree-label"><span class="tree-file-icon gif-icon"
+                        aria-hidden="true"></span>08-more-features.gif</span>
+                  </button>
+
+                  <div class="sidebar-group-title" style="padding-left:20px;font-size:9.5px;padding-top:6px;">WORKFLOW
+                  </div>
+                  <button class="tree-row depth-2" data-open="connections">
+                    <span class="tree-arrow">▶</span>
+                    <span class="tree-label"><span class="tree-file-icon workflow"
+                        aria-hidden="true"></span>connections.demo</span>
+                  </button>
+                  <button class="tree-row depth-2" data-open="install">
+                    <span class="tree-arrow">▶</span>
+                    <span class="tree-label"><span class="tree-file-icon workflow"
+                        aria-hidden="true"></span>INSTALL.md</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── Panel 2: Search ── -->
+            <div class="sidebar-panel" id="sidebar-search" aria-label="Search panel">
+              <div class="sidebar-header">SEARCH</div>
+              <div class="search-input-wrap">
+                <input type="text" id="doc-search-input" placeholder="Search docs and features..." autocomplete="off"
+                  spellcheck="false" aria-label="Search documentation">
+              </div>
+              <div class="search-results-list" id="search-results-list" role="listbox" aria-label="Search results">
+                <p class="search-empty">Type to search documentation, features, and workflows.</p>
+              </div>
+            </div>
+
+            <!-- ── Panel 3: NexQL ── -->
+            <div class="sidebar-panel" id="sidebar-nexql" aria-label="NexQL panel">
+              <div class="sidebar-header">NEXQL</div>
+              <div class="sidebar-panel-scroll">
+                <div class="sidebar-group">
+                  <div class="sidebar-group-title">CONNECTIONS</div>
+                  <div class="tree-row depth-1">
+                    <span class="tree-arrow">▼</span>
+                    <span class="tree-label"><span class="tree-file-icon workflow" aria-hidden="true"></span><span
+                        class="conn-dot" aria-label="Connected"></span>Local</span>
+                  </div>
+                  <button class="tree-row depth-2" data-open="connections">
+                    <span class="tree-arrow">▼</span>
+                    <span class="tree-label"><span class="tree-file-icon workflow"
+                        aria-hidden="true"></span>demo_db</span>
+                    <span class="tree-badge badge-dev">DEV</span>
+                  </button>
+                  <div class="tree-row depth-3">
+                    <span class="tree-arrow">▼</span>
+                    <span class="tree-label">Schemas</span>
+                  </div>
+                  <div class="tree-row depth-4">
+                    <span class="tree-arrow">▼</span>
+                    <span class="tree-label">public</span>
+                    <span class="tree-badge">12 tables</span>
+                  </div>
+                  <div class="tree-row depth-5">⊞ orders <span class="tree-badge">~480K</span></div>
+                  <div class="tree-row depth-6 col-row">🔑 <span class="col-name">id</span> <span
+                      class="col-type">bigint</span></div>
+                  <div class="tree-row depth-6 col-row">🔗 <span class="col-name">customer_id</span> <span
+                      class="col-type">bigint</span></div>
+                  <div class="tree-row depth-6 col-row"><span class="col-name">created_at</span> <span
+                      class="col-type">timestamptz</span> <span class="col-idx">⚡</span></div>
+                  <div class="tree-row depth-6 col-row"><span class="col-name">amount</span> <span
+                      class="col-type">numeric(10,2)</span></div>
+                  <div class="tree-row depth-6 col-row"><span class="col-name">status</span> <span
+                      class="col-type">text</span></div>
+                  <div class="tree-row depth-4">
+                    <span class="tree-arrow">▶</span>
+                    <span class="tree-label">sales</span>
+                    <span class="tree-badge">8 tables</span>
+                  </div>
+                </div>
+
+                <div class="sidebar-group">
+                  <div class="sidebar-group-title">NOTEBOOKS</div>
+                  <button class="tree-row depth-1" data-open="query">
+                    <span class="tree-arrow">▶</span>
+                    <span class="tree-label"><span class="tree-file-icon notebook"
+                        aria-hidden="true"></span>query.pgsql</span>
+                  </button>
+                  <button class="tree-row depth-1" data-open="query">
+                    <span class="tree-arrow">▶</span>
+                    <span class="tree-label"><span class="tree-file-icon notebook"
+                        aria-hidden="true"></span>sales_health.pgsql</span>
+                  </button>
+                </div>
+
+                <div class="sidebar-group">
+                  <div class="sidebar-group-title">SAVED QUERIES</div>
+                  <div class="tree-row depth-1">
+                    <span class="tree-label" style="font-style:italic;font-size:10.5px;color:var(--vsc-muted)">No saved
+                      queries</span>
+                  </div>
+                </div>
+
+                <div class="sidebar-group">
+                  <div class="sidebar-group-title">QUERY HISTORY</div>
+                  <button class="tree-row depth-1" data-open="query">
+                    <span class="tree-arrow">▶</span>
+                    <span class="history-label">daily_revenue_7d</span>
+                    <span class="history-time">2m ago</span>
+                  </button>
+                  <button class="tree-row depth-1" data-open="query">
+                    <span class="tree-arrow">▶</span>
+                    <span class="history-label">top_customers_30d</span>
+                    <span class="history-time">18m ago</span>
+                  </button>
+                  <button class="tree-row depth-1" data-open="query">
+                    <span class="tree-arrow">▶</span>
+                    <span class="history-label">orders_by_status</span>
+                    <span class="history-time">1h ago</span>
+                  </button>
+                  <button class="tree-row depth-1" data-open="query">
+                    <span class="tree-arrow">▶</span>
+                    <span class="history-label">EXPLAIN orders</span>
+                    <span class="history-time">3h ago</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </aside>
+
+          <section class="editor-region">
+            <div class="editor-tab-strip">
+              <div class="tabs" role="tablist" aria-label="Open files">
+                <button class="tab active" data-open="query" role="tab" aria-selected="true"><span class="tab-dot"></span>
+                  query.pgsql <span class="tab-close" aria-label="Close tab" tabindex="-1">×</span></button>
+                <button class="tab" data-open="readme" role="tab" aria-selected="false">README.md <span class="tab-close"
+                    aria-label="Close tab" tabindex="-1">×</span></button>
+                <button class="tab" data-open="doc-notebooks" role="tab" aria-selected="false">notebooks.md <span
+                    class="tab-close" aria-label="Close tab" tabindex="-1">×</span></button>
+              </div>
+              <div class="editor-layout-actions" role="toolbar" aria-label="Side panel visibility">
+                <button type="button" class="layout-toggle-btn" id="btn-toggle-explorer-sidebar"
+                  aria-pressed="false" title="Hide Explorer sidebar"
+                  aria-label="Toggle Explorer sidebar">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect x="3" y="4" width="8" height="16" rx="1.5" stroke="currentColor" stroke-width="1.5" />
+                    <rect x="14" y="4" width="7" height="6" rx="1" stroke="currentColor" stroke-width="1.5" />
+                    <rect x="14" y="13" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5" />
+                  </svg>
+                </button>
+                <button type="button" class="layout-toggle-btn" id="btn-toggle-assistant-sidebar"
+                  aria-pressed="false" title="Hide SQL Assistant panel"
+                  aria-label="Toggle SQL Assistant panel">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect x="14" y="4" width="8" height="16" rx="1.5" />
+                    <rect x="3" y="5" width="8" height="6" rx="1" />
+                    <rect x="3" y="13" width="8" height="7" rx="1" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="breadcrumb-bar" id="breadcrumb-bar" aria-label="File path">
+              <span>NEXQL</span>
+              <span class="breadcrumb-sep">›</span>
+              <span class="breadcrumb-file" id="breadcrumb-file">query.pgsql</span>
+            </div>
+
+            <div class="editor-content">
+              <article class="file-view" id="file-readme" itemscope itemtype="https://schema.org/SoftwareApplication">
+  <meta itemprop="name" content="NexQL">
+  <meta itemprop="applicationCategory" content="DeveloperApplication">
+  <meta itemprop="operatingSystem" content="Windows, macOS, Linux">
+  <meta itemprop="keywords" content="postgresql vscode extension, sql notebooks, postgres explorer, ai sql assistant, query optimization, schema designer, erd diagram, dbeaver alternative, pgadmin alternative">
+  <meta itemprop="softwareVersion" content="1.2.x">
+  <meta itemprop="screenshot" content="https://nexql.astrx.dev/assets/03-ai-assist.gif">
+  <link itemprop="downloadUrl" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer">
+  <div itemprop="offers" itemscope itemtype="https://schema.org/Offer" style="display:none">
+    <meta itemprop="price" content="0">
+    <meta itemprop="priceCurrency" content="USD">
+    <meta itemprop="availability" content="https://schema.org/InStock">
+  </div>
+  <div class="markdown">
+    <div class="pill-row">
+      <a class="pill" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer">Marketplace</a>
+      <span class="pill pill-ok" id="badge-version">v0.9.x</span>
+      <span class="pill">PostgreSQL Focused</span>
+      <span class="pill">Notebook + Explorer</span>
+    </div>
+    <h2>🐘 NexQL</h2>
+    <p itemprop="description">Run your full PostgreSQL workflow inside VS Code: connect to environments safely, inspect objects,
+      execute SQL notebooks, explain plans, and ship faster with AI-guided optimization.</p>
+    <p style="display:none">NexQL is a VS Code PostgreSQL extension for SQL editing, query execution, query optimization, database exploration, schema design, ERD visualization, and AI-assisted PostgreSQL analysis.</p>
+    <div class="metrics">
+      <div class="metric">
+        <strong id="stat-downloads">--</strong>
+        <span>Downloads</span>
+      </div>
+      <div class="metric">
+        <strong id="stat-rating">--</strong>
+        <span>Rating</span>
+      </div>
+      <div class="metric">
+        <strong id="stat-version">--</strong>
+        <span>Latest</span>
+      </div>
+    </div>
+
+    <h3>Simple flow for teams</h3>
+    <ol>
+      <li><strong>Connect safely:</strong> label environments as DEV, STAGE, PROD to avoid mistakes.</li>
+      <li><strong>Explore quickly:</strong> browse schemas, tables, views, and functions in one tree.</li>
+      <li><strong>Run and optimize:</strong> execute notebook cells and inspect plans with clear guidance.</li>
+      <li><strong>Collaborate:</strong> share reproducible SQL notebooks in your repository.</li>
+    </ol>
+
+    <div class="cta-row">
+      <a class="install-btn" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer">Install
+        from Marketplace</a>
+      <button class="ghost-btn" type="button" data-open="query">Open Live Query Demo</button>
+      <button class="ghost-btn" type="button" data-open="install">View Quick Start</button>
+    </div>
+
+    <div class="pillar-grid" aria-label="Feature areas overview">
+      <div class="pillar-card"><span class="pillar-icon">📓</span><strong class="pillar-title">Notebooks</strong>
+        <p>Write and run SQL notebooks with live results and export</p>
+      </div>
+      <div class="pillar-card"><span class="pillar-icon">🗂️</span><strong class="pillar-title">Explorer</strong>
+        <p>Browse all database objects and generate scripts instantly</p>
+      </div>
+      <div class="pillar-card"><span class="pillar-icon">✨</span><strong class="pillar-title">AI Assistant</strong>
+        <p>Ask in plain English, get SQL back with explanations</p>
+      </div>
+      <div class="pillar-card"><span class="pillar-icon">🎨</span><strong class="pillar-title">Schema Tools</strong>
+        <p>Visual designer, ERD diagrams, diff viewer, import wizard</p>
+      </div>
+      <div class="pillar-card"><span class="pillar-icon">🛡️</span><strong class="pillar-title">Safety</strong>
+        <p>DEV/STAGE/PROD tags, read-only mode, risk scoring</p>
+      </div>
+      <div class="pillar-card"><span class="pillar-icon">📊</span><strong class="pillar-title">Performance</strong>
+        <p>Live dashboards, EXPLAIN analysis, index advisor</p>
+      </div>
+    </div>
+
+    <section class="trust-strip" aria-label="NexQL value highlights">
+      <p><strong>Built for practical SQL work:</strong> production-safe execution, notebook workflows,
+        AI assistance, and schema-first exploration.</p>
+    </section>
+  </div>
+</article>
+
+<article class="file-view visible" id="file-query">
+  <div class="cell">
+    <div class="cell-lens">
+      <button id="run-query-btn" class="query-toolbar-btn query-toolbar-btn-primary">▶ Run</button>
+      <button class="query-toolbar-btn" data-query-action="ask-ai">✨ Ask AI Insights</button>
+      <button class="query-toolbar-btn" data-query-action="explain-query">Explain</button>
+      <button class="query-toolbar-btn" data-query-action="optimize-query">Optimize</button>
+    </div>
+    <div class="sql-editor-wrap">
+      <div class="sql-gutter" aria-hidden="true">
+        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span>
+      </div>
+      <pre
+        class="sql"><code><span class="comment">-- Revenue by day, last 7 days</span>
+<span class="kw">SELECT</span>
+  <span class="fn">date_trunc</span>(<span class="str">'day'</span>, created_at) <span class="kw">AS</span> day,
+  <span class="fn">COUNT</span>(*) <span class="kw">AS</span> orders,
+  <span class="fn">SUM</span>(amount) <span class="kw">AS</span> revenue
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> created_at &gt;= <span class="fn">NOW</span>() - <span class="kw">INTERVAL</span> <span class="str">'7 days'</span>
+<span class="kw">GROUP BY</span> day <span class="kw">ORDER BY</span> day;</code><span class="editor-cursor" aria-hidden="true"></span></pre>
+    </div>
+  </div>
+
+  <div id="query-output-stack" class="query-output-stack query-output-stack--pending" aria-live="polite">
+    <p class="query-output-hint" id="query-output-hint">Click <strong>Run</strong> to execute this cell — the results table and chart appear below.</p>
+    <div class="query-output-inner">
+      <div class="query-result" id="query-result">
+        <div class="result-meta">✓ 7 rows · demo_db</div>
+        <table>
+          <thead>
+            <tr>
+              <th data-col="0" class="sortable-th">day <span class="sort-ind">↕</span></th>
+              <th data-col="1" class="sortable-th">orders <span class="sort-ind">↕</span></th>
+              <th data-col="2" class="sortable-th">revenue <span class="sort-ind">↕</span></th>
+            </tr>
+          </thead>
+          <tbody id="result-body"></tbody>
+        </table>
+      </div>
+      <div class="insight-panel" id="insight-panel">
+        <h3>Execution Insight</h3>
+        <p id="insight-text">Suggestion: add an index on orders(created_at) and keep daily aggregation in a materialized
+          view for dashboard latency under 100ms.</p>
+      </div>
+      <div class="chart-cell" id="chart-cell">
+        <div class="chart-header">
+          <span>📊 Revenue by Day — Bar Chart</span>
+          <span style="margin-left:auto;font-size:10px">Chart.js</span>
+        </div>
+        <div class="chart-body">
+          <canvas id="revenue-chart" height="160"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-features">
+  <div class="feature-bridge">
+    <p class="story-kicker">Product stories</p>
+    <h2>Eight workflows. One editor window.</h2>
+    <p class="feature-bridge-lede">Each capability has a step-by-step interactive story on the marketing site — same design language as the homepage loop. Pick one to read how it works, then try it in this demo.</p>
+    <div class="feature-hub-grid" style="margin-top: 1rem;">
+      <a class="feature-hub-card" href="/features/notebooks/"><span class="feature-hub-path">notebooks</span><h3>SQL notebooks</h3><p>Cells, results, export — git-tracked .pgsql files.</p></a>
+      <a class="feature-hub-card" href="/features/explorer/"><span class="feature-hub-path">explorer</span><h3>Database explorer</h3><p>16+ object types, column insights, generated SQL.</p></a>
+      <a class="feature-hub-card" href="/features/assistant/"><span class="feature-hub-path">sql assistant</span><h3>Schema-aware AI</h3><p>Zero-config Free AI or BYO providers.</p></a>
+      <a class="feature-hub-card" href="/features/sentinel/"><span class="feature-hub-path">sentinel</span><h3>Sentinel safety</h3><p>Env labels, read-only, risk scoring.</p></a>
+      <a class="feature-hub-card" href="/features/schema-tools/"><span class="feature-hub-path">visual tools</span><h3>Schema designer</h3><p>Designer, diff, ERD, import wizard.</p></a>
+      <a class="feature-hub-card" href="/features/plan-studio/"><span class="feature-hub-path">plan studio</span><h3>Plan Studio</h3><p>EXPLAIN trees, flame graphs, index hints.</p></a>
+      <a class="feature-hub-card" href="/features/dashboard/"><span class="feature-hub-path">dashboard</span><h3>Live dashboard</h3><p>pg_stat metrics without leaving VS Code.</p></a>
+      <a class="feature-hub-card" href="/features/sync/"><span class="feature-hub-path">cloud sync</span><h3>Team sync</h3><p>E2E-encrypted profiles and shared context.</p></a>
+    </div>
+    <div class="feature-bridge-actions">
+      <a href="/features/" class="min-cta primary">Open features hub →</a>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-connections">
+  <div class="form-view">
+    <h3>Connection Preview</h3>
+    <p class="section-subtitle">Use labeled environments and a test-first flow before opening notebooks.</p>
+    <div class="form-grid">
+      <div class="field"><span>Name</span><strong>Local</strong></div>
+      <div class="field"><span>Host</span><strong>localhost</strong></div>
+      <div class="field"><span>Port</span><strong>5432</strong></div>
+      <div class="field"><span>Database</span><strong>demo_db</strong></div>
+      <div class="field"><span>User</span><strong>postgres</strong></div>
+      <div class="field"><span>SSL</span><strong>prefer</strong></div>
+    </div>
+    <div class="env-row">
+      <span class="env-badge active">DEV</span>
+      <span class="env-badge">STAGE</span>
+      <span class="env-badge">PROD</span>
+    </div>
+    <button class="connect-preview" type="button">Test &amp; Connect</button>
+    <ul class="connection-log" id="connection-log" aria-live="polite">
+      <li>Waiting for connection test...</li>
+    </ul>
+  </div>
+</article>
+
+<article class="file-view" id="file-install">
+  <div class="markdown">
+    <h2>🚀 Install and Start in 2 Minutes</h2>
+    <p>NexQL is free and optimized for day-to-day PostgreSQL work inside VS Code.</p>
+    <ol>
+      <li>Open Extensions in VS Code (<code>Ctrl+Shift+X</code>).</li>
+      <li>Search for <code>ric-v.postgres-explorer</code>.</li>
+      <li>Install the extension and create your first connection.</li>
+      <li>Open a <code>.pgsql</code> notebook and run your first query.</li>
+    </ol>
+    <pre><code>code --install-extension ric-v.postgres-explorer</code></pre>
+    <p>Then open NexQL from the editor sidebar and run your first notebook cell.</p>
+    <div class="cta-row">
+      <a class="install-btn" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer">Install
+        from Marketplace</a>
+      <a class="ghost-btn" href="https://github.com/dev-asterix/NexQL">View Source on GitHub</a>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-gif-setup">
+  <div class="gif-viewer">
+    <div class="gif-viewer-toolbar">
+      <span class="gif-viewer-name">01-setup.gif</span>
+      <span class="gif-viewer-meta">GIF · demos/</span>
+    </div>
+    <div class="gif-viewer-canvas">
+      <img src="/assets/01-setup.gif" alt="NexQL setup and connection workflow" class="gif-viewer-img">
+    </div>
+    <div class="gif-viewer-footer">
+      <span>Connect to PostgreSQL in seconds — label your environment, test the connection, done.</span>
+      <a class="gif-install-cta" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer"
+        target="_blank">⬇ Install NexQL →</a>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-gif-ai-setup">
+  <div class="gif-viewer">
+    <div class="gif-viewer-toolbar">
+      <span class="gif-viewer-name">02-more-settings.gif</span>
+      <span class="gif-viewer-meta">GIF · demos/</span>
+    </div>
+    <div class="gif-viewer-canvas">
+      <img src="/assets/02-more-settings.gif" alt="NexQL AI assistant setup" class="gif-viewer-img">
+    </div>
+    <div class="gif-viewer-footer">
+      <span>Connect GitHub Models or your own API key — AI assistance in under a minute.</span>
+      <a class="gif-install-cta" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer"
+        target="_blank">⬇ Install NexQL →</a>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-gif-explorer">
+  <div class="gif-viewer">
+    <div class="gif-viewer-toolbar">
+      <span class="gif-viewer-name">03-ai-assist.gif</span>
+      <span class="gif-viewer-meta">GIF · demos/</span>
+    </div>
+    <div class="gif-viewer-canvas">
+      <img src="/assets/03-ai-assist.gif" alt="NexQL Database Explorer" class="gif-viewer-img">
+    </div>
+    <div class="gif-viewer-footer">
+      <span>Browse tables, right-click to generate SQL, inspect columns — all in the VS Code sidebar.</span>
+      <a class="gif-install-cta" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer"
+        target="_blank">⬇ Install NexQL →</a>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-gif-ai">
+  <div class="gif-viewer">
+    <div class="gif-viewer-toolbar">
+      <span class="gif-viewer-name">04-ai-copilot.gif</span>
+      <span class="gif-viewer-meta">GIF · demos/</span>
+    </div>
+    <div class="gif-viewer-canvas">
+      <img src="/assets/04-ai-copilot.gif" alt="NexQL AI Assist in action" class="gif-viewer-img">
+    </div>
+    <div class="gif-viewer-footer">
+      <span>Ask in plain English, get SQL back with schema context — no copy-paste required.</span>
+      <a class="gif-install-cta" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer"
+        target="_blank">⬇ Install NexQL →</a>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-gif-dashboard">
+  <div class="gif-viewer">
+    <div class="gif-viewer-toolbar">
+      <span class="gif-viewer-name">05-dashboard.gif</span>
+      <span class="gif-viewer-meta">GIF · demos/</span>
+    </div>
+    <div class="gif-viewer-canvas">
+      <img src="/assets/05-dashboard.gif" alt="NexQL dashboard overview" class="gif-viewer-img">
+    </div>
+    <div class="gif-viewer-footer">
+      <span>Track health, wait events, throughput, and active load in the built-in dashboard.</span>
+      <a class="gif-install-cta" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer"
+        target="_blank">⬇ Install NexQL →</a>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-gif-db-ops">
+  <div class="gif-viewer">
+    <div class="gif-viewer-toolbar">
+      <span class="gif-viewer-name">06-db-ops.gif</span>
+      <span class="gif-viewer-meta">GIF · demos/</span>
+    </div>
+    <div class="gif-viewer-canvas">
+      <img src="/assets/06-db-ops.gif" alt="NexQL database operations" class="gif-viewer-img">
+    </div>
+    <div class="gif-viewer-footer">
+      <span>Run routine operations directly from explorer actions and SQL notebook workflows.</span>
+      <a class="gif-install-cta" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer"
+        target="_blank">⬇ Install NexQL →</a>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-gif-power-editor">
+  <div class="gif-viewer">
+    <div class="gif-viewer-toolbar">
+      <span class="gif-viewer-name">07-power-editor.gif</span>
+      <span class="gif-viewer-meta">GIF · demos/</span>
+    </div>
+    <div class="gif-viewer-canvas">
+      <img src="/assets/07-power-editor.gif" alt="NexQL power editor workflow" class="gif-viewer-img">
+    </div>
+    <div class="gif-viewer-footer">
+      <span>Combine notebook execution, rich results, and assistant context in one editor flow.</span>
+      <a class="gif-install-cta" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer"
+        target="_blank">⬇ Install NexQL →</a>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-gif-more-features">
+  <div class="gif-viewer">
+    <div class="gif-viewer-toolbar">
+      <span class="gif-viewer-name">08-more-features.gif</span>
+      <span class="gif-viewer-meta">GIF · demos/</span>
+    </div>
+    <div class="gif-viewer-canvas">
+      <img src="/assets/08-more-features.gif" alt="NexQL additional features" class="gif-viewer-img">
+    </div>
+    <div class="gif-viewer-footer">
+      <span>Explore additional workflows across explorer, assistant, and connection management.</span>
+      <a class="gif-install-cta" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer"
+        target="_blank">⬇ Install NexQL →</a>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-doc-notebooks">
+  <div class="feature-bridge">
+    <p class="story-kicker">SQL notebooks</p>
+    <h2>Notebooks that commit like source.</h2>
+    <p class="feature-bridge-lede">.pgsql files mix SQL cells and markdown in one editor tab. Run one cell or the whole notebook — results, charts, and export land inline. Git-tracked by default.</p>
+    <div class="feature-bridge-actions">
+      <a href="/features/notebooks/" class="min-cta primary">Full interactive story →</a>
+      <button type="button" class="min-cta secondary" data-feature-try-demo data-demo-file="query" data-demo-panel="nexql">Try in demo</button>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-doc-explorer">
+  <div class="feature-bridge">
+    <p class="story-kicker">Database explorer</p>
+    <h2>One tree for the whole schema.</h2>
+    <p class="feature-bridge-lede">Connections → databases → schemas → 16+ object types. Right-click generates correct SQL. Drag tables into notebooks or the SQL Assistant as @mentions.</p>
+    <div class="feature-bridge-actions">
+      <a href="/features/explorer/" class="min-cta primary">Full interactive story →</a>
+      <button type="button" class="min-cta secondary" data-feature-try-demo data-demo-file="query" data-demo-panel="explorer">Try in demo</button>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-doc-ai">
+  <div class="feature-bridge">
+    <p class="story-kicker">Schema-aware AI</p>
+    <h2>Zero-config AI. No API keys.</h2>
+    <p class="feature-bridge-lede">NexQL Free AI ships by default. Or bring OpenAI, Anthropic, Gemini, GitHub Models, VS Code LM. AI never auto-runs — you insert SQL into a notebook cell and Run.</p>
+    <div class="feature-bridge-actions">
+      <a href="/features/assistant/" class="min-cta primary">Full interactive story →</a>
+      <button type="button" class="min-cta secondary" data-feature-try-demo data-demo-file="query" data-demo-panel="nexql">Try in demo</button>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-doc-schema">
+  <div class="feature-bridge">
+    <p class="story-kicker">Visual schema tools</p>
+    <h2>Design, diff, and map without hand DDL.</h2>
+    <p class="feature-bridge-lede">Table designer, schema diff with migration SQL, auto ERD from foreign keys, CSV/JSON import wizard, and DBML import — all as editor webviews.</p>
+    <div class="feature-bridge-actions">
+      <a href="/features/schema-tools/" class="min-cta primary">Full interactive story →</a>
+      <button type="button" class="min-cta secondary" data-feature-try-demo data-demo-file="doc-schema" data-demo-panel="nexql">Try in demo</button>
+    </div>
+  </div>
+</article>
+
+<article class="file-view" id="file-doc-safety">
+  <div class="feature-bridge">
+    <p class="story-kicker">Sentinel safety</p>
+    <h2>Know which database you're on.</h2>
+    <p class="feature-bridge-lede">Environment tags, read-only mode, and query risk scoring before execution. Optional theme swap per environment pairs with NexQL Themes.</p>
+    <div class="feature-bridge-actions">
+      <a href="/features/sentinel/" class="min-cta primary">Full interactive story →</a>
+      <button type="button" class="min-cta secondary" data-feature-try-demo data-demo-file="connections" data-demo-panel="nexql">Try in demo</button>
+    </div>
+    <p class="feature-bridge-lede" style="margin-top: 1rem;">Also see <a href="/features/plan-studio/">Plan Studio</a> and <a href="/features/dashboard/">Live dashboard</a> for performance workflows.</p>
+  </div>
+</article>
+
+            </div>
+          </section>
+
+          <!-- SQL Assistant right panel -->
+          <aside class="right-panel expanded" id="right-panel" aria-label="SQL Assistant">
+
+  <div class="assistant-tab-bar" role="toolbar" aria-label="SQL Assistant controls">
+    <span class="assistant-tab active" aria-current="true">SQL ASSISTANT</span>
+  </div>
+
+  <div class="assistant-subheader">
+    <button class="assistant-subheader-btn" title="History" aria-label="Chat history">🕐</button>
+    <button class="assistant-subheader-btn" title="New chat" aria-label="New chat">＋</button>
+    <span class="assistant-model-label">GitHub Models · gpt-4o</span>
+  </div>
+
+  <div class="schema-context-bar">
+    <span class="schema-ctx-label">CONTEXT</span>
+    <span class="schema-chip active-chip">ecommerce_demo</span>
+    <span class="schema-chip">orders</span>
+    <span class="schema-chip">customers</span>
+    <span class="schema-chip">products</span>
+  </div>
+
+  <div class="assistant-body" id="assistant-body">
+
+    <!-- SQL ASSISTANT panel (default) -->
+    <div class="assistant-panel active" id="atab-sql">
+      <div class="assistant-welcome">
+        <h3>SQL Assistant</h3>
+        <p>Quick highlights from NexQL’s README, including editor-tab and multi-tab assistant workflows.</p>
+      </div>
+
+      <div class="action-cards action-cards-product">
+        <button class="action-card" data-open="readme" data-product-highlight="secure-connections">
+          <span class="action-card-icon">🔌</span>
+          <strong>Secure Connections</strong>
+          <span>VS Code SecretStorage encryption</span>
+        </button>
+        <button class="action-card" data-open="readme" data-product-highlight="connection-safety">
+          <span class="action-card-icon">🛡️</span>
+          <strong>Connection Safety</strong>
+          <span>DEV / STAGE / PROD, read-only, risk scoring</span>
+        </button>
+        <button class="action-card" data-open="readme" data-product-highlight="sql-notebooks">
+          <span class="action-card-icon">📓</span>
+          <strong>SQL Notebooks</strong>
+          <span>Interactive notebooks with AI assistance</span>
+        </button>
+        <button class="action-card" data-open="readme" data-product-highlight="ai-powered">
+          <span class="action-card-icon">🤖</span>
+          <strong>AI-Powered</strong>
+          <span>Generate, optimize, explain, analyze, and work across multiple assistant tabs</span>
+        </button>
+        <button class="action-card" data-open="readme" data-product-highlight="visual-tools">
+          <span class="action-card-icon">🎨</span>
+          <strong>Visual Tools</strong>
+          <span>Table designer, schema diff, ERD workflows</span>
+        </button>
+        <button class="action-card" data-open="readme" data-product-highlight="quick-start">
+          <span class="action-card-icon">🚀</span>
+          <strong>Quick Start</strong>
+          <span>Install and start in 2 minutes</span>
+        </button>
+      </div>
+
+      <div class="snippet-section">
+        <div class="snippet-label">SQL SNIPPETS</div>
+        <div class="snippet-pills">
+          <button class="snippet-pill" data-snippet="INNER JOIN ... ON ... = ...">INNER_JOIN</button>
+          <button class="snippet-pill" data-snippet="WITH cte AS (&#10;  SELECT ...&#10;)&#10;SELECT * FROM cte;">WITH
+            cte AS</button>
+          <button class="snippet-pill"
+            data-snippet="ROW_NUMBER() OVER (PARTITION BY ... ORDER BY ...)">ROW_NUMBER()</button>
+          <button class="snippet-pill" data-snippet="EXPLAIN ANALYZE">EXPLAIN ANALYZE</button>
+          <button class="snippet-pill" data-snippet="ON CONFLICT (id) DO UPDATE SET col = EXCLUDED.col">ON
+            CONFLICT</button>
+          <button class="snippet-pill" data-snippet="jsonb_agg(row_to_json(t)) FROM t">jsonb_agg</button>
+        </div>
+      </div>
+
+      <div class="assistant-chat-log" id="sql-chat-log"></div>
+    </div>
+
+  </div><!-- /assistant-body -->
+
+  <div class="assistant-input-area" style="position: relative;">
+    <textarea id="assistant-input" placeholder="Ask anything postgres/SQL... (@ to refer a table/function)" rows="2"
+      aria-label="Ask SQL Assistant"></textarea>
+    <div class="input-toolbar">
+      <button class="input-tool-btn" id="btn-attach" title="Attach file" aria-label="Attach file">📎</button>
+      <button class="input-tool-btn" title="Attach image" aria-label="Attach image">🖼️</button>
+      <button class="input-tool-btn" title="Reference table or function" aria-label="Reference">@</button>
+      <button class="input-send-btn" id="assistant-send" aria-label="Send message">Send ›</button>
+    </div>
+
+    <!-- Quick Context Menu -->
+    <div class="chat-attach-menu" id="chat-attach-menu" aria-hidden="true">
+      <div class="chat-attach-header">SELECT CONTEXT</div>
+      <div class="chat-attach-group">
+        <span class="conn-dot"></span> demo_db
+      </div>
+      <button class="attach-menu-item" data-ctx="public.orders"><span class="attach-icon">⊞</span>
+        public.orders</button>
+      <button class="attach-menu-item" data-ctx="public.customers"><span class="attach-icon">⊞</span>
+        public.customers</button>
+      <button class="attach-menu-item" data-ctx="public.products"><span class="attach-icon">⊞</span>
+        public.products</button>
+      <button class="attach-menu-item" data-ctx="sales.daily_revenue"><span class="attach-icon">⊞</span>
+        sales.daily_revenue</button>
+    </div>
+  </div>
+
+</aside><!-- /right-panel -->
+
+        </div>
+
+        <footer class="statusbar">
+          <span>⎇ main</span>
+          <span id="sb-problems"><span class="sb-err">⊘ 0</span> <span class="sb-warn">⚠ 1</span></span>
+          <span id="sb-connection">● Connected · demo_db</span>
+          <span id="sb-engine">PostgreSQL DB</span>
+          <span class="status-spacer"></span>
+          <span id="sb-file">Markdown</span>
+          <span id="sb-line">Ln 1, Col 1</span>
+          <span>UTF-8</span>
+          <span>LF</span>
+          <span id="sb-theme">Theme: Dark</span>
+          <span>NexQL</span>
+        </footer>
+      </div><!-- /shell -->
+        </div><!-- /demo-shell-frame -->
+      </div><!-- /demo-shell-stage -->
+
+      <section class="minimized-overview" id="minimized-overview" aria-hidden="false" itemscope
+  itemtype="https://schema.org/SoftwareApplication">
+  <meta itemprop="name" content="NexQL">
+  <meta itemprop="applicationCategory" content="DeveloperApplication">
+  <meta itemprop="operatingSystem" content="Windows, macOS, Linux">
+  <meta itemprop="softwareVersion" id="landing-software-version-meta" content="0.0.0">
+  <meta itemprop="keywords"
+    content="postgresql extension for vscode, sql notebook, postgres query tool, ai sql assistant, database explorer, query optimizer, schema designer, erd diagrams">
+  <link itemprop="downloadUrl" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer">
+  <div itemprop="offers" itemscope itemtype="https://schema.org/Offer" style="display:none">
+    <meta itemprop="price" content="0">
+    <meta itemprop="priceCurrency" content="USD">
+  </div>
+
+  <!-- Two-column hero (NexQL Themes layout): copy left, interactive preview right -->
+  <div class="hero-layout landing-viewport" id="top">
+
+    <div class="hero-col-left">
+      <div class="hero-eyebrow" aria-live="polite">
+        <span class="hero-live-dot" aria-hidden="true"></span>
+        <span>MCP server ships in v2.2.3 — your DB as agent tools</span>
+      </div>
+
+      <h1 class="landing-hero-title">
+        Postgres never<br>
+        leaves your <span class="hero-serif-em brand-gradient">editor</span>.
+      </h1>
+
+      <p class="min-lead" itemprop="description">Explorer, SQL notebooks, live dashboard, visual designers and a
+        schema-grounded AI assistant — one VS Code extension instead of a second app, a second window and a second
+        mental model.
+        <strong class="min-lead-strong">Pick a NexQL theme in the header — all 39 palettes repaint this page live.</strong></p>
+
+      <div class="minimized-actions">
+        <a class="min-cta primary" href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer"
+          target="_blank" rel="noopener noreferrer">Install from Marketplace</a>
+        <button class="min-cta secondary" id="open-editor-shortcut" type="button">▶ Run the demo</button>
+        <button class="min-cta tertiary nx-copy-install" type="button" data-nx-copy-cmd
+          data-cmd="ext install ric-v.postgres-explorer">
+          <span class="nx-cli-dollar">$</span>ext install ric-v.postgres-explorer
+          <span data-nx-copy-label>⧉</span>
+        </button>
+      </div>
+
+      <div class="hero-kpi-strip hero-kpis hero-trust" aria-live="polite">
+        <div class="kpi-item">
+          <span class="kpi-value">PG 12–17</span>
+          <span class="kpi-label">+ Neon, Supabase, Timescale</span>
+        </div>
+        <div class="kpi-item">
+          <span class="kpi-value">Zero-config AI</span>
+          <span class="kpi-label">no API key required</span>
+        </div>
+        <div class="kpi-item">
+          <span class="kpi-value">MIT core</span>
+          <span class="kpi-label">open source, forkable</span>
+        </div>
+        <div class="kpi-item">
+          <span class="kpi-value"><span id="landing-stat-downloads">—</span></span>
+          <span class="kpi-label">installs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-col-right">
+      <!-- .mini-editor-preview: workbench.js wires inner buttons + container click → open demo -->
+      <div class="hero-editor-stage hero-editor-stage--hero">
+        <p class="hero-editor-caption">
+          <span class="hero-editor-caption-label">Interactive workspace</span>
+          <span class="hero-editor-caption-hint" aria-hidden="true">Click to open the full demo</span>
+        </p>
+
+        <div class="landing-demo-stage landing-demo-stage--hero">
+          <div class="mini-wb-preview mini-wb-preview--hero mini-editor-preview"
+            aria-label="NexQL interactive preview — click to open demo">
+
+            <div class="mini-wb-titlebar">
+              <div class="mini-wb-dots" aria-hidden="true">
+                <span class="dot-red"></span>
+                <span class="dot-yellow"></span>
+                <span class="dot-green"></span>
+              </div>
+              <img class="mini-wb-brand-icon" src="/assets/NexQL.png" alt="" aria-hidden="true">
+              <span class="mini-wb-window-title">NexQL Workspace · Demo Project</span>
+              <div class="mini-wb-tab-strip" aria-hidden="true">
+                <span class="mini-wb-tab is-active">query.pgsql</span>
+                <span class="mini-wb-tab">README.md</span>
+              </div>
+            </div>
+
+            <div class="mini-wb-body" aria-hidden="true">
+
+              <div class="mini-wb-sidebar">
+                <div class="mini-wb-sidebar-hdr">NEXQL</div>
+                <div class="mini-wb-file-row is-active">
+                  <span class="mini-wb-file-dot nb"></span>
+                  query.pgsql
+                </div>
+                <div class="mini-wb-file-row">
+                  <span class="mini-wb-file-dot nb"></span>
+                  sales_health.pgsql
+                </div>
+                <div class="mini-wb-section-hdr">SCHEMA</div>
+                <div class="mini-wb-schema-row">orders</div>
+                <div class="mini-wb-schema-row">customers</div>
+                <div class="mini-wb-schema-row">products</div>
+                <div class="mini-wb-env-badge">
+                  Safe env labels&nbsp;
+                  <span class="env-label-dev">DEV</span>&thinsp;/&thinsp;<span class="env-label-prod">PROD</span>
+                </div>
+              </div>
+
+              <div class="mini-wb-editor">
+                <table class="mini-wb-result-table">
+                  <thead>
+                    <tr>
+                      <th>day</th>
+                      <th>orders</th>
+                      <th>revenue</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Apr 07</td>
+                      <td>142</td>
+                      <td>$18,420</td>
+                    </tr>
+                    <tr>
+                      <td>Apr 08</td>
+                      <td>158</td>
+                      <td>$21,340</td>
+                    </tr>
+                    <tr>
+                      <td>Apr 09</td>
+                      <td>131</td>
+                      <td>$17,890</td>
+                    </tr>
+                    <tr>
+                      <td>Apr 10</td>
+                      <td>177</td>
+                      <td>$24,110</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="mini-chart">
+                  <div class="mini-chart-bar" style="--bar-h: 66%"></div>
+                  <div class="mini-chart-bar" style="--bar-h: 77%"></div>
+                  <div class="mini-chart-bar" style="--bar-h: 64%"></div>
+                  <div class="mini-chart-bar" style="--bar-h: 87%"></div>
+                  <div class="mini-chart-bar" style="--bar-h: 100%"></div>
+                  <div class="mini-chart-bar" style="--bar-h: 81%"></div>
+                  <div class="mini-chart-bar" style="--bar-h: 95%"></div>
+                </div>
+              </div>
+
+              <div class="mini-wb-assistant">
+                <div class="mini-wb-assistant-hdr">SQL ASSISTANT</div>
+                <div class="mini-wb-schema-pill">
+                  Schema context: <strong>orders, customers</strong>
+                </div>
+                <div class="mini-chat-user">Why is this daily revenue query slow?</div>
+                <div class="mini-chat-ai">
+                  I can see <code>orders.created_at</code> is not indexed. Create
+                  <code>idx_orders_created_at</code> concurrently, then cache the daily rollup
+                  for dashboard latency.<br><br>
+                  Expected result: 3s to under 100ms on this demo shape.
+                </div>
+                <button class="mini-wb-cta-btn" type="button" aria-label="Open interactive NexQL demo">
+                  Try it live →
+                </button>
+              </div>
+            </div>
+
+            <div class="mini-wb-insight-bar">
+              Plan insight
+              <span class="mini-wb-insight-pill">Index recommendation</span>
+            </div>
+
+          </div>
+
+        </div><!-- /.landing-demo-stage -->
+      </div>
+    </div>
+
+  </div><!-- /hero-layout -->
+
+  <p class="landing-below-fold-hint story-scroll-hint">
+    <span class="landing-scroll-mouse" aria-hidden="true"></span>
+    <span>Scroll — playground, features, MCP, pricing</span>
+  </p>
+
+  <!-- Hidden SEO content -->
+  <ul class="min-feature-pills" aria-label="Key features" itemprop="featureList" style="display:none" hidden>
+    <li>SQL Notebooks</li><li>DB Explorer</li><li>AI Assistant</li>
+    <li>Schema Designer</li><li>ERD Diagrams</li><li>SSH Tunnels</li>
+    <li>EXPLAIN Analysis</li><li>Live Dashboard</li><li>Free</li>
+  </ul>
+  <p style="display:none">NexQL helps developers query PostgreSQL in VS Code with notebooks, explorer navigation, schema tools, AI-assisted SQL generation, EXPLAIN analysis, and performance optimization workflows.</p>
+</section>
+
+      <!-- Startup toast — positioned inside shell via absolute, but lives here for stacking -->
+      <div class="toast" id="startup-toast" role="status" aria-live="polite">
+        <img class="toast-icon toast-icon-image" src="/assets/NexQL.png" alt="">
+        <span>NexQL activated — demo_db connected</span>
+        <button class="toast-close" id="toast-close-btn" aria-label="Dismiss notification">×</button>
+      </div>
+    </section>

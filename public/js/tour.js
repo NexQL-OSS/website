@@ -4,7 +4,9 @@ let pendingTourStartTimer = null;
 
 function openEditorViewForTour() {
   const wasMinimized = document.body.classList.contains("editor-minimized");
-  if (wasMinimized && typeof setEditorMinimizedState === "function") {
+  if (wasMinimized && typeof openLandingDemo === "function") {
+    openLandingDemo();
+  } else if (wasMinimized && typeof setEditorMinimizedState === "function") {
     setEditorMinimizedState(false);
   }
   return wasMinimized;

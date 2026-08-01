@@ -1,8 +1,43 @@
-/** Keeps `.shell` / `#minimized-overview` aria-hidden in sync with `body.editor-minimized`. */
+/** Landing scroll position to restore after closing the full-screen demo. */
+let landingScrollY = 0;
+
+/** Keeps `.shell` / `#minimized-overview` / landing sections in sync with demo mode. */
 function setEditorMinimizedState(minimized) {
   const shell = document.querySelector(".shell");
   const minimizedOverview = document.getElementById("minimized-overview");
-  document.body.classList.toggle("editor-minimized", minimized);
+  const landingRoots = document.querySelectorAll(".story-root, .nx-root");
+  const html = document.documentElement;
+
+  if (!minimized) {
+    // Keep scroll-snap off for the whole demo session. Re-enabling it after one
+    // frame lets the browser snap to a marketing section while the document is
+    // already non-scrollable — trapping the user on the playground.
+    landingScrollY = window.scrollY;
+    html.style.scrollSnapType = "none";
+    document.body.classList.add("demo-open");
+    window.scrollTo(0, 0);
+    html.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    document.body.classList.toggle("editor-minimized", minimized);
+
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      html.scrollTop = 0;
+    });
+  } else {
+    document.body.classList.toggle("editor-minimized", minimized);
+    document.body.classList.remove("demo-open");
+
+    html.style.scrollSnapType = "none";
+    requestAnimationFrame(() => {
+      window.scrollTo(0, landingScrollY);
+      requestAnimationFrame(() => {
+        html.style.scrollSnapType = "";
+      });
+    });
+  }
+
   if (shell) {
     shell.setAttribute("aria-hidden", minimized ? "true" : "false");
     if (!minimized) {
@@ -17,9 +52,19 @@ function setEditorMinimizedState(minimized) {
   if (minimizedOverview) {
     minimizedOverview.setAttribute("aria-hidden", minimized ? "false" : "true");
   }
+  landingRoots.forEach((el) => {
+    el.setAttribute("aria-hidden", minimized ? "false" : "true");
+  });
   if (typeof syncSiteHeaderOffset === "function") {
     requestAnimationFrame(syncSiteHeaderOffset);
   }
+}
+
+/** Open the full workbench demo — single entry for all CTAs / preview clicks. */
+function openLandingDemo() {
+  setEditorMinimizedState(false);
+  openFile("query");
+  switchSidebarPanel("nexql");
 }
 
 function openFile(fileName) {
@@ -108,28 +153,23 @@ function wireWindowControls() {
     setEditorMinimizedState(true);
   });
 
-  restoreShortcut?.addEventListener("click", () => {
-    setEditorMinimizedState(false);
-    openFile("query");
-    switchSidebarPanel("nexql");
+  restoreShortcut?.addEventListener("click", (e) => {
+    e.preventDefault();
+    openLandingDemo();
   });
 
   terminalButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      setEditorMinimizedState(false);
-      openFile("query");
-      switchSidebarPanel("nexql");
+      openLandingDemo();
     });
   });
 
   minimizedOverview?.querySelector(".mini-editor-preview")?.addEventListener("click", (e) => {
     const el = e.target;
     if (el instanceof Element && el.closest("button")) return;
-    setEditorMinimizedState(false);
-    openFile("query");
-    switchSidebarPanel("nexql");
+    openLandingDemo();
   });
 }
 

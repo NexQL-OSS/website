@@ -1,7 +1,8 @@
 import { parseThemeSummary } from "./vendor/parse-theme-summary.mjs";
 
 const THEME_KEY = "nexql-docs-theme";
-const DEFAULT_THEME_ID = "claudy-day";
+const DEFAULT_THEME_ID = "mute-dark";
+const THEMES_CDN_BASE = "https://nexql-themes.astrx.dev/themes";
 
 /** @type {Array<Record<string, unknown>>} */
 let themes = [];
@@ -24,10 +25,8 @@ let menuAnchor = null;
 function themesBase() {
   const override = document.documentElement.dataset.themesBase;
   if (override) return override.replace(/\/$/, "");
-  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    return "/themes";
-  }
-  return "https://nexql-themes.astrx.dev/themes";
+  // Always hit the themes CDN so localhost (no /themes proxy) still gets the full list.
+  return THEMES_CDN_BASE;
 }
 
 /**
@@ -38,35 +37,35 @@ function shortThemeName(name) {
   return String(name).replace(/^NexQL\s+/, "");
 }
 
-/** Fallback when CDN / proxy is unavailable. */
+/** Fallback when CDN / proxy is unavailable — Mute Dark palette. */
 const FALLBACK_SUMMARY = {
-  id: "drift-dark",
-  name: "NexQL Drift Dark",
-  family: "Drift",
+  id: "mute-dark",
+  name: "NexQL Mute Dark",
+  family: "Mute",
   light: false,
-  bg: "#0b0e1a",
-  fg: "#e8ebf6",
-  panel: "#0a0d18",
-  deep: "#07080e",
-  border: "rgba(255, 255, 255, 0.07)",
-  muted: "#98a2bd",
-  accent: "#6c4cf0",
-  badge: "#6c4cf0",
-  badgeFg: "#ffffff",
-  sel: "rgba(108, 76, 240, 0.18)",
-  lineHi: "rgba(11, 14, 26, 0.5)",
-  keyword: "#8e8fb8",
-  func: "#7aa8e8",
-  typ: "#b68cdb",
-  string: "#d9a86c",
-  number: "#d9a86c",
-  comment: "#646e8c",
-  tag: "#7aa8e8",
-  operator: "#8e8fb8",
-  variable: "#d8d6e0",
-  property: "#d8d6e0",
-  constant: "#d9a86c",
-  parameter: "#d8d6e0",
+  bg: "#0B0E14",
+  fg: "#E6EDF3",
+  panel: "#0B0E14",
+  deep: "#0B0E14",
+  border: "#21262D",
+  muted: "#A0A0A0",
+  accent: "#E0A4CC",
+  badge: "#E0A4CC",
+  badgeFg: "#0B0E14",
+  sel: "#E0A4CC40",
+  lineHi: "#0b0e1499",
+  keyword: "#7688B8",
+  func: "#C4A4B8",
+  typ: "#8494C4",
+  string: "#FFA588",
+  number: "#7EE8A8",
+  comment: "#586674",
+  tag: "#E6EDF3",
+  operator: "#E6EDF3",
+  variable: "#E6EDF3",
+  property: "#E89870",
+  constant: "#FFA588",
+  parameter: "#E6EDF3",
 };
 
 /**

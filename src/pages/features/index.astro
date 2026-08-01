@@ -1,0 +1,47 @@
+---
+import FeatureLayout from "../../layouts/FeatureLayout.astro";
+import { FEATURES } from "../../data/feature-stories";
+
+const title = "NexQL Features — Interactive product stories";
+const description =
+  "Step through how NexQL notebooks, explorer, AI assistant, Sentinel safety, schema tools, Plan Studio, dashboard, and cloud sync work inside VS Code.";
+const canonical = "https://nexql.astrx.dev/features/";
+---
+
+<FeatureLayout {title} {description} {canonical}>
+  <main class="feature-page">
+    <header class="feature-page-header">
+      <p class="story-kicker">Product stories</p>
+      <h1 class="story-title">
+        Eight workflows.<br /><em>One editor window.</em>
+      </h1>
+      <p class="story-lede">
+        Each story walks connect → explore → query → analyze for a real NexQL
+        capability — sourced from core and pro surfaces, not marketing fluff.
+      </p>
+      <div class="feature-page-actions">
+        <a class="min-cta primary" href="/">← Back to homepage</a>
+        <a class="min-cta secondary" href="/#install">Install NexQL</a>
+      </div>
+    </header>
+
+    <div class="feature-hub" id="feature-content">
+      <p class="story-kicker">Pick a workflow</p>
+      <div class="feature-hub-grid">
+        {
+          FEATURES.map((f) => (
+            <a class="feature-hub-card" href={`/features/${f.slug}/`}>
+              <span class="feature-hub-path">{f.path}</span>
+              <span class="feature-tier" data-tier={f.tier}>{f.tierLabel}</span>
+              <h3>
+                {f.title}
+                {f.titleEm ? ` ${f.titleEm}` : ""}
+              </h3>
+              <p>{f.lede}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </main>
+</FeatureLayout>

@@ -1,0 +1,118 @@
+---
+/** Shared marketing header — matches demo-shell topbar; works on / and /features/*. */
+const { home = "/" } = Astro.props;
+const isHome = home === "/";
+---
+
+<header class="site-header landing-topbar" role="banner">
+  <div class="release-banner" id="release-banner">
+    <span
+      >NexQL v2.2.3 — <strong>MCP server ships over stdio</strong> — your DB as agent tools.
+      <a
+        href="https://github.com/dev-asterix/NexQL/blob/main/CHANGELOG.md"
+        target="_blank"
+        rel="noopener noreferrer">See what's new →</a
+      ></span
+    >
+    <button class="banner-close-btn" id="btn-close-banner" aria-label="Dismiss banner"
+      >&times;</button
+    >
+  </div>
+  <div class="site-header-inner">
+    <button
+      class="site-header-menu-btn mobile-menu-btn"
+      id="btn-toggle-topbar"
+      type="button"
+      aria-label="Toggle navigation"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      ><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" aria-hidden="true"
+        ><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line
+          x1="3"
+          y1="18"
+          x2="21"
+          y2="18"></line></svg
+      ></button
+    >
+    <a href={home} class="site-logo" aria-label="NexQL — home">
+      <img class="site-logo-img" src="/assets/NexQL.png" alt="" width="34" height="34" />
+      <span class="site-logo-text brand-gradient">NexQL</span>
+      <span class="site-logo-badge">v2.2.3</span>
+    </a>
+    <nav class="site-nav landing-topbar-nav-collapsible" id="site-nav" aria-label="Site">
+      {
+        isHome ? (
+          <>
+            <a href="#playground">Playground</a>
+            <a href="#features">Features</a>
+            <a href="#mcp">MCP</a>
+            <a href="#compare">Compare</a>
+            <a href="#pricing">Pricing</a>
+            <a href="/features/">Stories</a>
+          </>
+        ) : (
+          <>
+            <a href="/">Home</a>
+            <a href="/features/">Features</a>
+            <a href="/#pricing">Pricing</a>
+            <a href="/#install">Install</a>
+          </>
+        )
+      }
+      <a
+        href="https://nexql-themes.astrx.dev/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="site-nav-external">Themes ↗</a
+      >
+    </nav>
+    <div class="site-header-actions">
+      <div class="theme-picker" id="theme-picker">
+        <button
+          type="button"
+          class="theme-picker-trigger"
+          id="theme-picker-trigger"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-controls="theme-picker-menu"
+          aria-label="NexQL color theme"
+        >
+          <span class="theme-picker-dot" id="theme-picker-dot" aria-hidden="true"></span>
+          <span class="theme-picker-label" id="theme-picker-label">Loading…</span>
+          <svg class="theme-picker-chevron" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M6 9l6 6 6-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+        <div
+          class="theme-picker-menu"
+          id="theme-picker-menu"
+          role="listbox"
+          aria-label="NexQL themes"
+          hidden
+        >
+        </div>
+      </div>
+      {
+        isHome ? (
+          <button
+            class="topbar-icon-btn play-tour-btn"
+            id="play-tour"
+            type="button"
+            aria-label="Start guided product tour"
+            data-tooltip="Play product tour"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <polygon points="9,7 18,12 9,17" />
+            </svg>
+          </button>
+        ) : null
+      }
+    </div>
+  </div>
+</header>

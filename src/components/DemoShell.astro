@@ -1,0 +1,11 @@
+---
+/**
+ * Full interactive demo shell — header, workbench, landing sections, tour.
+ * Markup extracted from the legacy index with the three runtime HTML
+ * partials inlined at build time (no fetch race / partials.js needed).
+ * Behavior comes from the legacy public/js/* scripts loaded by DemoBoot.
+ */
+import shellHtml from "../markup/demo-shell.html?raw";
+---
+
+<Fragment set:html={shellHtml} />

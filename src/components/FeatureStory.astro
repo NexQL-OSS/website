@@ -1,0 +1,94 @@
+---
+import type { FeatureStory } from "../data/feature-stories";
+import { FEATURE_BY_SLUG } from "../data/feature-stories";
+
+interface Props {
+  feature: FeatureStory;
+  showRelated?: boolean;
+}
+
+const { feature, showRelated = true } = Astro.props;
+---
+
+<div class="feature-story" id="feature-content" data-feature-story>
+  <div class="feature-story-steps" role="tablist" aria-label={`${feature.label} workflow steps`}>
+    {
+      feature.steps.map((step, i) => (
+        <button
+          type="button"
+          class="feature-story-step"
+          role="tab"
+          data-feature-step
+          data-step-title={step.title}
+          data-step-body={step.body}
+          data-step-visual={step.visual}
+          data-step-snippet={step.snippet ?? ""}
+          aria-current={i === 0 ? "step" : "false"}
+          id={`feature-step-${feature.slug}-${i}`}
+          aria-controls={`feature-panel-${feature.slug}`}
+        >
+          <div class="feature-story-step-n">
+            {String(i + 1).padStart(2, "0")}
+          </div>
+          <h3>{step.title}</h3>
+          <p>{step.body}</p>
+        </button>
+      ))
+    }
+  </div>
+
+  <div
+    class="feature-story-panel"
+    role="tabpanel"
+    id={`feature-panel-${feature.slug}`}
+    aria-labelledby={`feature-step-${feature.slug}-0`}
+  >
+    <div class="feature-story-panel-chrome">
+      <span class="dot" aria-hidden="true"></span>
+      <span>{feature.path}</span>
+      <span aria-hidden="true">·</span>
+      <span>{feature.label}</span>
+    </div>
+    <div class="feature-story-panel-body">
+      <h3 class="feature-story-panel-title" data-feature-panel-title>
+        {feature.steps[0]?.title}
+      </h3>
+      <p class="feature-story-panel-lede" data-feature-panel-lede>
+        {feature.steps[0]?.body}
+      </p>
+      <pre
+        class="feature-story-snippet"
+        data-feature-snippet
+        hidden={!feature.steps[0]?.snippet}>{feature.steps[0]?.snippet ?? ""}</pre
+      >
+      <div
+        class="feature-story-visual"
+        data-feature-visual
+        data-visual={feature.steps[0]?.visual}
+        hidden={!!feature.steps[0]?.snippet}
+      >
+      </div>
+      <div class="feature-story-caps" aria-label="Capabilities">
+        {feature.caps.map((cap) => (
+          <span class="ws-map-cap">{cap}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+{
+  showRelated && feature.related.length > 0 && (
+    <section class="feature-related" aria-labelledby={`related-${feature.slug}`}>
+      <h2 id={`related-${feature.slug}`}>Related in the loop</h2>
+      <div class="feature-related-links">
+        {feature.related.map((slug) => {
+          const rel = FEATURE_BY_SLUG[slug];
+          return (
+            <a href={`/features/${slug}/`}>{rel?.kicker ?? slug}</a>
+          );
+        })}
+      </div>
+    </section>
+  )
+}
