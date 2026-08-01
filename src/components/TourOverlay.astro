@@ -1,0 +1,20 @@
+---
+/** Guided tour overlay — wired by public/js/tour.js */
+---
+
+<div class="tour-overlay" id="tour-overlay" aria-hidden="true">
+  <div class="tour-spotlight" id="tour-spotlight"></div>
+  <div class="tour-tooltip" id="tour-tooltip" role="dialog" aria-label="Guided tour step">
+    <div class="tour-tooltip-step" id="tt-step">Step 1 of 4</div>
+    <div class="tour-tooltip-title" id="tt-title">Connect safely</div>
+    <div class="tour-tooltip-body" id="tt-body">
+      Label environments as DEV, STAGE, or PROD. NexQL makes it obvious which database
+      you&apos;re working on.
+    </div>
+    <div class="tour-tooltip-nav">
+      <button class="tour-nav-btn" id="tour-prev" style="display:none">← Back</button>
+      <button class="tour-nav-btn primary" id="tour-next">Next →</button>
+      <span class="tour-step-counter" id="tour-counter">1 / 4</span>
+    </div>
+  </div>
+</div>

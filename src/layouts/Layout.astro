@@ -1,0 +1,140 @@
+---
+// Base document shell. Ports the SEO-critical <head> from the legacy
+// index.html verbatim so structured data / OG / meta render statically
+// (crawlers get full markup — the reason we chose Astro over a CSR SPA).
+//
+// Global CSS is the existing aggregator at /public/styles.css (which
+// @imports styles/*.css). Served as-is; no rewrite in Phase 1.
+//
+// Phase 2 will mount the interactive workbench + theme-loader as islands;
+// for now the page is static and uses the base-theme :root token defaults.
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  bodyClass?: string;
+  skipHref?: string;
+}
+
+const {
+  title = "NexQL — Postgres, without leaving your editor",
+  description = "Explorer, SQL notebooks, live dashboard, visual designers and a schema-grounded AI assistant — one VS Code extension. MCP server, MIT core, PostgreSQL 12–17.",
+  canonical = "https://nexql.astrx.dev/",
+  bodyClass = "editor-minimized",
+  skipHref = "#playground",
+} = Astro.props;
+
+const marketplaceUrl =
+  "https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer";
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "NexQL",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "Windows, macOS, Linux",
+  description:
+    "PostgreSQL management inside VS Code with SQL notebooks, database explorer, AI assistance, schema design, and performance tools.",
+  url: "https://nexql.astrx.dev/",
+  downloadUrl: marketplaceUrl,
+  keywords:
+    "postgresql vscode extension, sql notebooks, ai sql assistant, schema explorer, query optimization",
+  featureList: [
+    "Interactive .pgsql SQL notebooks",
+    "PostgreSQL database explorer",
+    "AI assistant for SQL generation and optimization",
+    "Visual schema tools and ERD diagrams",
+    "Safety controls for production databases",
+  ],
+  sameAs: [
+    "https://github.com/dev-asterix/NexQL",
+    "https://open-vsx.org/extension/ric-v/postgres-explorer",
+    marketplaceUrl,
+  ],
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="postgresql vscode extension, sql notebooks, postgres explorer, ai sql assistant, query optimization, explain analyze, schema designer, erd diagram, dbeaver alternative, pgadmin alternative, github models sql"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="NexQL" />
+    <meta property="og:title" content="NexQL - PostgreSQL VS Code Extension with SQL Notebooks and AI" />
+    <meta
+      property="og:description"
+      content="Run PostgreSQL workflows in VS Code with notebooks, explorer tree, AI SQL help, schema tools, and query performance insights."
+    />
+    <meta property="og:url" content="https://nexql.astrx.dev/" />
+    <meta property="og:image" content="https://nexql.astrx.dev/assets/NexQL.png" />
+    <meta property="og:image:alt" content="NexQL database management logo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="NexQL - PostgreSQL VS Code Extension with SQL Notebooks and AI" />
+    <meta
+      name="twitter:description"
+      content="Connect, query, analyze, and optimize PostgreSQL in VS Code with AI assistance and notebook workflows."
+    />
+    <meta name="twitter:image" content="https://nexql.astrx.dev/assets/NexQL.png" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/NexQL.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/NexQL.png" />
+    <link rel="apple-touch-icon" href="/assets/NexQL.png" />
+    <meta name="theme-color" content="#07080E" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+
+    <link rel="stylesheet" href="/styles.css" />
+    <style is:global>
+      .skip-link {
+        position: absolute;
+        left: 0.75rem;
+        top: 0.75rem;
+        z-index: 10000;
+        padding: 0.55rem 0.85rem;
+        background: var(--accent, #6c4cf0);
+        color: #fff;
+        font: 600 0.9rem/1.2 system-ui, sans-serif;
+        text-decoration: none;
+        border-radius: 4px;
+        transform: translateY(-160%);
+        transition: transform 120ms ease;
+      }
+      .skip-link:focus,
+      .skip-link:focus-visible {
+        transform: translateY(0);
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+      }
+    </style>
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class={bodyClass}>
+    <a class="skip-link" href={skipHref}>Skip to content</a>
+    <slot />
+  </body>
+</html>

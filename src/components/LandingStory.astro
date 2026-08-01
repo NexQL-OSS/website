@@ -1,0 +1,491 @@
+---
+/**
+ * Redesigned marketing sections — visual language from website/design/NexQL Site.dc.html.
+ * Interactive VS Code workbench stays in DemoShell; this is scroll content below the hero.
+ */
+import {
+  MARKETPLACE,
+  OPEN_VSX,
+  GITHUB,
+  CHANGELOG,
+  COMPATIBILITY,
+  ARCHITECTURE,
+  INSTALL_CMD,
+  MARQUEE,
+  FEATURES,
+  AGENTS,
+  MCP_TOOLS,
+  PLATFORMS,
+  COMPARE,
+  RELEASES,
+  FAQS,
+  PLAYGROUND_QUERIES,
+} from "../data/landing-content";
+
+const marqueeLoop = [...MARQUEE, ...MARQUEE];
+---
+
+<div class="nx-root">
+  <div class="nx-marquee" aria-hidden="true">
+    <div class="nx-marquee-track">
+      {
+        marqueeLoop.map((m) => (
+          <span class="nx-marquee-item">
+            {m}
+            <span class="nx-marquee-diamond">◆</span>
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <section class="nx-section" id="playground" data-nx-reveal aria-labelledby="nx-playground-title">
+    <div class="nx-section-intro">
+      <p class="nx-kicker">Try it — no install</p>
+      <h2 class="nx-title" id="nx-playground-title">Ask in English. Get SQL you can read.</h2>
+      <p class="nx-lede">
+        Pick a question. The assistant grounds it in the live schema, writes the query into a
+        notebook cell — and waits. Nothing runs until you press play. Prefer the full editor?
+        <button type="button" class="nx-inline-link" id="nx-open-demo-from-playground">
+          Open the interactive workspace ↑
+        </button>
+      </p>
+    </div>
+
+    <div class="nx-playground" data-nx-playground>
+      <div class="nx-playground-prompts">
+        {
+          PLAYGROUND_QUERIES.map((q, i) => (
+            <button
+              type="button"
+              class:list={["nx-prompt", i === 0 && "is-active"]}
+              data-nx-prompt={i}
+              aria-pressed={i === 0 ? "true" : "false"}
+            >
+              <div class="nx-prompt-head">
+                <span class="nx-prompt-num">0{i + 1}</span>
+                <span class="nx-prompt-title">{q.title}</span>
+              </div>
+              <div class="nx-prompt-ask">“{q.ask}”</div>
+            </button>
+          ))
+        }
+        <div class="nx-prompt-note">
+          <b>Safe by default.</b> Generated SQL lands in a notebook cell. Auto-LIMIT caps runaway
+          SELECTs, and writes against a Production-tagged connection need explicit confirmation.
+        </div>
+      </div>
+
+      <div class="nx-playground-panel">
+        <div class="nx-pg-hdr">
+          <img src="/assets/NexQL-chat-vsc-icon.png" alt="" width="20" height="20" />
+          <span class="nx-pg-hdr-title">SQL Assistant</span>
+          <span class="nx-chip">nexql-free · smart</span>
+          <div class="nx-pg-tabs" role="tablist" aria-label="Result view">
+            <button type="button" role="tab" data-nx-tab="table" aria-selected="true" class="is-active"
+              >Table</button
+            >
+            <button type="button" role="tab" data-nx-tab="chart" aria-selected="false">Chart</button>
+          </div>
+        </div>
+
+        <div class="nx-pg-chat">
+          <div class="nx-pg-user" data-nx-ask></div>
+          <div class="nx-pg-ai-row">
+            <div class="nx-pg-ai-avatar" aria-hidden="true"></div>
+            <div class="nx-pg-ai-body">
+              <p class="nx-pg-reply" data-nx-reply></p>
+              <div class="nx-pg-cell">
+                <div class="nx-pg-cell-bar">
+                  <span class="nx-pg-run">▶</span>Cell 1 · pgsql
+                  <span class="nx-pg-run-state" data-nx-run-state>writing…</span>
+                </div>
+                <pre class="nx-pg-sql" data-nx-sql aria-live="polite"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nx-pg-results">
+          <div class="nx-pg-meta" data-nx-meta></div>
+          <div data-nx-result="table">
+            <table class="nx-table">
+              <thead>
+                <tr data-nx-cols></tr>
+              </thead>
+              <tbody data-nx-rows></tbody>
+            </table>
+          </div>
+          <div data-nx-result="chart" hidden>
+            <div class="nx-chart" data-nx-bars></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="application/json" id="nx-playground-data" set:html={JSON.stringify(PLAYGROUND_QUERIES)} />
+  </section>
+
+  <section class="nx-section" id="features" data-nx-reveal aria-labelledby="nx-features-title">
+    <div class="nx-section-intro">
+      <p class="nx-kicker">What's inside</p>
+      <h2 class="nx-title" id="nx-features-title">Four surfaces, one extension.</h2>
+      <p class="nx-lede">
+        Everything below is a native VS Code surface — tree views, notebooks and webviews that
+        follow your theme and your keybindings.
+      </p>
+    </div>
+
+    <div class="nx-feature-grid">
+      {
+        FEATURES.map((f) => (
+          <article class="nx-feature-card" data-nx-reveal data-nx-tilt>
+            <div class="nx-feature-mark" style={`background:${f.tint};color:${f.ink}`}>
+              {f.mark}
+            </div>
+            <h3>{f.title}</h3>
+            <p>{f.body}</p>
+            <ul>
+              {f.points.map((pt) => (
+                <li>
+                  <span style={`color:${f.ink}`}>→</span>
+                  {pt}
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="nx-ai-banner" data-nx-reveal>
+      <div class="nx-ai-banner-copy">
+        <p class="nx-kicker nx-kicker--amber">In the editor</p>
+        <h3>Set up an AI provider in under a minute.</h3>
+        <p>
+          NexQL Free AI is the default — no key, no account. Or bring your own: OpenAI, Anthropic,
+          Gemini, GitHub Models, VS Code LM, Ollama, LM Studio and custom endpoints, each with its
+          own key in OS-encrypted storage.
+        </p>
+      </div>
+      <div class="nx-ai-banner-media">
+        <img
+          src="/assets/02-ai-assist-setup.gif"
+          alt="Configuring the NexQL AI assistant inside VS Code"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="nx-section" id="mcp" data-nx-reveal aria-labelledby="nx-mcp-title">
+    <div class="nx-mcp">
+      <div class="nx-mcp-glow" aria-hidden="true"></div>
+      <div class="nx-mcp-grid">
+        <div>
+          <p class="nx-kicker nx-kicker--gold">MCP server · v2.2.3</p>
+          <h2 class="nx-title" id="nx-mcp-title">Hand your database to any agent — read-only.</h2>
+          <p class="nx-lede">
+            VS Code spawns the bundled <code class="nx-code">nexql-mcp</code> binary over stdio and
+            registers it automatically. Copilot, Cursor, Claude Desktop and Codex discover your
+            connections with no URLs, ports or tokens to paste.
+          </p>
+          <div class="nx-agent-chips">
+            {AGENTS.map((a) => <span class="nx-agent-chip">{a}</span>)}
+          </div>
+          <p class="nx-faint">
+            Initialize instructions tell every agent to verify the live schema before writing SQL —
+            the single cheapest fix for hallucinated table names.
+          </p>
+        </div>
+        <div class="nx-mcp-tools">
+          <div class="nx-mcp-tools-hdr">TOOLS EXPOSED</div>
+          {
+            MCP_TOOLS.map((t) => (
+              <div class="nx-mcp-tool">
+                <code>{t.name}</code>
+                <span>{t.desc}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="nx-section" id="platforms" data-nx-reveal aria-labelledby="nx-platforms-title">
+    <div class="nx-section-intro nx-section-intro--center">
+      <h2 class="nx-title nx-title--sm" id="nx-platforms-title">
+        If it speaks the Postgres wire protocol, it works.
+      </h2>
+      <p class="nx-lede">
+        Integration-tested against PostgreSQL 12 through 17 every release, with version-gated
+        fallbacks for managed platforms.
+      </p>
+    </div>
+    <div class="nx-platform-grid">
+      {
+        PLATFORMS.map((p) => (
+          <div class="nx-platform">
+            <img src={`/assets/platform-icons/${p.icon}`} alt="" width="26" height="26" />
+            <div class="nx-platform-name">{p.name}</div>
+            <div class="nx-platform-note">{p.note}</div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="nx-section" id="compare" data-nx-reveal aria-labelledby="nx-compare-title">
+    <div class="nx-section-intro">
+      <p class="nx-kicker">Compare</p>
+      <h2 class="nx-title" id="nx-compare-title">You already have the window open.</h2>
+    </div>
+    <div class="nx-compare-wrap">
+      <table class="nx-compare">
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th class="is-nexql">NexQL</th>
+            <th>pgAdmin</th>
+            <th>DBeaver</th>
+            <th>TablePlus</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            COMPARE.map((r) => (
+              <tr>
+                <td>{r.k}</td>
+                <td class="is-nexql">{r.nexql}</td>
+                <td>{r.a}</td>
+                <td>{r.b}</td>
+                <td>{r.c}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="nx-section" id="pricing" data-nx-reveal aria-labelledby="nx-pricing-title">
+    <div class="nx-section-intro nx-section-intro--center">
+      <p class="nx-kicker">Pricing</p>
+      <h2 class="nx-title" id="nx-pricing-title">Free is genuinely free.</h2>
+      <p class="nx-lede">
+        Import, backup, indexing, notebooks and the AI assistant are unlimited on every tier.
+        Subscriptions fund the work and lift the AI token ceiling.
+      </p>
+    </div>
+
+    <div class="pricing-controls">
+      <div class="pricing-billing-toggle" role="radiogroup" aria-label="Billing period">
+        <button type="button" class="is-active" data-period="monthly" aria-pressed="true">Monthly</button>
+        <button type="button" data-period="annual" aria-pressed="false"
+          >Annual <span class="pricing-save-hint">Save ~17%</span></button
+        >
+      </div>
+    </div>
+
+    <div class="nx-pricing-grid pricing-grid pricing-grid-three">
+      <div class="nx-tier">
+        <div class="nx-tier-name">Free</div>
+        <div class="nx-tier-price">$0 <span>forever</span></div>
+        <p class="nx-tier-who">Everything you need to run a database from your editor.</p>
+        <a class="nx-tier-cta" href={MARKETPLACE} target="_blank" rel="noopener noreferrer"
+          >Install from Marketplace</a
+        >
+        <ul class="nx-tier-items">
+          <li>Explorer, notebooks, saved queries, history</li>
+          <li>Unlimited AI assistant + agentic mode</li>
+          <li>Import, backup/restore, database indexing</li>
+          <li>Smart AI tier — about 600K tokens/month</li>
+          <li>MCP server and live dashboard</li>
+        </ul>
+      </div>
+
+      <div class="nx-tier nx-tier--featured" data-pricing-tier="sponsor">
+        <div class="nx-tier-name" style="color:var(--nex-magenta)">Sponsor</div>
+        <div class="nx-tier-price pricing-amount"
+          ><span class="pricing-amount-value">$2</span> <span class="period">/month</span></div
+        >
+        <p class="nx-tier-who"
+          >For the developer who lives in NexQL and wants the sharper model.</p
+        >
+        <button
+          class="nx-tier-cta nx-tier-cta--grad pricing-cta-pay"
+          type="button"
+          data-tier="sponsor"
+          disabled
+          title="Checkout temporarily unavailable">Become a sponsor</button
+        >
+        <ul class="nx-tier-items">
+          <li>Everything in Free</li>
+          <li>Engineer model — about 3M tokens/month</li>
+          <li>Unlimited saved queries and notebooks</li>
+          <li>Unlimited Schema Diff, ERD, Plan Studio</li>
+          <li>Directly funds weekly releases</li>
+        </ul>
+      </div>
+
+      <div class="nx-tier" data-pricing-tier="singularity">
+        <div class="nx-tier-name" style="color:var(--nex-amber,#f5b23a)">Singularity</div>
+        <div class="nx-tier-price pricing-amount"
+          ><span class="pricing-amount-value">$9</span> <span class="period">/month</span></div
+        >
+        <p class="nx-tier-who">One flat licence covering a team of up to five developers.</p>
+        <button
+          class="nx-tier-cta pricing-cta-pay"
+          type="button"
+          data-tier="singularity"
+          disabled
+          title="Checkout temporarily unavailable">Licence a team</button
+        >
+        <ul class="nx-tier-items">
+          <li>Everything in Sponsor</li>
+          <li>Architect model — about 10M tokens/month</li>
+          <li>Up to 5 developers on one subscription</li>
+          <li>Cloud sync, workspace sharing, invites</li>
+          <li>Device-limit management</li>
+        </ul>
+      </div>
+    </div>
+    <p class="pricing-activation-note">
+      After checkout you’ll get a license key — click <b>Activate in VS Code</b> or run
+      <b>NexQL: Activate License</b> from the command palette.
+      <br />Already subscribed?
+      <a href="#" class="manage-subscription-link" data-manage-subscription
+        >Manage or cancel your subscription</a
+      >.
+    </p>
+    <p class="pricing-legal-note">
+      By subscribing you agree to our <a href="/terms">Terms of Service</a> and
+      <a href="/privacy">Privacy Policy</a>.
+    </p>
+  </section>
+
+  <section class="nx-section" id="open-core" data-nx-reveal aria-labelledby="nx-open-title">
+    <div class="nx-open-grid">
+      <div>
+        <p class="nx-kicker">Open core</p>
+        <h2 class="nx-title" id="nx-open-title">MIT, and shipping weekly.</h2>
+        <p class="nx-lede">
+          The core builds a fully working free extension anyone may fork, rebrand and publish.
+          Stable releases ship from version tags; nightlies publish on every merge to
+          <code class="nx-code">main</code> as a pre-release.
+        </p>
+        <div class="nx-open-actions">
+          <a class="nx-btn" href={GITHUB} target="_blank" rel="noopener noreferrer">Read the source</a>
+          <a class="nx-btn nx-btn--ghost" href={OPEN_VSX} target="_blank" rel="noopener noreferrer"
+            >Also on Open VSX</a
+          >
+        </div>
+      </div>
+      <div class="nx-changelog">
+        <div class="nx-changelog-hdr">
+          <span>CHANGELOG</span>
+          <a href={CHANGELOG} target="_blank" rel="noopener noreferrer">Full history →</a>
+        </div>
+        {
+          RELEASES.map((r) => (
+            <div class="nx-release">
+              <div class="nx-release-meta">
+                <span class="nx-release-v">{r.v}</span>
+                <span class="nx-release-date">{r.date}</span>
+                <span class="nx-release-tag">{r.tag}</span>
+              </div>
+              <div class="nx-release-title">{r.title}</div>
+              <p>{r.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="nx-section nx-section--narrow" id="faq" data-nx-reveal aria-labelledby="nx-faq-title">
+    <h2 class="nx-title" id="nx-faq-title">Questions people actually ask</h2>
+    <div class="nx-faq">
+      {
+        FAQS.map((f) => (
+          <details class="nx-faq-item">
+            <summary>
+              <span class="nx-faq-plus">+</span>
+              {f.q}
+            </summary>
+            <p>{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="nx-section" id="install" data-nx-reveal>
+    <div class="nx-cta">
+      <div class="nx-cta-wash" aria-hidden="true"></div>
+      <div class="nx-cta-inner">
+        <h2 class="nx-title nx-title--cta">
+          Your database is one<br />
+          <em>keystroke</em> away.
+        </h2>
+        <p class="nx-lede">Install, add a connection, open a notebook. That's the whole setup.</p>
+        <div class="nx-cta-actions">
+          <a
+            class="nx-btn nx-btn--grad"
+            href={MARKETPLACE}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-nx-magnetic>Install — free</a
+          >
+          <button type="button" class="nx-btn nx-btn--cli" data-nx-copy-cmd data-cmd={INSTALL_CMD}>
+            <span class="nx-cli-dollar">$</span>{INSTALL_CMD}
+            <span class="nx-cli-copy" data-nx-copy-label>⧉</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="nx-footer">
+    <div class="nx-footer-grid">
+      <div class="nx-footer-brand">
+        <div class="nx-footer-logo">
+          <img src="/assets/NexQL.png" alt="" width="28" height="28" />
+          <span>NexQL</span>
+        </div>
+        <p>Intelligent PostgreSQL tooling for VS Code. Built for the Postgres community.</p>
+      </div>
+      <div>
+        <div class="nx-footer-col-title">PRODUCT</div>
+        <a href="#playground">Playground</a>
+        <a href="#features">Features</a>
+        <a href="#mcp">MCP server</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <div>
+        <div class="nx-footer-col-title">RESOURCES</div>
+        <a href={COMPATIBILITY} target="_blank" rel="noopener noreferrer">Compatibility</a>
+        <a href={ARCHITECTURE} target="_blank" rel="noopener noreferrer">Architecture</a>
+        <a href={CHANGELOG} target="_blank" rel="noopener noreferrer">Changelog</a>
+        <a href="https://nexql-themes.astrx.dev/" target="_blank" rel="noopener noreferrer"
+          >NexQL Themes ↗</a
+        >
+      </div>
+      <div>
+        <div class="nx-footer-col-title">COMMUNITY</div>
+        <a href={GITHUB} target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href={`${GITHUB}/issues`} target="_blank" rel="noopener noreferrer">Report a bug</a>
+        <a href={OPEN_VSX} target="_blank" rel="noopener noreferrer">Open VSX</a>
+        <a href={MARKETPLACE} target="_blank" rel="noopener noreferrer">Marketplace</a>
+      </div>
+    </div>
+    <div class="nx-footer-bottom">
+      <span>MIT licensed · open core</span>
+      <span
+        >Made for the PostgreSQL community · <a href="/terms">Terms</a> ·
+        <a href="/privacy">Privacy</a></span
+      >
+    </div>
+  </footer>
+</div>

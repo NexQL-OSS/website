@@ -1,0 +1,164 @@
+---
+import LegalLayout from "../layouts/LegalLayout.astro";
+
+const title = "Terms of Service — NexQL";
+const description =
+  "Terms of Service for NexQL, the PostgreSQL VS Code extension and its optional paid Sponsor/Singularity plans.";
+const canonical = "https://nexql.astrx.dev/terms";
+---
+
+<LegalLayout {title} {description} {canonical} active="terms">
+  <main class="legal-main" id="legal-content">
+    <span class="eyebrow">Legal</span>
+    <h1 class="grad-text legal-h1">Terms of Service</h1>
+    <p class="legal-updated">Last updated: July 19, 2026</p>
+    <p class="legal-intro">
+      NexQL is a free, MIT-licensed PostgreSQL extension for VS Code, with optional paid
+      <strong>Sponsor</strong> and <strong>Singularity</strong> plans. These Terms cover the
+      <a href="https://nexql.astrx.dev/">nexql.astrx.dev</a> website, the paid checkout/licensing
+      backend, and the optional Cloud Sync and hosted AI features. They're written to be short and
+      readable — if anything is unclear, email
+      <a href="mailto:support@astrx.dev">support@astrx.dev</a>.
+    </p>
+
+    <div class="legal-prose">
+      <h2>1. Who runs NexQL</h2>
+      <p>
+        NexQL is developed and operated by <strong>astrx.dev</strong> (GitHub:
+        <a href="https://github.com/dev-asterix" target="_blank" rel="noopener noreferrer"
+          >dev-asterix</a
+        >). In these Terms, "we", "us", and "NexQL" refer to astrx.dev acting as the operator of this
+        website and backend services. We're an independent developer project, not a large company —
+        if you ever need a human, email works.
+      </p>
+
+      <h2>2. The extension is free and open source</h2>
+      <p>
+        The core NexQL extension (
+        <a
+          href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer"
+          target="_blank"
+          rel="noopener noreferrer">VS Code Marketplace</a
+        >
+        /
+        <a
+          href="https://open-vsx.org/extension/ric-v/postgres-explorer"
+          target="_blank"
+          rel="noopener noreferrer">Open VSX</a
+        >) is MIT-licensed and free forever — notebooks, database explorer, AI assist (including
+        zero-config NexQL Free AI), schema tools, and safety controls. Source is public at
+        <a href="https://github.com/dev-asterix/NexQL" target="_blank" rel="noopener noreferrer"
+          >github.com/dev-asterix/NexQL</a
+        >
+        under the MIT license, which governs your right to use, modify, and redistribute the code
+        independently of these Terms.
+      </p>
+
+      <h2>3. Paid plans (Sponsor / Singularity)</h2>
+      <p>
+        Sponsor and Singularity are optional paid subscriptions that unlock extra features (schema
+        diff, unlimited saved queries, cloud sync, higher AI usage limits, priority support). They
+        are billed monthly or annually, in INR or USD, and renew automatically until cancelled.
+        Current pricing is shown on the <a href="/#pricing">pricing page</a>.
+      </p>
+
+      <h2>4. Payments</h2>
+      <p>
+        All payments are processed by
+        <a href="https://razorpay.com/" target="_blank" rel="noopener noreferrer">Razorpay</a>, a
+        licensed payment aggregator that supports Indian and international cards/currencies. We never
+        see or store your full card number — Razorpay handles that per their own
+        <a href="https://razorpay.com/security/" target="_blank" rel="noopener noreferrer"
+          >security and compliance</a
+        >
+        standards (PCI-DSS). After a successful payment, we receive a license key that activates your
+        plan in VS Code.
+      </p>
+
+      <h2>5. Cancellations &amp; refunds</h2>
+      <p>
+        You can cancel anytime from the license management screen (or by emailing us your license
+        key). Cancelling stops future renewals; by default your plan stays active until the end of
+        the billing period you already paid for. You may also request an immediate cancellation,
+        which ends access right away.
+      </p>
+      <p>
+        <strong>We do not offer refunds</strong> for partial billing periods, unused time, or
+        change-of-mind cancellations. If you believe you were charged in error (e.g. a duplicate
+        charge or a billing bug), email <a href="mailto:support@astrx.dev">support@astrx.dev</a> with
+        your license key and we'll look into it.
+      </p>
+
+      <h2>6. Acceptable use</h2>
+      <ul>
+        <li>Don't attempt to bypass, share, or resell license keys or the free-tier usage limits.</li>
+        <li>Don't use the hosted AI gateway or Cloud Sync to store or transmit unlawful content.</li>
+        <li>Don't attempt to overwhelm, scan, or attack the API backend.</li>
+      </ul>
+      <p>We may suspend access for accounts that violate these terms or abuse shared infrastructure.</p>
+
+      <h2>7. AI features</h2>
+      <p>
+        NexQL Free AI (zero-config) and the "bring your own key" providers (OpenAI, Anthropic, Gemini,
+        GitHub Models, VS Code Language Model API) generate SQL, explanations, and optimizations from
+        the prompts and schema context you send. When you use your own API key, that provider's own
+        terms and privacy policy govern how they handle your data — NexQL is just the client. See our
+        <a href="/privacy">Privacy Policy</a> for what NexQL itself stores about AI usage (short
+        version: usage counts for metering, not your prompt content).
+      </p>
+
+      <h2>8. Cloud Sync (paid feature)</h2>
+      <p>
+        Cloud Sync is opt-in and lets Sponsor/Singularity users sync connection profiles, saved
+        queries, and notebooks across devices. Database <strong>passwords are never included</strong>
+        — credentials stay local via VS Code's encrypted Secret Storage. If your paid plan lapses,
+        synced data is retained for 30 days and then purged; see the Privacy Policy for details.
+      </p>
+
+      <h2>9. Database safety — use your own judgment</h2>
+      <p>
+        NexQL includes safety features (environment labels, risk scoring for destructive statements)
+        as a convenience, not a guarantee. <strong
+          >You are responsible for the SQL you run</strong
+        > against your databases, including anything generated or suggested by AI. Always review
+        generated queries before running them against production data.
+      </p>
+
+      <h2>10. No warranty, limitation of liability</h2>
+      <p>
+        NexQL is provided "as is", without warranty of any kind, express or implied. To the maximum
+        extent permitted by law, astrx.dev is not liable for any indirect, incidental, or
+        consequential damages — including data loss — arising from your use of the extension,
+        website, or backend services.
+      </p>
+
+      <h2>11. Changes to these Terms</h2>
+      <p>
+        We may update these Terms as the product changes. Material changes will update the "Last
+        updated" date above; continued use after a change means you accept the update.
+      </p>
+
+      <h2>12. Governing law</h2>
+      <p>
+        These Terms are governed by the laws of India, where our payment processor Razorpay is
+        licensed and regulated. We welcome customers worldwide — Razorpay supports international cards
+        and both INR and USD billing.
+      </p>
+
+      <h2>13. Contact</h2>
+      <p>
+        Questions about these Terms: <a href="mailto:support@astrx.dev">support@astrx.dev</a>. Bug
+        reports and feature requests:
+        <a
+          href="https://github.com/dev-asterix/NexQL/issues"
+          target="_blank"
+          rel="noopener noreferrer">GitHub Issues</a
+        >.
+      </p>
+    </div>
+
+    <p class="legal-footer-note">
+      See also our <a href="/privacy">Privacy Policy</a>. · <a href="/">Back to NexQL</a>
+    </p>
+  </main>
+</LegalLayout>

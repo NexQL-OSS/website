@@ -1,0 +1,20 @@
+---
+import Layout from "./Layout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+}
+
+const { title, description, canonical } = Astro.props;
+---
+
+<Layout {title} {description} {canonical} bodyClass="feature-site" skipHref="#feature-content">
+  <SiteHeader home="/" />
+  <slot />
+  <script type="module" src="/js/theme-loader.mjs"></script>
+  <script src="/js/feature-page-boot.js" defer></script>
+  <script src="/js/feature-story.js" defer></script>
+</Layout>

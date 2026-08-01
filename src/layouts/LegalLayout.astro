@@ -1,0 +1,32 @@
+---
+/**
+ * Thin shell for /terms and /privacy — matches marketing chrome + theme-loader.
+ */
+import Layout from "./Layout.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  active: "terms" | "privacy";
+}
+
+const { title, description, canonical, active } = Astro.props;
+---
+
+<Layout {title} {description} {canonical} bodyClass="legal-page" skipHref="#legal-content">
+  <header class="legal-header" role="banner">
+    <div class="legal-header-inner">
+      <a href="/" class="legal-logo" aria-label="NexQL home">
+        <img src="/assets/NexQL.png" alt="" width="32" height="32" />
+        <span class="brand-gradient legal-logo-text">NexQL</span>
+      </a>
+      <nav class="legal-header-nav" aria-label="Legal pages">
+        <a href="/terms" aria-current={active === "terms" ? "page" : undefined}>Terms</a>
+        <a href="/privacy" aria-current={active === "privacy" ? "page" : undefined}>Privacy</a>
+      </nav>
+    </div>
+  </header>
+  <slot />
+  <script type="module" src="/js/theme-loader.mjs"></script>
+</Layout>

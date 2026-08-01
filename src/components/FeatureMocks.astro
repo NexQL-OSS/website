@@ -1,0 +1,106 @@
+---
+/**
+ * Shared product UI mocks for hub preview + story panels.
+ * Parent sets data-visual / CSS to show one variant.
+ */
+interface Props {
+  /** Use data-fv attrs for story JS sync; hub uses class selectors only */
+  mode?: "story" | "hub";
+}
+
+const { mode = "hub" } = Astro.props;
+const fv = (name: string) => (mode === "story" ? { "data-fv": name } : {});
+---
+
+<div class="fv-mock fv-mock--tree" {...fv("tree")}>
+  <div class="fv-tree-hdr">CONNECTIONS</div>
+  <div class="fv-tree-row"><span class="fv-dot fv-dot--prod"></span>orders_prod</div>
+  <div class="fv-tree-row is-active"><span class="fv-dot fv-dot--dev"></span>orders_dev</div>
+  <div class="fv-tree-indent">public</div>
+  <div class="fv-tree-indent is-hi">▸ customers</div>
+  <div class="fv-tree-indent is-hi">▸ orders</div>
+  <div class="fv-tree-indent">▸ payments</div>
+</div>
+
+<div class="fv-mock fv-mock--notebook" {...fv("notebook")}>
+  <div class="fv-cell-bar"><span class="fv-run">▶</span> Cell 1 · pgsql · ready</div>
+  <div class="fv-cell-sql"
+    >SELECT date_trunc('day', created_at) AS day,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COUNT(*) AS
+    orders<br />FROM orders GROUP BY 1;</div
+  >
+  <div class="fv-cell-meta">7 rows · 12 ms</div>
+  <table class="fv-table">
+    <thead
+      ><tr><th>day</th><th>orders</th><th>revenue</th></tr></thead
+    >
+    <tbody>
+      <tr><td>Apr 07</td><td>142</td><td>$18,420</td></tr>
+      <tr><td>Apr 08</td><td>158</td><td>$21,340</td></tr>
+      <tr><td>Apr 09</td><td>131</td><td>$17,890</td></tr>
+    </tbody>
+  </table>
+  <div class="fv-bars" aria-hidden="true">
+    <i style="--h:55%"></i><i style="--h:72%"></i><i style="--h:48%"></i>
+    <i style="--h:88%"></i><i style="--h:64%"></i><i style="--h:95%"></i>
+  </div>
+</div>
+
+<div class="fv-mock fv-mock--sql" {...fv("sql")}>
+  <div class="fv-cell-bar"><span class="fv-run">▶</span> untitled.pgsql</div>
+  <div class="fv-cell-sql fv-cell-sql--accent" data-fv-sql-live
+    >SELECT … FROM orders<br />GROUP BY day;</div
+  >
+</div>
+
+<div class="fv-mock fv-mock--ai" {...fv("ai")}>
+  <div class="fv-ai-user">top customers by revenue this quarter</div>
+  <div class="fv-ai-row">
+    <div class="fv-ai-avatar" aria-hidden="true"></div>
+    <div>
+      <p>Grounded in <code>customers</code> + <code>orders</code>. Review before running.</p>
+      <div class="fv-cell-bar"><span class="fv-run">▶</span> Cell 1 · writing…</div>
+    </div>
+  </div>
+</div>
+
+<div class="fv-mock fv-mock--safety" {...fv("safety")}>
+  <div class="fv-env-row">
+    <span class="fv-env fv-env--dev">DEV</span>
+    <span class="fv-env fv-env--stage">STAGE</span>
+    <span class="fv-env fv-env--prod is-on">PROD</span>
+  </div>
+  <div class="fv-risk">
+    <span>Risk score</span>
+    <strong>HIGH</strong>
+    <div class="fv-risk-bar"><i style="width:82%"></i></div>
+  </div>
+  <p class="fv-risk-note">DELETE without WHERE — confirm to continue</p>
+</div>
+
+<div class="fv-mock fv-mock--schema" {...fv("schema")}>
+  <div class="fv-erd">
+    <div class="fv-erd-node">customers<span>id · name · email</span></div>
+    <div class="fv-erd-link" aria-hidden="true">──FK──▶</div>
+    <div class="fv-erd-node is-hi">orders<span>id · customer_id · total</span></div>
+  </div>
+  <div class="fv-erd-tools">Designer · Diff · ERD · Import</div>
+</div>
+
+<div class="fv-mock fv-mock--explain" {...fv("explain")}>
+  <div class="fv-plan-row"><span>Seq Scan on orders</span><b>4 511 ms</b><i style="--w:100%"></i></div>
+  <div class="fv-plan-row"><span>Hash Join</span><b>214 ms</b><i style="--w:18%"></i></div>
+  <div class="fv-plan-row is-good"><span>Index Scan (after fix)</span><b>88 ms</b><i style="--w:8%"></i></div>
+</div>
+
+<div class="fv-mock fv-mock--dashboard" {...fv("dashboard")}>
+  <div class="fv-metric"><b>12</b><span>active</span></div>
+  <div class="fv-metric"><b>2</b><span>locks</span></div>
+  <div class="fv-metric"><b>99.2%</b><span>cache hit</span></div>
+  <div class="fv-metric"><b>48ms</b><span>p95</span></div>
+</div>
+
+<div class="fv-mock fv-mock--connect" {...fv("connect")}>
+  <div class="fv-conn"><span class="fv-dot fv-dot--dev"></span>orders_dev · Neon · SSL</div>
+  <div class="fv-conn"><span class="fv-dot fv-dot--stage"></span>orders_stage · SSH tunnel</div>
+  <div class="fv-conn is-hi"><span class="fv-dot fv-dot--prod"></span>orders_prod · read-only</div>
+</div>

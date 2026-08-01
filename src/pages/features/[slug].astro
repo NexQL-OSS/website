@@ -1,0 +1,53 @@
+---
+import FeatureLayout from "../../layouts/FeatureLayout.astro";
+import FeatureStory from "../../components/FeatureStory.astro";
+import { FEATURES, getFeature } from "../../data/feature-stories";
+
+export function getStaticPaths() {
+  return FEATURES.map((f) => ({ params: { slug: f.slug } }));
+}
+
+const { slug } = Astro.params;
+const feature = getFeature(slug!);
+
+if (!feature) {
+  return Astro.redirect("/features/");
+}
+
+const title = `${feature.kicker} — ${feature.title} ${feature.titleEm ?? ""} | NexQL`;
+const description = feature.lede;
+const canonical = `https://nexql.astrx.dev/features/${feature.slug}/`;
+const demoFile = feature.tryDemo.file;
+const demoPanel = feature.tryDemo.panel ?? "nexql";
+---
+
+<FeatureLayout {title} {description} {canonical}>
+  <main class="feature-page" style={`--story-ink:${feature.ink};--story-tint:${feature.tint}`}>
+    <header class="feature-page-header">
+      <div class="feature-story-hero-mark" style={`background:${feature.tint};color:${feature.ink}`}
+        >{feature.mark}</div
+      >
+      <p class="story-kicker">{feature.kicker}</p>
+      <span class="feature-tier" data-tier={feature.tier}>{feature.tierLabel}</span>
+      <h1 class="story-title">
+        {feature.title}
+        {feature.titleEm ? <em> {feature.titleEm}</em> : null}
+      </h1>
+      <p class="story-lede">{feature.lede}</p>
+      <div class="feature-page-actions">
+        <button
+          type="button"
+          class="min-cta primary"
+          data-feature-try-demo
+          data-demo-file={demoFile}
+          data-demo-panel={demoPanel}
+          data-demo-home="/">Try in live demo</button
+        >
+        <a class="min-cta secondary" href="/features/">All features</a>
+        <a class="min-cta tertiary" href="/">Homepage</a>
+      </div>
+    </header>
+
+    <FeatureStory {feature} />
+  </main>
+</FeatureLayout>

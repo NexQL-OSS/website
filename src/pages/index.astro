@@ -1,0 +1,16 @@
+---
+import Layout from "../layouts/Layout.astro";
+import DemoShell from "../components/DemoShell.astro";
+import LandingStory from "../components/LandingStory.astro";
+import TourOverlay from "../components/TourOverlay.astro";
+import DemoBoot from "../islands/DemoBoot";
+---
+
+<Layout>
+  <main class="site-main">
+    <DemoShell />
+    <LandingStory />
+  </main>
+  <TourOverlay />
+  <DemoBoot client:load />
+</Layout>

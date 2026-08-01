@@ -1,0 +1,131 @@
+---
+import type { FeatureStory } from "../data/feature-stories";
+import { FEATURE_BY_SLUG } from "../data/feature-stories";
+import FeatureMocks from "./FeatureMocks.astro";
+
+interface Props {
+  feature: FeatureStory;
+  showRelated?: boolean;
+}
+
+const { feature, showRelated = true } = Astro.props;
+const stepCount = feature.steps.length;
+const first = feature.steps[0];
+---
+
+<div
+  class="feature-story"
+  id="feature-content"
+  data-feature-story
+  style={`--story-ink:${feature.ink};--story-tint:${feature.tint}`}
+>
+  <div class="feature-story-rail">
+    <div class="feature-story-progress" aria-hidden="true">
+      <div
+        class="feature-story-progress-fill"
+        data-feature-progress
+        style={`width:${(100 / stepCount).toFixed(2)}%`}></div
+      >
+    </div>
+    <div class="feature-story-steps" role="tablist" aria-label={`${feature.label} workflow steps`}>
+      {
+        feature.steps.map((step, i) => (
+          <button
+            type="button"
+            class="feature-story-step"
+            role="tab"
+            data-feature-step
+            data-step-title={step.title}
+            data-step-body={step.body}
+            data-step-visual={step.visual}
+            data-step-snippet={step.snippet ?? ""}
+            aria-current={i === 0 ? "step" : "false"}
+            id={`feature-step-${feature.slug}-${i}`}
+            aria-controls={`feature-panel-${feature.slug}`}
+            tabindex={i === 0 ? 0 : -1}
+          >
+            <div class="feature-story-step-n">{String(i + 1).padStart(2, "0")}</div>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </button>
+        ))
+      }
+    </div>
+    <div class="feature-story-nav">
+      <button type="button" class="feature-story-nav-btn" data-feature-prev aria-label="Previous step"
+        >←</button
+      >
+      <span class="feature-story-nav-count"
+        ><span data-feature-step-index>1</span> / {stepCount}</span
+      >
+      <button type="button" class="feature-story-nav-btn" data-feature-next aria-label="Next step"
+        >→</button
+      >
+    </div>
+  </div>
+
+  <div
+    class="feature-story-panel"
+    role="tabpanel"
+    id={`feature-panel-${feature.slug}`}
+    aria-labelledby={`feature-step-${feature.slug}-0`}
+  >
+    <div class="feature-story-panel-chrome">
+      <span class="dot" aria-hidden="true"></span>
+      <span>{feature.path}</span>
+      <span aria-hidden="true">·</span>
+      <span>{feature.label}</span>
+      <span
+        class="feature-story-panel-badge"
+        style={`color:${feature.ink};border-color:${feature.ink}`}>{feature.mark}</span
+      >
+    </div>
+    <div class="feature-story-panel-body">
+      <h3 class="feature-story-panel-title" data-feature-panel-title>{first?.title}</h3>
+      <p class="feature-story-panel-lede" data-feature-panel-lede>{first?.body}</p>
+
+      <pre
+        class="feature-story-snippet"
+        data-feature-snippet
+        hidden={!first?.snippet}>{first?.snippet ?? ""}</pre
+      >
+
+      <div
+        class="feature-story-visual"
+        data-feature-visual
+        data-visual={first?.visual ?? "notebook"}
+        hidden={!!first?.snippet}
+      >
+        <FeatureMocks mode="story" />
+      </div>
+
+      <div class="feature-story-caps" aria-label="Capabilities">
+        {feature.caps.map((cap) => <span class="ws-map-cap">{cap}</span>)}
+      </div>
+    </div>
+  </div>
+</div>
+
+{
+  showRelated && feature.related.length > 0 && (
+    <section class="feature-related" aria-labelledby={`related-${feature.slug}`}>
+      <h2 id={`related-${feature.slug}`}>Related in the loop</h2>
+      <div class="feature-related-links">
+        {feature.related.map((slug) => {
+          const rel = FEATURE_BY_SLUG[slug];
+          return (
+            <a href={`/features/${slug}/`} style={rel ? `--hub-ink:${rel.ink}` : undefined}>
+              <span
+                class="feature-related-mark"
+                style={rel ? `background:${rel.tint};color:${rel.ink}` : undefined}
+              >
+                {rel?.mark ?? "·"}
+              </span>
+              {rel?.kicker ?? slug}
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  )
+}
