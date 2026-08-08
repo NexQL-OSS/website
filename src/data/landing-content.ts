@@ -128,6 +128,20 @@ export const COMPARE = [
 
 export const RELEASES = [
   {
+    v: "v2.5.0",
+    date: "2026-08-08",
+    tag: "nightly",
+    title: "Nightly channel for v2.4.0",
+    body: "Pre-release build carrying the v2.4.0 feature set — NexQL Bot rebrand, MCP install/update UX, agentic step limits, and notebook context fixes.",
+  },
+  {
+    v: "v2.4.0",
+    date: "2026-08-08",
+    tag: "stable",
+    title: "NexQL Bot and smarter MCP setup",
+    body: "SQL Assistant is now NexQL Bot. MCP gets one-click install, update checks, and tool profiles in Preferences. Agentic step limits, scratch-notebook fixes, and packaged-build dependency corrections round out the release.",
+  },
+  {
     v: "v2.2.3",
     date: "2026-07-29",
     tag: "stable",
