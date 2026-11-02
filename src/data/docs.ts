@@ -5,7 +5,8 @@
  * words, and defines the docs navigation. The build throws if a command or
  * setting lands in no area, so a new one can't ship undocumented.
  *
- * Adding a guide: add an entry to GUIDES and a page at src/pages/docs/guides/<slug>.astro.
+ * Adding a guide: add src/pages/docs/guides/<slug>.md with GuideLayout frontmatter
+ * (see src/layouts/GuideLayout.astro). GUIDES reads the files, so nothing to register.
  * Adding an area: add it to AREAS, then add rules that route commands or settings to it.
  */
 import raw from "./extension-manifest.json";
@@ -210,7 +211,7 @@ export const AREAS: Area[] = [
   },
 ];
 
-const AREA_BY_ID = new Map(AREAS.map((a) => [a.id, a]));
+export const AREA_BY_ID = new Map(AREAS.map((a) => [a.id, a]));
 
 // ---- classification -----------------------------------------------------------
 // Rules run on the command id without its prefix ("postgres-explorer."), first
@@ -476,15 +477,34 @@ export interface Guide {
   summary: string;
   /** An AREAS id: which reference section the guide links to. */
   area: string;
+  /** Position in the guides list; lower comes first. */
+  order: number;
+  /** Feature story slugs to link at the end. */
+  related?: string[];
 }
 
 /**
- * Task guides. Each entry needs a page at src/pages/docs/guides/<slug>.astro.
- * Empty for now: add entries here and the hub and sidebar pick them up.
+ * Task guides, read from the frontmatter of src/pages/docs/guides/*.md, so a
+ * guide is added by adding its file. The build fails on a missing field, an
+ * unknown area or an unknown related feature.
  */
-export const GUIDES: Guide[] = [];
+const guideFiles = import.meta.glob<{ frontmatter: Record<string, unknown> }>("../pages/docs/guides/*.md", { eager: true });
+const FEATURE_SLUGS = new Set(FEATURES.map((f) => f.slug));
+export const GUIDES: Guide[] = Object.entries(guideFiles)
+  .map(([file, mod]) => {
+    const slug = file.split("/").pop()!.replace(/\.md$/, "");
+    const fm = mod.frontmatter;
+    for (const key of ["title", "summary", "area", "order"]) {
+      if (fm[key] === undefined || fm[key] === "") throw new Error(`Guide "${slug}" is missing "${key}" in its frontmatter.`);
+    }
+    return { slug, title: String(fm.title), summary: String(fm.summary), area: String(fm.area), order: Number(fm.order), related: (fm.related as string[] | undefined) ?? [] };
+  })
+  .sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
 for (const g of GUIDES) {
   if (!AREA_BY_ID.has(g.area)) throw new Error(`Guide "${g.slug}" names an unknown area "${g.area}".`);
+  for (const r of g.related ?? []) {
+    if (!FEATURE_SLUGS.has(r)) throw new Error(`Guide "${g.slug}" lists an unknown related feature "${r}".`);
+  }
 }
 export const guideHref = (slug: string) => `/docs/guides/${slug}`;
 
@@ -517,6 +537,7 @@ export const DOCS_NAV: NavSection[] = [
   {
     id: "guides",
     label: "Guides",
+    overview: { href: "/docs/guides", label: "All guides" },
     links: GUIDES.map((g) => ({ href: guideHref(g.slug), label: g.title })),
   },
   {

@@ -376,7 +376,7 @@ export const FEATURE_BY_SLUG = Object.fromEntries(FEATURES.map((f) => [f.slug, f
 /** Features in sidebar order: grouped by GROUPS, original order inside a group. */
 export const FEATURES_ORDERED: FeatureStory[] = GROUPS.flatMap((g) => FEATURES.filter((f) => f.group === g.id));
 
-export const featureHref = (slug: string) => `/features/${slug}/`;
+export const featureHref = (slug: string) => `/features/${slug}`;
 
 /** Split "Know which *database* you're on" into [before, emphasised, after]. */
 export function titleParts(title: string): [string, string, string] {
