@@ -1,5 +1,5 @@
-docs/
-scripts/
+/docs/
+/scripts/
 api/eslint.config.js
 .git/
 *.log
