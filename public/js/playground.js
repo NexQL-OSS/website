@@ -1,6 +1,6 @@
 /**
  * Interactive SQL playground (design mock → live typewriter + table/chart tabs).
- * Data injected via #nx-playground-data JSON from LandingStory.astro.
+ * Data injected via #nx-playground-data JSON from components/story/AskDemo.astro.
  */
 (function initNxPlayground() {
   const root = document.querySelector("[data-nx-playground]");
@@ -68,10 +68,10 @@
     if (barsEl) {
       barsEl.innerHTML = q.bars
         .map(
-          (b) => `<div class="nx-chart-col">
-            <span class="nx-chart-v">${escapeHtml(b.v)}</span>
-            <div class="nx-chart-bar" style="height:${escapeHtml(b.h)}"></div>
-            <span class="nx-chart-l">${escapeHtml(b.l)}</span>
+          (b) => `<div class="pg-chart-col">
+            <span class="pg-chart-v">${escapeHtml(b.v)}</span>
+            <div class="pg-chart-bar" style="height:${escapeHtml(b.h)}"></div>
+            <span class="pg-chart-l">${escapeHtml(b.l)}</span>
           </div>`,
         )
         .join("");

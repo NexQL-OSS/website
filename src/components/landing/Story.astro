@@ -1,0 +1,516 @@
+---
+/**
+ * The story: a day with NexQL in five stops, Connect, Explore, Ask, Watch,
+ * Guard, followed by a short "arrived" handoff. Pattern from nexql-mcp's site.
+ *
+ * Contract (the hero ticket and the header link to these ids): #connect
+ * #explore #ask #watch #guard, driven by STOPS in data/site.ts. Copy and data
+ * live in data/story.ts. Each stop: <StopHead>, an h2 with ONE serif-em word,
+ * a lede, content, <NextStop>. The sticky rail (desktop), the progress bar
+ * (mobile) and the scroll script at the bottom read `.stop`,
+ * `.rail a[data-stop]`, `.track-fill`, `.mbar-fill`, `.mbar-label`.
+ *
+ * Ask embeds the scripted playground (#ask-demo, components/story/AskDemo),
+ * wired by public/js/playground.js. The handoff button carries
+ * `data-landing-open-demo`, which Playground.astro wires to open the demo.
+ * Needs no legacy CSS; LandingStory.astro is no longer used here.
+ */
+import StopHead from "../ui/StopHead.astro";
+import NextStop from "../ui/NextStop.astro";
+import Figure from "../story/Figure.astro";
+import ConnectMock from "../story/ConnectMock.astro";
+import AskDemo from "../story/AskDemo.astro";
+import { STOPS } from "../../data/site";
+import { STOP_COPY, PROVIDERS, FIRST_QUESTIONS, GUARD_CARDS, GIFS } from "../../data/story";
+
+const pad = (n: number) => String(n).padStart(2, "0");
+---
+
+<div class="story">
+  <div class="mbar">
+    <div class="mbar-fill"></div>
+    <span class="mbar-label">Stop 01 of {pad(STOPS.length)} · {STOPS[0].label}</span>
+  </div>
+
+  <div class="tour wrap">
+    <nav class="rail" aria-label="Story stops">
+      <div class="track"><div class="track-fill"></div></div>
+      <ol>
+        {
+          STOPS.map((s, i) => (
+            <li>
+              <a href={`#${s.id}`} data-stop={s.id}>
+                <span class="dot" />
+                <span class="rail-text">
+                  <span class="rail-no">Stop {pad(i + 1)}</span>
+                  <span class="rail-label">{s.label}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <div class="stops">
+      {
+        STOPS.map((s, i) => {
+          const c = STOP_COPY[s.id];
+          const next = STOPS[i + 1];
+          return (
+            <section class="stop" id={s.id} aria-labelledby={`${s.id}-title`}>
+              <StopHead no={i + 1} label={s.label} time={s.minutes} />
+              <h2 id={`${s.id}-title`}>
+                {c.head[0]}
+                <span class="serif-em">{c.head[1]}</span>
+                {c.head[2]}
+              </h2>
+              <p class="lede">{c.lede}</p>
+              {c.points.length > 0 && (
+                <ul class="points">
+                  {c.points.map((p) => (
+                    <li>{p}</li>
+                  ))}
+                </ul>
+              )}
+
+              {s.id === "connect" && <ConnectMock />}
+
+              {s.id === "explore" && <Figure {...GIFS.explore} />}
+
+              {s.id === "ask" && (
+                <>
+                  <AskDemo />
+                  <h3 class="sub">Bring your own model, or don’t</h3>
+                  <p class="small">
+                    NexQL Free AI is the default: no key, no account. Or add your own. Each key is kept in OS-encrypted storage.
+                  </p>
+                  <ul class="chips">
+                    {PROVIDERS.map((p) => (
+                      <li>{p}</li>
+                    ))}
+                  </ul>
+                  <h3 class="sub">Good first questions</h3>
+                  <ul class="prompts">
+                    {FIRST_QUESTIONS.map((q) => (
+                      <li>{q}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+
+              {s.id === "watch" && <Figure {...GIFS.watch} />}
+
+              {s.id === "guard" && (
+                <div class="cards">
+                  {GUARD_CARDS.map((g) => (
+                    <article class="card">
+                      <h3>{g.title}</h3>
+                      <p>{g.body}</p>
+                      <code class="proof">{g.proof}</code>
+                    </article>
+                  ))}
+                </div>
+              )}
+
+              {next ? (
+                <NextStop href={`#${next.id}`} label={next.label} />
+              ) : (
+                <NextStop href="#arrived" label="You’ve arrived" verb="Final stop" />
+              )}
+            </section>
+          );
+        })
+      }
+
+      <section class="arrived" id="arrived" aria-labelledby="arrived-title">
+        <div class="ribbon"></div>
+        <h2 id="arrived-title">
+          You’ve <span class="serif-em grad-text">arrived</span>.
+        </h2>
+        <p class="lede">That’s a day with NexQL. Want to click around first?</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#playground" data-landing-open-demo>Open the playground</a>
+          <a class="btn" href="/features">See all features →</a>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ---------- Mobile progress, under the header ---------- */
+  .mbar {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 40;
+    background: color-mix(in srgb, var(--bg-deep) 92%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    padding: 9px 16px 10px;
+    font: 500 12.5px/1.2 var(--font-mono);
+    color: var(--muted);
+  }
+  .mbar-fill {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 2px;
+    width: 0;
+    background: var(--nex-grad);
+    transition: width 0.2s;
+  }
+  @media (min-width: 960px) {
+    .mbar {
+      display: none;
+    }
+  }
+
+  /* ---------- Layout ---------- */
+  .tour {
+    display: grid;
+    gap: 40px;
+  }
+  @media (min-width: 960px) {
+    .tour {
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 56px;
+    }
+  }
+  .rail {
+    display: none;
+  }
+  @media (min-width: 960px) {
+    .rail {
+      display: block;
+      position: sticky;
+      top: calc(var(--header-h) + 40px);
+      align-self: start;
+    }
+  }
+  .rail ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+  .track {
+    position: absolute;
+    left: 8px;
+    top: 14px;
+    width: 3px;
+    height: calc(var(--rail-h, 300px) - 28px);
+    background: var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .track-fill {
+    width: 100%;
+    height: 0;
+    background: var(--nex-grad-v);
+    background-size: 100% var(--rail-h, 300px);
+    transition: height 0.15s linear;
+  }
+  .rail a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 8px 0;
+    color: var(--faint);
+    position: relative;
+    z-index: 1;
+  }
+  .rail a:hover {
+    text-decoration: none;
+    color: var(--fg);
+  }
+  .dot {
+    width: 19px;
+    height: 19px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 3px solid var(--line-2);
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .rail a.done .dot {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+  .rail a.active {
+    color: var(--fg);
+    background: var(--rail-active);
+    border-radius: 10px;
+  }
+  .rail a.active .dot {
+    border-color: var(--accent);
+    background: var(--bg);
+    box-shadow: var(--accent-glow);
+  }
+  .rail-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+  }
+  .rail-no {
+    font: 500 11px/1.4 var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+  .rail-label {
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+
+  /* ---------- Stops ---------- */
+  .stops {
+    min-width: 0;
+  }
+  .stop {
+    position: relative;
+    padding: 8px 0 72px;
+    margin-bottom: 72px;
+    border-bottom: 1px solid var(--line);
+  }
+  .stop:last-child {
+    margin-bottom: 0;
+  }
+  .stop h2 {
+    font-size: clamp(28px, 3.6vw, 42px);
+    font-weight: 700;
+    margin-bottom: 12px;
+    max-width: 22em;
+  }
+  .stop h2 .serif-em {
+    color: var(--accent);
+    font-size: 1.1em;
+  }
+  .lede {
+    color: var(--muted);
+    font-size: 17.5px;
+    max-width: 40em;
+  }
+  .points {
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 8px;
+    color: var(--prose);
+    max-width: 40em;
+  }
+  .points li {
+    position: relative;
+    padding-left: 22px;
+  }
+  .points li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  /* ---------- Stop content ---------- */
+  .stop :global(.sub),
+  .sub {
+    font-size: 17px;
+    margin: 36px 0 8px;
+  }
+  .small {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 40em;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 14px 0 0;
+  }
+  .chips li {
+    font: 500 13px/1 var(--font-mono);
+    padding: 8px 12px;
+    border-radius: 99px;
+    border: 1px solid var(--line-2);
+    background: var(--panel);
+    color: var(--prose);
+  }
+  .prompts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 8px;
+    max-width: 40em;
+  }
+  .prompts li {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--prose);
+    font-size: 15px;
+  }
+  .prompts li::before {
+    content: "“";
+    color: var(--accent);
+  }
+  .prompts li::after {
+    content: "”";
+    color: var(--accent);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 14px;
+    margin-top: 28px;
+  }
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    border-radius: 14px;
+    border: 1px solid;
+    border-color: var(--bevel-border);
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+    overflow: hidden;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2px;
+    background: var(--nex-grad);
+    opacity: var(--card-edge);
+  }
+  .card h3 {
+    font-size: 17px;
+  }
+  .card p {
+    color: var(--muted);
+    font-size: 14.5px;
+    flex: 1;
+  }
+  .card .proof {
+    align-self: flex-start;
+    max-width: 100%;
+    font-size: 12.5px;
+    color: var(--num);
+    background: var(--bg-deep);
+    overflow-wrap: anywhere;
+  }
+
+  /* ---------- Arrived ---------- */
+  .arrived {
+    position: relative;
+    margin-top: 72px;
+    padding: 40px 28px 36px;
+    border-radius: 20px;
+    border: 1px solid var(--edge);
+    background: var(--nex-grad-soft), var(--panel);
+    box-shadow: var(--shadow-3);
+    overflow: hidden;
+  }
+  .arrived > .ribbon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+  }
+  .arrived h2 {
+    font-size: clamp(28px, 3.6vw, 42px);
+    margin-bottom: 12px;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  @media (max-width: 719px) {
+    .arrived {
+      padding: 32px 18px 28px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .track-fill,
+    .mbar-fill {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Route progress: rail on wide screens, bar on narrow ones.
+  const root = document.querySelector<HTMLElement>(".story");
+  if (root) {
+    const stops = [...root.querySelectorAll<HTMLElement>(".stop")];
+    const railLinks = [...root.querySelectorAll<HTMLAnchorElement>(".rail a[data-stop]")];
+    const railList = root.querySelector<HTMLElement>(".rail ol");
+    const fill = root.querySelector<HTMLElement>(".track-fill");
+    const mFill = root.querySelector<HTMLElement>(".mbar-fill");
+    const mLabel = root.querySelector<HTMLElement>(".mbar-label");
+    const pad = (n: number) => String(n).padStart(2, "0");
+
+    const update = () => {
+      const mark = window.innerHeight * 0.35;
+      let active = -1;
+      stops.forEach((s, i) => {
+        if (s.getBoundingClientRect().top <= mark) active = i;
+      });
+      const idx = Math.max(0, active);
+      const r = stops[idx].getBoundingClientRect();
+      const within = active < 0 ? 0 : Math.min(1, Math.max(0, (mark - r.top) / Math.max(1, r.height)));
+      const progress = (idx + within) / stops.length;
+
+      railLinks.forEach((a, i) => {
+        a.classList.toggle("active", active >= 0 && i === active);
+        a.classList.toggle("done", i < active);
+        if (active >= 0 && i === active) a.setAttribute("aria-current", "step");
+        else a.removeAttribute("aria-current");
+      });
+      if (fill && railList && railLinks.length) {
+        const first = railLinks[0].querySelector(".dot")!.getBoundingClientRect();
+        const cur = railLinks[idx].querySelector(".dot")!.getBoundingClientRect();
+        const next = railLinks[Math.min(idx + 1, railLinks.length - 1)].querySelector(".dot")!.getBoundingClientRect();
+        const y = cur.top - first.top + (next.top - cur.top) * within;
+        fill.style.height = `${Math.max(0, y)}px`;
+      }
+      if (mFill) mFill.style.width = `${progress * 100}%`;
+      if (mLabel) {
+        const label = railLinks[idx]?.querySelector(".rail-label")?.textContent ?? "";
+        mLabel.textContent = `Stop ${pad(idx + 1)} of ${pad(stops.length)} · ${label}`;
+      }
+    };
+    if (railList) {
+      const setH = () => railList.parentElement?.style.setProperty("--rail-h", `${railList.offsetHeight}px`);
+      setH();
+      window.addEventListener("resize", setH);
+    }
+    let queued = false;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+          queued = false;
+          update();
+        });
+      },
+      { passive: true },
+    );
+    window.addEventListener("resize", update);
+    update();
+  }
+</script>

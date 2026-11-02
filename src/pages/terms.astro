@@ -8,24 +8,20 @@ const canonical = "https://nexql.astrx.dev/terms";
 ---
 
 <LegalLayout {title} {description} {canonical} active="terms">
-  <main class="legal-main" id="legal-content">
-    <span class="eyebrow">Legal</span>
-    <h1 class="grad-text legal-h1">Terms of Service</h1>
-    <p class="legal-updated">Last updated: July 19, 2026</p>
-    <p class="legal-intro">
-      NexQL is a free, MIT-licensed PostgreSQL extension for VS Code, with optional paid
-      <strong>Sponsor</strong> and <strong>Singularity</strong> plans. These Terms cover the
-      <a href="https://nexql.astrx.dev/">nexql.astrx.dev</a> website, the paid checkout/licensing
+  <article class="legal">
+    <p class="eyebrow">Legal</p>
+    <h1>Terms of Service</h1>
+    <p class="updated">Last updated: July 19, 2026</p>
+    <p class="lede">
+      NexQL is a free, MIT-licensed PostgreSQL extension for VS Code, with optional paid{" "}<strong>Sponsor</strong> and <strong>Singularity</strong> plans. These Terms cover the{" "}<a href="https://nexql.astrx.dev/">nexql.astrx.dev</a> website, the paid checkout/licensing
       backend, and the optional Cloud Sync and hosted AI features. They're written to be short and
-      readable — if anything is unclear, email
-      <a href="mailto:support@astrx.dev">support@astrx.dev</a>.
+      readable — if anything is unclear, email{" "}<a href="mailto:support@astrx.dev">support@astrx.dev</a>.
     </p>
 
-    <div class="legal-prose">
+    <div class="prose">
       <h2>1. Who runs NexQL</h2>
       <p>
-        NexQL is developed and operated by <strong>astrx.dev</strong> (GitHub:
-        <a href="https://github.com/dev-asterix" target="_blank" rel="noopener noreferrer"
+        NexQL is developed and operated by <strong>astrx.dev</strong> (GitHub:{" "}<a href="https://github.com/dev-asterix" target="_blank" rel="noopener noreferrer"
           >dev-asterix</a
         >). In these Terms, "we", "us", and "NexQL" refer to astrx.dev acting as the operator of this
         website and backend services. We're an independent developer project, not a large company —
@@ -46,10 +42,9 @@ const canonical = "https://nexql.astrx.dev/terms";
           target="_blank"
           rel="noopener noreferrer">Open VSX</a
         >) is MIT-licensed and free forever — notebooks, database explorer, AI assist (including
-        zero-config NexQL Free AI), schema tools, and safety controls. Source is public at
-        <a href="https://github.com/dev-asterix/NexQL" target="_blank" rel="noopener noreferrer"
+        zero-config NexQL Free AI), schema tools, and safety controls. Source is public at{" "}<a href="https://github.com/dev-asterix/NexQL" target="_blank" rel="noopener noreferrer"
           >github.com/dev-asterix/NexQL</a
-        >
+        >{" "}
         under the MIT license, which governs your right to use, modify, and redistribute the code
         independently of these Terms.
       </p>
@@ -64,13 +59,11 @@ const canonical = "https://nexql.astrx.dev/terms";
 
       <h2>4. Payments</h2>
       <p>
-        All payments are processed by
-        <a href="https://razorpay.com/" target="_blank" rel="noopener noreferrer">Razorpay</a>, a
+        All payments are processed by{" "}<a href="https://razorpay.com/" target="_blank" rel="noopener noreferrer">Razorpay</a>, a
         licensed payment aggregator that supports Indian and international cards/currencies. We never
-        see or store your full card number — Razorpay handles that per their own
-        <a href="https://razorpay.com/security/" target="_blank" rel="noopener noreferrer"
+        see or store your full card number — Razorpay handles that per their own{" "}<a href="https://razorpay.com/security/" target="_blank" rel="noopener noreferrer"
           >security and compliance</a
-        >
+        >{" "}
         standards (PCI-DSS). After a successful payment, we receive a license key that activates your
         plan in VS Code.
       </p>
@@ -102,8 +95,7 @@ const canonical = "https://nexql.astrx.dev/terms";
         NexQL Free AI (zero-config) and the "bring your own key" providers (OpenAI, Anthropic, Gemini,
         GitHub Models, VS Code Language Model API) generate SQL, explanations, and optimizations from
         the prompts and schema context you send. When you use your own API key, that provider's own
-        terms and privacy policy govern how they handle your data — NexQL is just the client. See our
-        <a href="/privacy">Privacy Policy</a> for what NexQL itself stores about AI usage (short
+        terms and privacy policy govern how they handle your data — NexQL is just the client. See our{" "}<a href="/privacy">Privacy Policy</a> for what NexQL itself stores about AI usage (short
         version: usage counts for metering, not your prompt content).
       </p>
 
@@ -148,8 +140,7 @@ const canonical = "https://nexql.astrx.dev/terms";
       <h2>13. Contact</h2>
       <p>
         Questions about these Terms: <a href="mailto:support@astrx.dev">support@astrx.dev</a>. Bug
-        reports and feature requests:
-        <a
+        reports and feature requests:{" "}<a
           href="https://github.com/dev-asterix/NexQL/issues"
           target="_blank"
           rel="noopener noreferrer">GitHub Issues</a
@@ -157,8 +148,31 @@ const canonical = "https://nexql.astrx.dev/terms";
       </p>
     </div>
 
-    <p class="legal-footer-note">
+    <p class="note">
       See also our <a href="/privacy">Privacy Policy</a>. · <a href="/">Back to NexQL</a>
     </p>
-  </main>
+  </article>
 </LegalLayout>
+
+<style>
+  .updated {
+    margin-top: 10px;
+    font: 500 13px/1.4 var(--font-mono);
+    color: var(--muted);
+  }
+  .prose {
+    margin-top: 28px;
+  }
+  .prose :global(h2:first-child) {
+    margin-top: 0;
+    border-top: 0;
+    padding-top: 0;
+  }
+  .note {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+</style>

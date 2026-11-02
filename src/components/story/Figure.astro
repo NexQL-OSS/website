@@ -1,0 +1,48 @@
+---
+/**
+ * Framed, lazy-loaded GIF with a caption. Width and height are required so
+ * the box is reserved before the file arrives (no layout shift).
+ *
+ * Props: src, width, height, alt (all required), caption (optional).
+ */
+interface Props {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+  caption?: string;
+}
+const { src, width, height, alt, caption } = Astro.props;
+---
+
+<figure class="shot">
+  <div class="frame" style={`aspect-ratio:${width}/${height}`}>
+    <img {src} {width} {height} {alt} loading="lazy" decoding="async" />
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .shot {
+    margin: 28px 0 0;
+  }
+  .frame {
+    border-radius: 14px;
+    border: 1px solid;
+    border-color: var(--bevel-border);
+    background: var(--figure-bg);
+    box-shadow: var(--shadow-3);
+    overflow: hidden;
+  }
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  figcaption {
+    margin-top: 10px;
+    font: 500 12.5px/1.4 var(--font-mono);
+    color: var(--faint);
+  }
+</style>

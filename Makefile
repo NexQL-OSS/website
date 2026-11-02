@@ -1,4 +1,4 @@
-# NexQL site — quick action commands (Astro + Preact islands).
+# NexQL site — quick action commands (Astro, static).
 # Static output: `astro build` -> dist/. Backend is a separate Vercel
 # project; vercel.json rewrites /api/* there.
 

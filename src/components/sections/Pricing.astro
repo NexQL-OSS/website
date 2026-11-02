@@ -1,0 +1,431 @@
+---
+/**
+ * #pricing. Free / Sponsor / Singularity with the monthly/annual toggle.
+ *
+ * DOM hooks that public/js/pricing.js and checkout.js bind to (do not rename):
+ *   [data-pricing-tier="sponsor|singularity"] on each paid card,
+ *   .pricing-amount-value and .pricing-amount .period inside it,
+ *   button[data-tier].pricing-cta-pay,
+ *   .pricing-billing-toggle button[data-period="monthly|annual"],
+ *   a[data-manage-subscription].
+ * checkout.js injects its own overlays and toasts into <body> (its <style> is
+ * hard-coded dark). The :global rules at the bottom restyle them with brand
+ * tokens so they follow the light and dark palettes.
+ */
+import SectionHead from "../ui/SectionHead.astro";
+import { PRICING } from "../../data/landing-content";
+import { MARKETPLACE_URL } from "../../data/site";
+
+const { free, sponsor, singularity } = PRICING;
+---
+
+<section class="band wrap" id="pricing" aria-labelledby="pricing-title">
+  <SectionHead center eyebrow="Pricing" id="pricing-title">
+    Free is genuinely <span class="serif-em">free</span>.
+    <Fragment slot="lede">
+      Import, backup, indexing, notebooks and the AI assistant are unlimited on every tier. Subscriptions fund the
+      work and lift the AI token ceiling.
+    </Fragment>
+  </SectionHead>
+
+  <div class="pricing-controls">
+    <div class="pricing-billing-toggle" role="group" aria-label="Billing period">
+      <button type="button" class="is-active" data-period="monthly" aria-pressed="true">Monthly</button>
+      <button type="button" data-period="annual" aria-pressed="false">
+        Annual <span class="pricing-save-hint">Save ~17%</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="tiers">
+    <article class="tier" aria-labelledby="tier-free">
+      <h3 id="tier-free" class="tier-name">{free.name}</h3>
+      <p class="tier-price">{free.price} <span>{free.period}</span></p>
+      <p class="tier-who">{free.who}</p>
+      <a class="btn" href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer">Install from Marketplace</a>
+      <ul class="tier-items">
+        {free.items.map((i) => <li>{i}</li>)}
+      </ul>
+    </article>
+
+    <article class="tier featured" data-pricing-tier="sponsor" aria-labelledby="tier-sponsor">
+      <h3 id="tier-sponsor" class="tier-name">{sponsor.name}</h3>
+      <p class="tier-price pricing-amount">
+        <span class="pricing-amount-value">{sponsor.price}</span>
+        <span class="period">{sponsor.period}</span>
+      </p>
+      <p class="tier-who">{sponsor.who}</p>
+      <button
+        class="btn btn-primary pricing-cta-pay"
+        type="button"
+        data-tier="sponsor"
+        disabled
+        title="Checkout temporarily unavailable">{sponsor.cta}</button
+      >
+      <ul class="tier-items">
+        {sponsor.items.map((i) => <li>{i}</li>)}
+      </ul>
+    </article>
+
+    <article class="tier" data-pricing-tier="singularity" aria-labelledby="tier-singularity">
+      <h3 id="tier-singularity" class="tier-name">{singularity.name}</h3>
+      <p class="tier-price pricing-amount">
+        <span class="pricing-amount-value">{singularity.price}</span>
+        <span class="period">{singularity.period}</span>
+      </p>
+      <p class="tier-who">{singularity.who}</p>
+      <button
+        class="btn pricing-cta-pay"
+        type="button"
+        data-tier="singularity"
+        disabled
+        title="Checkout temporarily unavailable">{singularity.cta}</button
+      >
+      <ul class="tier-items">
+        {singularity.items.map((i) => <li>{i}</li>)}
+      </ul>
+    </article>
+  </div>
+
+  <div class="notes">
+    <p class="checkout-note">Paid checkout is temporarily unavailable. Free is not affected.</p>
+    <p>
+      After checkout you get a license key. Click <b>Activate in VS Code</b>, or run <b>NexQL: Activate License</b> from
+      the command palette. Already subscribed?
+      <a href="#" class="manage-subscription-link" data-manage-subscription>Manage or cancel your subscription</a>.
+    </p>
+    <p class="legal">
+      By subscribing you agree to our <a href="/terms">Terms of Service</a> and
+      <a href="/privacy">Privacy Policy</a>.
+    </p>
+  </div>
+</section>
+
+<style>
+  .band {
+    padding-block: 56px;
+  }
+  @media (min-width: 720px) {
+    .band {
+      padding-block: 80px;
+    }
+  }
+
+  /* Billing toggle */
+  .pricing-controls {
+    display: flex;
+    justify-content: center;
+    margin: 28px 0 28px;
+  }
+  .pricing-billing-toggle {
+    display: inline-flex;
+    max-width: 100%;
+    padding: 4px;
+    gap: 4px;
+    border-radius: 12px;
+    background: var(--well);
+    box-shadow: var(--well-shadow);
+    border: 1px solid var(--line);
+  }
+  .pricing-billing-toggle button {
+    min-height: 40px;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--muted);
+    font: 600 14.5px/1.2 var(--font-body);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  }
+  .pricing-billing-toggle button:hover {
+    color: var(--fg);
+  }
+  .pricing-billing-toggle button[aria-pressed="true"] {
+    color: var(--fg);
+    background: var(--control-bg);
+    border-color: var(--line-2);
+    box-shadow: var(--control-shadow);
+  }
+  .pricing-billing-toggle button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .pricing-save-hint {
+    margin-left: 4px;
+    font: 500 11.5px/1 var(--font-mono);
+    color: var(--ok);
+  }
+
+  /* Tier cards */
+  .tiers {
+    display: grid;
+    gap: 16px;
+    align-items: stretch;
+  }
+  @media (min-width: 900px) {
+    .tiers {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .tier {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+    padding: 24px 22px 22px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+  }
+  .tier.featured {
+    border-color: var(--edge);
+    box-shadow: var(--shadow-3);
+  }
+  .tier.featured::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 18px;
+    padding: 1px;
+    background: var(--nex-grad);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: var(--card-edge);
+    pointer-events: none;
+  }
+  .tier-name {
+    font: 500 12px/1.3 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  .featured .tier-name {
+    color: var(--accent);
+  }
+  .tier-price {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .tier-price span:not(.pricing-amount-value),
+  .tier-price .period {
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--muted);
+  }
+  .tier-who {
+    color: var(--muted);
+    font-size: 15px;
+    min-height: 3em;
+  }
+  .tier .btn {
+    width: 100%;
+  }
+  .pricing-cta-pay:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .tier-items {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 16px 0 0;
+    border-top: 1px dashed var(--line-2);
+    display: grid;
+    gap: 9px;
+    font-size: 14.5px;
+  }
+  .tier-items li {
+    position: relative;
+    padding-left: 22px;
+    color: var(--prose);
+  }
+  .tier-items li::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 0.5em;
+    width: 8px;
+    height: 5px;
+    border-left: 2px solid var(--ok);
+    border-bottom: 2px solid var(--ok);
+    transform: rotate(-45deg);
+  }
+
+  /* Notes under the cards */
+  .notes {
+    display: grid;
+    gap: 10px;
+    max-width: 44rem;
+    margin: 32px auto 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+  .notes .checkout-note {
+    color: var(--warn);
+    font-weight: 500;
+  }
+  .notes .legal {
+    color: var(--faint);
+    font-size: 13.5px;
+  }
+  .notes a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .notes a:hover {
+    color: var(--accent-hover);
+  }
+  .notes b {
+    color: var(--fg);
+    font-weight: 600;
+  }
+</style>
+
+<!--
+  Overlays and toasts that public/js/checkout.js appends to <body>. Its own
+  injected <style> is dark-only and loads later, so these use `body` for the
+  extra specificity.
+-->
+<style is:global>
+  body .payment-toast {
+    background: var(--panel-2);
+    color: var(--fg);
+    border: 1px solid var(--line-2);
+    border-radius: 12px;
+    box-shadow: var(--shadow-4);
+    font-family: var(--font-body);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  body .payment-toast.success {
+    border-left: 4px solid var(--ok);
+  }
+  body .payment-toast.error {
+    border-left: 4px solid var(--nex-magenta);
+  }
+  body .payment-toast.warning {
+    border-left: 4px solid var(--warn);
+  }
+  body .payment-toast-close {
+    color: var(--muted);
+  }
+  body .payment-toast-close:hover {
+    color: var(--fg);
+  }
+  body .spinner-dot {
+    border-color: color-mix(in srgb, currentColor 30%, transparent);
+    border-top-color: currentColor;
+  }
+
+  body .license-modal-overlay {
+    background: color-mix(in srgb, var(--bg-deep) 78%, transparent);
+    font-family: var(--font-body);
+  }
+  body .license-modal {
+    background: var(--surface);
+    color: var(--fg);
+    border: 1px solid var(--edge);
+    border-radius: 18px;
+    box-shadow: var(--shadow-4);
+    max-height: calc(100dvh - 32px);
+    overflow-y: auto;
+  }
+  body .license-modal p,
+  body .license-pending,
+  body .license-recover-note {
+    color: var(--muted);
+  }
+  body .license-key-row {
+    flex-wrap: wrap;
+  }
+  body .license-key-value {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    background: var(--well);
+    box-shadow: var(--well-shadow);
+    border: 1px solid var(--line);
+    color: var(--fg);
+    font-family: var(--font-mono);
+  }
+  body .license-btn {
+    min-height: 44px;
+    border: 1px solid var(--bevel-border, var(--line-2));
+    border-radius: 10px;
+    font-family: var(--font-body);
+    transition: background 0.15s, box-shadow 0.15s;
+  }
+  body .license-btn:focus-visible,
+  body .license-input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  body .license-btn-copy {
+    background: var(--control-bg);
+    color: var(--fg);
+    box-shadow: var(--control-shadow);
+  }
+  body .license-btn-primary {
+    background: var(--btn-primary-bg);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+    box-shadow: var(--btn-primary-shadow);
+  }
+  body .license-btn-secondary {
+    background: transparent;
+    border-color: transparent;
+    color: var(--muted);
+  }
+  body .license-btn-secondary:hover {
+    color: var(--fg);
+  }
+  body .license-btn-danger {
+    background: color-mix(in srgb, var(--nex-magenta) 65%, #000);
+    border-color: color-mix(in srgb, var(--nex-magenta) 65%, #000);
+    color: #fff;
+  }
+  body .license-input {
+    background: var(--well);
+    box-shadow: var(--well-shadow);
+    border: 1px solid var(--line-2);
+    color: var(--fg);
+    font-family: var(--font-mono);
+  }
+  body .license-input:focus {
+    border-color: var(--accent);
+  }
+  body .license-status-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--fg);
+  }
+  body .license-status-card .muted {
+    color: var(--muted);
+  }
+  body .license-pill.active {
+    background: color-mix(in srgb, var(--ok) 18%, transparent);
+    color: var(--ok);
+  }
+  body .license-pill.cancelled,
+  body .license-pill.halted,
+  body .license-pill.paused {
+    background: color-mix(in srgb, var(--nex-magenta) 18%, transparent);
+    color: var(--accent);
+  }
+  body .license-error {
+    color: var(--accent);
+  }
+  body a.manage-subscription-link {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>

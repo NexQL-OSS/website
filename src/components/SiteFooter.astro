@@ -1,0 +1,179 @@
+---
+/**
+ * Site footer: brand blurb, product / resources / community columns, and
+ * cross-links to the sibling properties (NexQL MCP, NexQL Themes).
+ * Anchors are "/#id" so the footer works on any page.
+ */
+import {
+  VERSION,
+  REPO_URL,
+  CHANGELOG_URL,
+  MARKETPLACE_URL,
+  OPENVSX_URL,
+  MCP_URL,
+  THEMES_URL,
+  FACTS,
+} from "../data/site";
+
+interface FooterLink {
+  href: string;
+  label: string;
+  external?: boolean;
+  arrow?: boolean;
+}
+const columns: { title: string; links: FooterLink[] }[] = [
+  {
+    title: "Product",
+    links: [
+      { href: "/#connect", label: "Tour" },
+      { href: "/#playground", label: "Playground" },
+      { href: "/features/", label: "Feature stories" },
+      { href: "/#mcp", label: "MCP server" },
+      { href: "/#pricing", label: "Pricing" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { href: `${REPO_URL}/blob/main/docs/COMPATIBILITY.md`, label: "Compatibility", external: true },
+      { href: `${REPO_URL}/blob/main/docs/ARCHITECTURE.md`, label: "Architecture", external: true },
+      { href: CHANGELOG_URL, label: "Changelog", external: true },
+      { href: MCP_URL, label: "NexQL MCP", external: true, arrow: true },
+      { href: THEMES_URL, label: "NexQL Themes", external: true, arrow: true },
+    ],
+  },
+  {
+    title: "Community",
+    links: [
+      { href: REPO_URL, label: "GitHub", external: true },
+      { href: `${REPO_URL}/issues`, label: "Report a problem", external: true },
+      { href: MARKETPLACE_URL, label: "Marketplace", external: true },
+      { href: OPENVSX_URL, label: "Open VSX", external: true },
+    ],
+  },
+];
+---
+
+<footer class="site-footer">
+  <div class="ribbon"></div>
+  <div class="wrap grid">
+    <div class="about">
+      <p class="name">
+        <img src="/assets/NexQL.png" alt="" width="24" height="24" />
+        NexQL <span class="ver">v{VERSION}</span>
+      </p>
+      <p class="small">
+        Postgres tooling for VS Code: explorer, notebooks, an AI assistant that reads your schema, and an MCP server
+        for other agents. {FACTS.license}.
+      </p>
+    </div>
+    {
+      columns.map((c) => (
+        <nav aria-label={c.title}>
+          <p class="mono-label">{c.title}</p>
+          {c.links.map((l) => (
+            <a href={l.href} {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+              {l.label}
+              {l.arrow && <span aria-hidden="true"> ↗</span>}
+            </a>
+          ))}
+        </nav>
+      ))
+    }
+  </div>
+  <div class="wrap legal">
+    <span>Made for the PostgreSQL community.</span>
+    <span><a href="/terms">Terms</a> · <a href="/privacy">Privacy</a></span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 96px;
+    background: var(--bg-deep);
+    border-top: 1px solid var(--line);
+    position: relative;
+  }
+  .ribbon {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    border-radius: 0;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding-top: 40px;
+    padding-bottom: 36px;
+  }
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .about {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    }
+    .about {
+      grid-column: auto;
+    }
+  }
+  .name {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-weight: 700;
+    font-size: 17px;
+  }
+  .name img {
+    border-radius: 6px;
+  }
+  .ver {
+    font: 500 12px/1 var(--font-mono);
+    color: var(--faint);
+  }
+  .small {
+    color: var(--faint);
+    font-size: 14px;
+    margin-top: 10px;
+    max-width: 30em;
+  }
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  nav .mono-label {
+    margin-bottom: 8px;
+  }
+  nav a {
+    color: var(--muted);
+    font-size: 14.5px;
+    padding: 5px 0;
+  }
+  nav a:hover {
+    color: var(--fg);
+  }
+  .legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 20px;
+    padding-top: 18px;
+    padding-bottom: 28px;
+    border-top: 1px solid var(--line);
+    color: var(--faint);
+    font-size: 13.5px;
+  }
+  .legal a {
+    color: var(--muted);
+  }
+</style>

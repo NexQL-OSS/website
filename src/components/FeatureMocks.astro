@@ -1,106 +1,320 @@
 ---
 /**
- * Shared product UI mocks for hub preview + story panels.
- * Parent sets data-visual / CSS to show one variant.
+ * Small drawn mock of a NexQL surface, used as the figure on a feature page
+ * when no recording matches. Decorative: the figure caption carries the meaning,
+ * so the mock is aria-hidden. Built from brand tokens, so both palettes work.
+ *
+ * Props
+ *  - kind: "tree" | "notebook" | "ai" | "safety" | "schema" | "explain" | "dashboard" | "connect"
  */
 interface Props {
-  /** Use data-fv attrs for story JS sync; hub uses class selectors only */
-  mode?: "story" | "hub";
+  kind: "tree" | "notebook" | "ai" | "safety" | "schema" | "explain" | "dashboard" | "connect";
 }
-
-const { mode = "hub" } = Astro.props;
-const fv = (name: string) => (mode === "story" ? { "data-fv": name } : {});
+const { kind } = Astro.props;
 ---
 
-<div class="fv-mock fv-mock--tree" {...fv("tree")}>
-  <div class="fv-tree-hdr">CONNECTIONS</div>
-  <div class="fv-tree-row"><span class="fv-dot fv-dot--prod"></span>orders_prod</div>
-  <div class="fv-tree-row is-active"><span class="fv-dot fv-dot--dev"></span>orders_dev</div>
-  <div class="fv-tree-indent">public</div>
-  <div class="fv-tree-indent is-hi">▸ customers</div>
-  <div class="fv-tree-indent is-hi">▸ orders</div>
-  <div class="fv-tree-indent">▸ payments</div>
+<div class={`mock mock--${kind}`} aria-hidden="true">
+  {
+    kind === "tree" && (
+      <>
+        <div class="hdr">Connections</div>
+        <div class="row"><i class="dot prod" />orders_prod</div>
+        <div class="row on"><i class="dot dev" />orders_dev</div>
+        <div class="row ind">public</div>
+        <div class="row ind2 hi">▸ customers</div>
+        <div class="row ind2 hi">▸ orders</div>
+        <div class="row ind2">▸ payments</div>
+      </>
+    )
+  }
+  {
+    kind === "notebook" && (
+      <>
+        <div class="bar"><b>▶</b> Cell 1 · pgsql · ready</div>
+        <pre class="sql">{`SELECT date_trunc('day', created_at) AS day,
+       COUNT(*) AS orders
+FROM orders GROUP BY 1;`}</pre>
+        <div class="meta">3 rows · 12 ms</div>
+        <table>
+          <thead><tr><th>day</th><th>orders</th></tr></thead>
+          <tbody>
+            <tr><td>Apr 07</td><td>142</td></tr>
+            <tr><td>Apr 08</td><td>158</td></tr>
+            <tr><td>Apr 09</td><td>131</td></tr>
+          </tbody>
+        </table>
+      </>
+    )
+  }
+  {
+    kind === "ai" && (
+      <>
+        <div class="user">Top customers by revenue this quarter</div>
+        <div class="reply">
+          Grounded in <code>customers</code> and <code>orders</code>. Review the SQL, then insert it into a cell.
+        </div>
+        <div class="bar"><b>▶</b> Cell 1 · ready to insert</div>
+      </>
+    )
+  }
+  {
+    kind === "safety" && (
+      <>
+        <div class="envs"><span class="env">DEV</span><span class="env">STAGE</span><span class="env on">PROD</span></div>
+        <div class="risk"><span>Risk score</span><strong>High</strong></div>
+        <div class="meter"><i style="width:82%" /></div>
+        <p class="note">DELETE without WHERE. Confirm to continue.</p>
+      </>
+    )
+  }
+  {
+    kind === "schema" && (
+      <>
+        <div class="erd">
+          <div class="node">customers<span>id · name · email</span></div>
+          <div class="fk">FK →</div>
+          <div class="node hi">orders<span>id · customer_id · total</span></div>
+        </div>
+        <div class="meta">Designer · Diff · ERD · Import</div>
+      </>
+    )
+  }
+  {
+    kind === "explain" && (
+      <>
+        <div class="plan"><span>Seq Scan on orders</span><b>4,511 ms</b><i style="width:100%" /></div>
+        <div class="plan"><span>Hash Join</span><b>214 ms</b><i style="width:18%" /></div>
+        <div class="plan good"><span>Index Scan (after the fix)</span><b>88 ms</b><i style="width:8%" /></div>
+      </>
+    )
+  }
+  {
+    kind === "dashboard" && (
+      <div class="metrics">
+        <div><b>12</b><span>active</span></div>
+        <div><b>2</b><span>locks</span></div>
+        <div><b>99.2%</b><span>cache hit</span></div>
+        <div><b>48 ms</b><span>p95</span></div>
+      </div>
+    )
+  }
+  {
+    kind === "connect" && (
+      <>
+        <div class="row"><i class="dot dev" />orders_dev · Neon · SSL</div>
+        <div class="row"><i class="dot stage" />orders_stage · SSH tunnel</div>
+        <div class="row hi"><i class="dot prod" />orders_prod · read-only</div>
+      </>
+    )
+  }
 </div>
 
-<div class="fv-mock fv-mock--notebook" {...fv("notebook")}>
-  <div class="fv-cell-bar"><span class="fv-run">▶</span> Cell 1 · pgsql · ready</div>
-  <div class="fv-cell-sql"
-    >SELECT date_trunc('day', created_at) AS day,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COUNT(*) AS
-    orders<br />FROM orders GROUP BY 1;</div
-  >
-  <div class="fv-cell-meta">7 rows · 12 ms</div>
-  <table class="fv-table">
-    <thead
-      ><tr><th>day</th><th>orders</th><th>revenue</th></tr></thead
-    >
-    <tbody>
-      <tr><td>Apr 07</td><td>142</td><td>$18,420</td></tr>
-      <tr><td>Apr 08</td><td>158</td><td>$21,340</td></tr>
-      <tr><td>Apr 09</td><td>131</td><td>$17,890</td></tr>
-    </tbody>
-  </table>
-  <div class="fv-bars" aria-hidden="true">
-    <i style="--h:55%"></i><i style="--h:72%"></i><i style="--h:48%"></i>
-    <i style="--h:88%"></i><i style="--h:64%"></i><i style="--h:95%"></i>
-  </div>
-</div>
-
-<div class="fv-mock fv-mock--sql" {...fv("sql")}>
-  <div class="fv-cell-bar"><span class="fv-run">▶</span> untitled.pgsql</div>
-  <div class="fv-cell-sql fv-cell-sql--accent" data-fv-sql-live
-    >SELECT … FROM orders<br />GROUP BY day;</div
-  >
-</div>
-
-<div class="fv-mock fv-mock--ai" {...fv("ai")}>
-  <div class="fv-ai-user">top customers by revenue this quarter</div>
-  <div class="fv-ai-row">
-    <div class="fv-ai-avatar" aria-hidden="true"></div>
-    <div>
-      <p>Grounded in <code>customers</code> + <code>orders</code>. Review before running.</p>
-      <div class="fv-cell-bar"><span class="fv-run">▶</span> Cell 1 · writing…</div>
-    </div>
-  </div>
-</div>
-
-<div class="fv-mock fv-mock--safety" {...fv("safety")}>
-  <div class="fv-env-row">
-    <span class="fv-env fv-env--dev">DEV</span>
-    <span class="fv-env fv-env--stage">STAGE</span>
-    <span class="fv-env fv-env--prod is-on">PROD</span>
-  </div>
-  <div class="fv-risk">
-    <span>Risk score</span>
-    <strong>HIGH</strong>
-    <div class="fv-risk-bar"><i style="width:82%"></i></div>
-  </div>
-  <p class="fv-risk-note">DELETE without WHERE — confirm to continue</p>
-</div>
-
-<div class="fv-mock fv-mock--schema" {...fv("schema")}>
-  <div class="fv-erd">
-    <div class="fv-erd-node">customers<span>id · name · email</span></div>
-    <div class="fv-erd-link" aria-hidden="true">──FK──▶</div>
-    <div class="fv-erd-node is-hi">orders<span>id · customer_id · total</span></div>
-  </div>
-  <div class="fv-erd-tools">Designer · Diff · ERD · Import</div>
-</div>
-
-<div class="fv-mock fv-mock--explain" {...fv("explain")}>
-  <div class="fv-plan-row"><span>Seq Scan on orders</span><b>4 511 ms</b><i style="--w:100%"></i></div>
-  <div class="fv-plan-row"><span>Hash Join</span><b>214 ms</b><i style="--w:18%"></i></div>
-  <div class="fv-plan-row is-good"><span>Index Scan (after fix)</span><b>88 ms</b><i style="--w:8%"></i></div>
-</div>
-
-<div class="fv-mock fv-mock--dashboard" {...fv("dashboard")}>
-  <div class="fv-metric"><b>12</b><span>active</span></div>
-  <div class="fv-metric"><b>2</b><span>locks</span></div>
-  <div class="fv-metric"><b>99.2%</b><span>cache hit</span></div>
-  <div class="fv-metric"><b>48ms</b><span>p95</span></div>
-</div>
-
-<div class="fv-mock fv-mock--connect" {...fv("connect")}>
-  <div class="fv-conn"><span class="fv-dot fv-dot--dev"></span>orders_dev · Neon · SSL</div>
-  <div class="fv-conn"><span class="fv-dot fv-dot--stage"></span>orders_stage · SSH tunnel</div>
-  <div class="fv-conn is-hi"><span class="fv-dot fv-dot--prod"></span>orders_prod · read-only</div>
-</div>
+<style>
+  .mock {
+    display: grid;
+    gap: 10px;
+    padding: 20px;
+    font-size: 14px;
+    color: var(--prose);
+    min-width: 0;
+  }
+  .hdr,
+  .meta,
+  .bar,
+  th {
+    font: 500 11.5px/1.3 var(--font-mono);
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .hdr {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .row {
+    font: 400 13.5px/1.4 var(--font-mono);
+    padding: 6px 10px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--prose);
+  }
+  .row.on,
+  .row.hi {
+    background: var(--panel-2);
+    color: var(--fg);
+    box-shadow: inset 2px 0 0 var(--accent);
+  }
+  .ind { padding-left: 24px; }
+  .ind2 { padding-left: 40px; }
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex: none;
+  }
+  .dot.prod { background: var(--nex-magenta); }
+  .dot.stage { background: var(--warn); }
+  .dot.dev { background: var(--ok); }
+  .bar b {
+    color: var(--accent);
+    margin-right: 4px;
+  }
+  .sql {
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--code-bg);
+    color: var(--fg);
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  td {
+    font-family: var(--font-mono);
+  }
+  .user {
+    justify-self: end;
+    max-width: 85%;
+    padding: 9px 13px;
+    border-radius: 12px 12px 2px 12px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    color: var(--fg);
+  }
+  .reply {
+    max-width: 90%;
+    padding: 9px 13px;
+    border-left: 2px solid var(--accent);
+  }
+  .envs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .env {
+    font: 500 12px/1 var(--font-mono);
+    padding: 7px 12px;
+    border-radius: 99px;
+    border: 1px solid var(--line-2);
+    color: var(--muted);
+  }
+  .env.on {
+    color: var(--on-grad);
+    background: var(--nex-magenta);
+    border-color: transparent;
+    font-weight: 700;
+  }
+  .risk {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .risk strong {
+    color: var(--warn);
+  }
+  .meter,
+  .plan i {
+    display: block;
+    height: 7px;
+    border-radius: 99px;
+    background: var(--panel-2);
+    overflow: hidden;
+  }
+  .meter i {
+    display: block;
+    height: 100%;
+    background: var(--nex-grad);
+  }
+  .note {
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+  .erd {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .node {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--line-2);
+    background: var(--panel-2);
+    color: var(--fg);
+    font: 600 14px/1.3 var(--font-mono);
+  }
+  .node.hi {
+    border-color: var(--accent);
+  }
+  .node span {
+    display: block;
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .fk {
+    font: 500 12px/1 var(--font-mono);
+    color: var(--accent);
+  }
+  .plan {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4px 12px;
+    font-size: 13.5px;
+  }
+  .plan i {
+    grid-column: 1 / -1;
+    position: relative;
+  }
+  .plan i::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    background: var(--nex-amber);
+    border-radius: inherit;
+  }
+  .plan.good i::after {
+    background: var(--ok);
+  }
+  .plan b {
+    font: 500 13px/1.4 var(--font-mono);
+    color: var(--fg);
+  }
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 10px;
+  }
+  .metrics div {
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--panel-2);
+  }
+  .metrics b {
+    display: block;
+    font: 600 22px/1.2 var(--font-body);
+    color: var(--fg);
+  }
+  .metrics span {
+    font: 500 11px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+</style>

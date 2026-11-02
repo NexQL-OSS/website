@@ -1,32 +1,10 @@
 /** Marketing content for the redesigned landing — sourced from website/design/NexQL Site.dc.html */
 
-export const MARKETPLACE =
-  "https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer";
-export const OPEN_VSX = "https://open-vsx.org/extension/ric-v/postgres-explorer";
 export const GITHUB = "https://github.com/dev-asterix/NexQL";
 export const CHANGELOG = `${GITHUB}/blob/main/CHANGELOG.md`;
 export const COMPATIBILITY = `${GITHUB}/blob/main/docs/COMPATIBILITY.md`;
 export const ARCHITECTURE = `${GITHUB}/blob/main/docs/ARCHITECTURE.md`;
 export const INSTALL_CMD = "ext install ric-v.postgres-explorer";
-
-export const MARQUEE = [
-  "SQL notebooks",
-  "Live dashboard",
-  "Visual table designer",
-  "RLS Policy Studio",
-  "Plan Studio",
-  "Schema diff",
-  "ERD + DBML",
-  "Index advisor",
-  "Migration hub",
-  "Foreign data wrappers",
-  "Smart paste",
-  "SSH tunnels",
-  "Vision AI",
-  "Drag & drop context",
-  "Backup & restore",
-  "Sentinel prod guards",
-];
 
 export const FEATURES = [
   {
@@ -88,17 +66,32 @@ export const AGENTS = [
   "Any MCP client",
 ];
 
-export const MCP_TOOLS = [
-  { name: "list_schemas", desc: "schema discovery" },
-  { name: "list_objects", desc: "tables, views, routines" },
-  { name: "describe_object", desc: "columns, types, comments" },
-  { name: "search_schema", desc: "full-text over names" },
-  { name: "run_select", desc: "SELECT / EXPLAIN only" },
-  { name: "explain_query", desc: "EXPLAIN ANALYZE plans" },
-  { name: "get_join_path", desc: "FK relationship traversal" },
-  { name: "get_table_stats", desc: "size and row estimates" },
-  { name: "get_index_usage", desc: "scan counts and waste" },
-  { name: "switch_connection", desc: "context switching" },
+/** Facts from the nexql-mcp site (mcp/site/src/data/tools.json). Update when the server's tool count changes. */
+export const MCP_TOOL_COUNT = 55;
+export const MCP_DOCS_URL = "https://nexql-mcp.astrx.dev/docs/tools";
+
+/** What an agent can do through the bundled server. Tool names are real entries in tools.json. */
+export const MCP_CAPABILITIES = [
+  {
+    title: "Reads the schema before it writes SQL",
+    body: "Agents search a live, indexed copy of your catalog and follow foreign keys, so they stop guessing table names.",
+    tools: ["orient", "search_schema", "describe_object", "get_join_path"],
+  },
+  {
+    title: "Read-only by default",
+    body: "Every query runs in a read-only transaction. Statements that change data are refused unless you switch changes on.",
+    tools: ["run_select", "explain_query", "export_query"],
+  },
+  {
+    title: "Finds what is slowing the database",
+    body: "Blocking locks, the slowest statements, unused indexes and a one-call health check, without opening a dashboard.",
+    tools: ["find_blocking_locks", "slow_queries", "suggest_indexes", "db_health_check"],
+  },
+  {
+    title: "Reviews a change before it runs",
+    body: "Diff two schemas, draft the migration, and check the DDL for dangerous locks. Nothing is applied by the review.",
+    tools: ["schema_diff", "generate_migration", "check_ddl_safety"],
+  },
 ];
 
 export const PLATFORMS = [
@@ -287,3 +280,47 @@ WHERE  o.status = 'pending'
     ],
   },
 ];
+
+export const PRICING = {
+  free: {
+    name: "Free",
+    price: "$0",
+    period: "forever",
+    who: "Everything you need to run a database from your editor.",
+    items: [
+      "Explorer, notebooks, saved queries, history",
+      "Unlimited AI assistant and agentic mode",
+      "Import, backup/restore, database indexing",
+      "Smart AI tier, about 600K tokens/month",
+      "MCP server and live dashboard",
+    ],
+  },
+  sponsor: {
+    name: "Sponsor",
+    price: "$2",
+    period: "/month",
+    who: "For the developer who lives in NexQL and wants the sharper model.",
+    cta: "Become a sponsor",
+    items: [
+      "Everything in Free",
+      "Engineer model, about 3M tokens/month",
+      "Unlimited saved queries and notebooks",
+      "Unlimited Schema Diff, ERD and Plan Studio",
+      "Directly funds weekly releases",
+    ],
+  },
+  singularity: {
+    name: "Singularity",
+    price: "$9",
+    period: "/month",
+    who: "One flat licence covering a team of up to five developers.",
+    cta: "Licence a team",
+    items: [
+      "Everything in Sponsor",
+      "Architect model, about 10M tokens/month",
+      "Up to 5 developers on one subscription",
+      "Cloud sync, workspace sharing, invites",
+      "Device-limit management",
+    ],
+  },
+};

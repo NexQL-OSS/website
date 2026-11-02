@@ -1,0 +1,22 @@
+---
+/**
+ * A command or snippet with a copy button (the copy handler lives in BaseLayout).
+ *
+ * Props
+ *  - html:  string. The code. May hold <span> markup: `.p` (prompt) and `.c`
+ *           (comment) spans are left out of what Copy puts on the clipboard.
+ *  - label: string, optional. Accessible name of the button. Default "Copy".
+ *
+ * Example: <Code html={`<span class="p">$ </span>ext install ric-v.postgres-explorer`} />
+ */
+interface Props {
+  html: string;
+  label?: string;
+}
+const { html, label = "Copy" } = Astro.props;
+---
+
+<figure class="code">
+  <pre set:html={html} />
+  <button class="copy" type="button" aria-label={label}>Copy</button>
+</figure>

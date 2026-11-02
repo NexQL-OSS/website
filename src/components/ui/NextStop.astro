@@ -1,0 +1,47 @@
+---
+/**
+ * The "Next stop →" link at the foot of a stop.
+ *
+ * Props
+ *  - href:  string. Anchor of the next stop ("#explore").
+ *  - label: string. Name of the next stop ("Explore").
+ *  - verb:  string, optional. Default "Next stop".
+ */
+interface Props {
+  href: string;
+  label: string;
+  verb?: string;
+}
+const { href, label, verb = "Next stop" } = Astro.props;
+---
+
+<a class="next" href={href}>{verb} <b>{label}</b> <span aria-hidden="true">→</span></a>
+
+<style>
+  .next {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 40px;
+    padding: 12px 18px;
+    min-height: 44px;
+    border-radius: 999px;
+    border: 1px solid;
+    border-color: var(--bevel-border);
+    color: var(--muted);
+    font-size: 15px;
+    background: var(--surface);
+    box-shadow: var(--shadow-1);
+    transition: border-color 0.15s, color 0.15s, box-shadow 0.15s, transform 0.15s;
+  }
+  .next b {
+    color: var(--fg);
+  }
+  .next:hover {
+    text-decoration: none;
+    border-color: var(--accent);
+    color: var(--fg);
+    box-shadow: var(--shadow-2);
+    transform: translateY(var(--btn-lift));
+  }
+</style>

@@ -1,126 +1,50 @@
-# Docs Website Context
+# Website Context
 
-Last updated: 2026-06-11
-Primary entry: docs/index.html
-Hosting: Vercel (migrated from GitHub Pages)
-Design reference: [NexQL-Themes/site/](https://github.com/ric-v/NexQL-Themes/tree/main/site) (typography, pitch, dynamic theming — **not** replacing the interactive workbench demo)
+Last updated: 2026-11-02
+Hosting: Vercel (`nexql.astrx.dev`); backend on `api.nexql.astrx.dev` via the `/api/*` rewrite
+Design reference: the NexQL MCP site (`mcp/site`, nexql-mcp.astrx.dev). Sibling sites share its brand layer: nexql-themes.astrx.dev and this one.
 
-## What This Website Is
+## What this website is
 
-This site is a product demo and marketing landing page for NexQL. It includes Razorpay subscription checkout for **Sponsor** and **Singularity** paid tiers.
+The product site for NexQL: a guided story of the extension, an interactive workbench demo, and Razorpay checkout for the paid tiers.
 
-The **canonical interactive demo** is the full VS Code workbench shell in `docs/index.html` (minimized hero preview → expandable workbench with tour, assistant, query simulation). Do not replace it with a static brochure or the NexQL Themes gallery layout.
+- Show value by simulation and concrete facts, not brochure copy.
+- Keep the install CTA one click away (header button, hero, final section).
+- One fixed brand palette (Mute Dark / lilac light) with a System / Dark / Light switch, stored in `localStorage` key `nexql-theme` and applied before paint.
+- Theme switching across the 39 NexQL themes happens **only inside the workbench demo**. The page links to nexql-themes.astrx.dev for the full gallery.
 
-Core concept:
-- Show value by simulation, not static brochure copy.
-- Let users interact with a realistic editor + explorer + SQL assistant shell.
-- Keep install CTA visible from minimized and expanded states.
-- Paid subscriptions via Razorpay (server API + Razorpay Plans in dashboard).
-- **Live theme switching** via the header dropdown — landing + workbench chrome repaint from NexQL Themes JSON (no theme files committed in NexQL).
-- **Themes bridge** loading NexQL-Themes at runtime.
+## Home page structure
 
-## NexQL Themes integration (no duplication)
+Header nav: **Tour · Playground · Features · MCP · Pricing · Themes ↗ · GitHub · Install — free**
 
-Theme JSON lives only in the **[NexQL-Themes](https://github.com/ric-v/NexQL-Themes)** repo (`themes/*.json`). NexQL loads them at runtime:
+1. **Hero** (`landing/Hero.astro`): release pill → `#changelog`, headline, install command, and a "What you get" ticket listing the story stops.
+2. **Story** (`landing/Story.astro`): sticky rail, five stops `#connect #explore #ask #watch #guard` driven by `STOPS` in `src/data/site.ts`. The Ask stop holds the scripted SQL playground (`#ask-demo`, wired by `public/js/playground.js`).
+3. **Playground** (`landing/Playground.astro`, `#playground`): the workbench demo in an iframe pointing at `/demo/`. It loads on click, when scrolled near (skipped on Save-Data), or from a `?demo=1&file=&panel=` deep link. Any element with `data-landing-open-demo` opens it.
+4. **Sections** (`landing/Sections.astro`): `#mcp` (links to the MCP site rather than listing tools), `#platforms`, `#compare` (table on wide screens, cards on phones), `#pricing`, `#changelog`, `#faq`, `#install`.
+5. **Footer** (`SiteFooter.astro`): product, resources, community, plus cross-links to NexQL MCP and NexQL Themes.
 
-| Environment | Theme source |
-|-------------|----------------|
-| Production | `https://nexql-themes.astrx.dev/themes/` (CDN) |
-| Local `npm run dev:site` | `/themes` proxied to `../NexQL-Themes/themes` when sibling repo exists |
-| Override | `data-themes-base` on `<html>` |
+Other pages: `/features` and `/features/<slug>` on `DocsLayout`, `/privacy` and `/terms` on `LegalLayout`, `/demo/` (noindex), `device-auth.html` (extension device authorization).
 
-**Parser** (`parse-theme-summary.mjs`) is vendored into `docs/js/vendor/` by `npm run prebuild:site` (copied from `NexQL-Themes/src/site/`). This is build logic, not theme data.
+**Platform compatibility:** NexQL works with any PostgreSQL-wire database. The canonical matrix lives in `docs/COMPATIBILITY.md` in the extension repo (linked from the footer).
 
-**Runtime module:** `docs/js/theme-loader.mjs`
-- Fetches manifest + theme JSON → `parseThemeSummary()` → CSS custom properties on `:root`
-- Persists choice in `localStorage` key `nexql-docs-theme`
-- Default theme: `claudy-day`
-- Fallback palette if CDN/proxy unavailable (Drift Dark–like tokens)
-- Exposes `window.NexqlThemes` for workbench integration
+## The workbench demo (`/demo/`)
 
-**Cross-links:** Nav/footer → [nexql-themes.astrx.dev](https://nexql-themes.astrx.dev/)
-
-## Design tokens
-
-Defined in `docs/styles/base-theme.css` and **overwritten at runtime** by `theme-loader.mjs`:
-
-| Layer | Tokens |
-|-------|--------|
-| Surfaces | `--bg`, `--fg`, `--panel`, `--deep`, `--border`, `--muted`, `--accent` |
-| Workbench | `--vsc-*` mapped from active theme summary |
-| SQL demo | `--sql-kw`, `--sql-fn`, `--sql-str`, `--sql-num`, `--sql-comment` |
-| Fixed brand | `--nex-grad` (ribbon gradient for `.grad-text`, install CTA — not theme-skinned) |
-
-Fonts: **Space Grotesk** (UI), **Instrument Serif** (hero accent), **JetBrains Mono** (code).
-
-Utilities: `.grad-text`, `.brand-gradient`, `.hero-serif-em`, `.pg-anim`, `.eyebrow`.
-
-## Landing information architecture
-
-Scroll container: `.hero-shell` (scroll-snap in minimized mode).
-
-1. **Hero** — eyebrow (NexQL Themes link), headline, lede, trust KPIs, CTAs (Install · Run demo · Browse Themes), mini preview
-2. **Marquee** — capability chips
-3. **Features** (`#features`) — metrics strip + area tile grids
-4. **AI showcase** (`#ai`) — plain-English → SQL + provider chips
-5. **Comparison** (`#compare`) — NexQL vs pgAdmin / DBeaver / TablePlus
-6. **Workflow** — Connect → Explore → Query → Analyze
-7. **FAQ** (`#faq`) — includes “Which databases work with NexQL?” → [COMPATIBILITY.md](./COMPATIBILITY.md) on GitHub
-8. **Pricing** — Free / Sponsor / Singularity (Razorpay)
-9. **Install CTA** (`#install`)
-10. **Footer** — Resources · Community · Install
-
-Top nav: **Features · AI · Compare · FAQ · Pricing · Themes · GitHub · Install — free**
-
-**Platform compatibility:** NexQL works with any PostgreSQL-wire database. Canonical matrix and per-provider connection guides live in [COMPATIBILITY.md](./COMPATIBILITY.md) (chip strip below the workflow loop, FAQ, and footer **Platform compatibility**). Hero KPI strip shows **PG 12+ / compatible**; named platforms appear in the workflow chip strip.
+A separate page so its legacy CSS (`public/styles/demo.css` → base-theme, workbench-layout, content-panels, interactive) and scripts can't affect the site. Script order on that page: `core-state.js` → `workbench.js` → `demo-embed.js` → `assistant.js` → `tour.js` → `visuals.js` → `landing-capabilities.js` → `feature-story.js` → `theme-loader.mjs` (module) → `bootstrap.js`. `theme-loader.mjs` fetches theme JSON from `https://nexql-themes.astrx.dev/themes/` and repaints the iframe's `:root` only. `demo-embed.js` posts close events to the parent page.
 
 ## Pricing tiers
 
 | Tier | Key | Audience | Payment |
 |------|-----|----------|---------|
-| Free | — | Everyone | $0 — Marketplace |
+| Free | — | Everyone | $0, Marketplace |
 | Sponsor | `sponsor` | Individual pro | Razorpay subscription |
 | Singularity | `singularity` | Teams / org | Razorpay subscription, flat org license |
 
-**Full Razorpay setup:** [RAZORPAY.md](./RAZORPAY.md)
-
-## Runtime behavior
-
-Startup: `theme-loader.mjs` (module) → `DOMContentLoaded` → await `NexqlThemes.ready` → `loadHtmlPartials()` → wire demo + pricing.
-
-Script order in `index.html`:
-1. `partials.js` → `core-state.js` → `workbench.js` → `assistant.js` → `tour.js` → `visuals.js` → `landing-capabilities.js` → `pricing.js` → `checkout.js` → **`theme-loader.mjs` (module)** → `bootstrap.js`
-
-## Styling layers
-
-- `base-theme.css` — tokens, hero, theme select, minimized layout, aurora
-- `workbench-layout.css` — demo chrome (reskinned via `--vsc-*` / `--sql-*`)
-- `content-panels.css` — in-demo doc pages
-- `interactive.css` — tour, assistant, mobile
-- `landing-sections.css` — marquee, metrics, tiles, AI, compare, workflow, FAQ, pricing, footer
-
-Aggregator: `docs/styles.css`
-
-## Deployment (Vercel)
-
-- Build: `npm run build:site` (syncs parser → copies `docs/` to `dist/`)
-- Static output: `dist/`
-- API: `api/config`, `api/create-subscription`, `api/verify-payment`, etc.
-
-Quick local dev:
-
-```bash
-cp .env.example .env   # fill RAZORPAY_KEY_* and all RAZORPAY_PLAN_*
-cd api && npm install && cd ..
-npm run dev:site       # http://localhost:3000 — /themes proxied if ../NexQL-Themes exists
-```
-
-Extension license delivery after payment is **not** implemented yet — see `docs/roadmap/license-implementation.md`.
+`landing/PageScripts.astro` loads `playground.js`, Razorpay, `pricing.js` and `checkout.js` after the page is idle. The pricing markup in `sections/Pricing.astro` must keep the hooks those scripts bind to (listed in the `Sections.astro` header comment). Full Razorpay setup: `RAZORPAY.md`.
 
 ## Maintenance rules
 
-- Keep partial paths and script order stable (theme-loader before bootstrap).
-- Preserve interactive demo behavior; reskin via CSS tokens + theme-loader only.
-- Do **not** commit `themes/*.json` into NexQL — update themes in NexQL-Themes repo.
-- After NexQL-Themes parser changes, run `npm run prebuild:site` (or full `build:site`) before deploy.
-- Mobile: test 375px / 640px / 980px — theme dropdown in topbar actions.
+- Don't edit `src/styles/brand.css`; refresh it with `node scripts/sync-brand.mjs` from a checkout that has `../mcp`.
+- New UI uses brand tokens and scoped styles, never `public/styles/*`.
+- Version, URLs and facts live in `src/data/site.ts`. Update `VERSION` and the hero pill copy on each release.
+- Don't commit theme JSON here; themes live in the vsc-themes repo.
+- Test at 375px and desktop width, in dark and light.

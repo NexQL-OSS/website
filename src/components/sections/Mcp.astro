@@ -1,0 +1,150 @@
+---
+/**
+ * #mcp band. What the bundled nexql-mcp server gives an agent, with links out
+ * to the full tour and the tool reference on nexql-mcp.astrx.dev. Facts come
+ * from data/landing-content.ts (MCP_CAPABILITIES, MCP_TOOL_COUNT, AGENTS).
+ */
+import SectionHead from "../ui/SectionHead.astro";
+import { AGENTS, MCP_CAPABILITIES, MCP_TOOL_COUNT, MCP_DOCS_URL } from "../../data/landing-content";
+import { MCP_URL } from "../../data/site";
+---
+
+<section class="band wrap" id="mcp" aria-labelledby="mcp-title">
+  <div class="mcp">
+    <span class="ribbon" aria-hidden="true"></span>
+    <div class="mcp-copy">
+      <SectionHead eyebrow="MCP server" id="mcp-title">
+        Hand your database to any agent, <span class="serif-em">read-only</span>.
+        <Fragment slot="lede">
+          NexQL bundles the <code>nexql-mcp</code> server and registers it in VS Code over stdio. There are no URLs,
+          ports or tokens to paste: your connections just show up.
+        </Fragment>
+      </SectionHead>
+      <ul class="agents" aria-label="Works with">
+        {AGENTS.map((a) => <li class="pill">{a}</li>)}
+      </ul>
+      <div class="mcp-links">
+        <a class="btn btn-primary" href={MCP_URL} target="_blank" rel="noopener noreferrer">
+          Full tour and every tool
+        </a>
+        <a class="btn" href={MCP_DOCS_URL} target="_blank" rel="noopener noreferrer">Tool reference</a>
+      </div>
+      <p class="mcp-count mono-label">{MCP_TOOL_COUNT} tools · stdio · changes off by default</p>
+    </div>
+
+    <ul class="caps">
+      {
+        MCP_CAPABILITIES.map((c) => (
+          <li class="cap">
+            <h3>{c.title}</h3>
+            <p>{c.body}</p>
+            <p class="cap-tools">
+              {c.tools.map((t) => (
+                <code>{t}</code>
+              ))}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .band {
+    padding-block: 56px;
+  }
+  @media (min-width: 720px) {
+    .band {
+      padding-block: 80px;
+    }
+  }
+  .mcp {
+    position: relative;
+    display: grid;
+    gap: 32px;
+    padding: 28px 18px;
+    border: 1px solid var(--edge);
+    border-radius: 20px;
+    background: var(--nex-grad-soft), var(--panel);
+    box-shadow: var(--shadow-3);
+    overflow: hidden;
+  }
+  .mcp > .ribbon {
+    position: absolute;
+    inset: 0 0 auto 0;
+    border-radius: 0;
+  }
+  @media (min-width: 720px) {
+    .mcp {
+      padding: 44px 36px;
+    }
+  }
+  @media (min-width: 1000px) {
+    .mcp {
+      grid-template-columns: 1fr 1.1fr;
+      gap: 48px;
+      align-items: start;
+    }
+  }
+  .mcp-copy {
+    min-width: 0;
+  }
+  .agents {
+    list-style: none;
+    margin: 22px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .mcp-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 26px;
+  }
+  .mcp-count {
+    margin-top: 16px;
+  }
+  .caps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+  }
+  @media (min-width: 720px) {
+    .caps {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .cap {
+    min-width: 0;
+    padding: 18px 18px 16px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+  }
+  .cap h3 {
+    font-size: 16.5px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .cap p {
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+  .cap .cap-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .cap-tools code {
+    font-size: 12px;
+    color: var(--prose);
+  }
+</style>

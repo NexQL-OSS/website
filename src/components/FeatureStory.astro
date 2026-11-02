@@ -1,131 +1,237 @@
 ---
+/**
+ * Body of a /features/<slug> page: title and lede, a figure (recording or
+ * drawn mock), numbered steps, key facts, related features and an install
+ * call to action. Everything is static; content comes from data/feature-stories.ts.
+ *
+ * Props
+ *  - feature: FeatureStory
+ */
 import type { FeatureStory } from "../data/feature-stories";
-import { FEATURE_BY_SLUG } from "../data/feature-stories";
+import { FEATURE_BY_SLUG, GROUPS, featureHref, titleParts } from "../data/feature-stories";
+import { MARKETPLACE_URL } from "../data/site";
+import Code from "./ui/Code.astro";
 import FeatureMocks from "./FeatureMocks.astro";
 
 interface Props {
   feature: FeatureStory;
-  showRelated?: boolean;
 }
+const { feature } = Astro.props;
+const [pre, em, post] = titleParts(feature.title);
+const group = GROUPS.find((g) => g.id === feature.group);
+const related = feature.related.map((s) => FEATURE_BY_SLUG[s]).filter(Boolean);
+const { gif, mock, caption } = feature.figure;
 
-const { feature, showRelated = true } = Astro.props;
-const stepCount = feature.steps.length;
-const first = feature.steps[0];
+const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 ---
 
-<div
-  class="feature-story"
-  id="feature-content"
-  data-feature-story
-  style={`--story-ink:${feature.ink};--story-tint:${feature.tint}`}
->
-  <div class="feature-story-rail">
-    <div class="feature-story-progress" aria-hidden="true">
-      <div
-        class="feature-story-progress-fill"
-        data-feature-progress
-        style={`width:${(100 / stepCount).toFixed(2)}%`}></div
-      >
-    </div>
-    <div class="feature-story-steps" role="tablist" aria-label={`${feature.label} workflow steps`}>
+<article class="feature">
+  <p class="eyebrow">{group?.label}</p>
+  <h1>{pre}{em && <span class="serif-em grad-text">{em}</span>}{post}</h1>
+  <p class="lede">{feature.lede}</p>
+  <p class="plan"><span class="pill">{feature.tierLabel}</span></p>
+
+  <div class="prose">
+    <figure class="figure">
+      <div class="frame">
+        {
+          gif ? (
+            <>
+              <img
+                class="gif"
+                src={gif.src}
+                alt={gif.alt}
+                width={gif.width}
+                height={gif.height}
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="still"><FeatureMocks kind={mock} /></div>
+            </>
+          ) : (
+            <FeatureMocks kind={mock} />
+          )
+        }
+      </div>
+      <figcaption>{caption}</figcaption>
+    </figure>
+
+    <h2 id="how">How you use it</h2>
+    <ol class="steps">
       {
-        feature.steps.map((step, i) => (
-          <button
-            type="button"
-            class="feature-story-step"
-            role="tab"
-            data-feature-step
-            data-step-title={step.title}
-            data-step-body={step.body}
-            data-step-visual={step.visual}
-            data-step-snippet={step.snippet ?? ""}
-            aria-current={i === 0 ? "step" : "false"}
-            id={`feature-step-${feature.slug}-${i}`}
-            aria-controls={`feature-panel-${feature.slug}`}
-            tabindex={i === 0 ? 0 : -1}
-          >
-            <div class="feature-story-step-n">{String(i + 1).padStart(2, "0")}</div>
-            <h3>{step.title}</h3>
-            <p>{step.body}</p>
-          </button>
+        feature.steps.map((s) => (
+          <li>
+            <strong>{s.title}</strong>
+            <p>{s.body}</p>
+            {s.snippet && <Code html={esc(s.snippet)} label={`Copy: ${s.title}`} />}
+          </li>
         ))
       }
-    </div>
-    <div class="feature-story-nav">
-      <button type="button" class="feature-story-nav-btn" data-feature-prev aria-label="Previous step"
-        >←</button
-      >
-      <span class="feature-story-nav-count"
-        ><span data-feature-step-index>1</span> / {stepCount}</span
-      >
-      <button type="button" class="feature-story-nav-btn" data-feature-next aria-label="Next step"
-        >→</button
-      >
-    </div>
+    </ol>
+
+    <h2 id="facts">Key facts</h2>
+    <ul class="facts">
+      <li><strong>Plan:</strong> {feature.tierLabel}</li>
+      {feature.facts.map((f) => <li>{f}</li>)}
+    </ul>
+
+    {
+      related.length > 0 && (
+        <>
+          <h2 id="related">Related features</h2>
+          <div class="cards">
+            {related.map((r) => (
+              <a class="card" href={featureHref(r.slug)}>
+                <strong>{r.name}</strong>
+                <span>{r.summary}</span>
+              </a>
+            ))}
+          </div>
+        </>
+      )
+    }
+
+    <aside class="cta" aria-labelledby="cta-h">
+      <h2 id="cta-h">Try it in VS Code</h2>
+      <p>The free core includes the explorer, notebooks and Sentinel. Install it from the Marketplace and connect to a database.</p>
+      <a class="btn btn-primary" href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer">
+        Install from Marketplace
+      </a>
+    </aside>
   </div>
+</article>
 
-  <div
-    class="feature-story-panel"
-    role="tabpanel"
-    id={`feature-panel-${feature.slug}`}
-    aria-labelledby={`feature-step-${feature.slug}-0`}
-  >
-    <div class="feature-story-panel-chrome">
-      <span class="dot" aria-hidden="true"></span>
-      <span>{feature.path}</span>
-      <span aria-hidden="true">·</span>
-      <span>{feature.label}</span>
-      <span
-        class="feature-story-panel-badge"
-        style={`color:${feature.ink};border-color:${feature.ink}`}>{feature.mark}</span
-      >
-    </div>
-    <div class="feature-story-panel-body">
-      <h3 class="feature-story-panel-title" data-feature-panel-title>{first?.title}</h3>
-      <p class="feature-story-panel-lede" data-feature-panel-lede>{first?.body}</p>
-
-      <pre
-        class="feature-story-snippet"
-        data-feature-snippet
-        hidden={!first?.snippet}>{first?.snippet ?? ""}</pre
-      >
-
-      <div
-        class="feature-story-visual"
-        data-feature-visual
-        data-visual={first?.visual ?? "notebook"}
-        hidden={!!first?.snippet}
-      >
-        <FeatureMocks mode="story" />
-      </div>
-
-      <div class="feature-story-caps" aria-label="Capabilities">
-        {feature.caps.map((cap) => <span class="ws-map-cap">{cap}</span>)}
-      </div>
-    </div>
-  </div>
-</div>
-
-{
-  showRelated && feature.related.length > 0 && (
-    <section class="feature-related" aria-labelledby={`related-${feature.slug}`}>
-      <h2 id={`related-${feature.slug}`}>Related in the loop</h2>
-      <div class="feature-related-links">
-        {feature.related.map((slug) => {
-          const rel = FEATURE_BY_SLUG[slug];
-          return (
-            <a href={`/features/${slug}/`} style={rel ? `--hub-ink:${rel.ink}` : undefined}>
-              <span
-                class="feature-related-mark"
-                style={rel ? `background:${rel.tint};color:${rel.ink}` : undefined}
-              >
-                {rel?.mark ?? "·"}
-              </span>
-              {rel?.kicker ?? slug}
-            </a>
-          );
-        })}
-      </div>
-    </section>
-  )
-}
+<style>
+  .plan {
+    margin-top: 16px;
+  }
+  h1 {
+    max-width: 22ch;
+  }
+  .figure {
+    margin: 28px 0 0;
+  }
+  .frame {
+    border: 1px solid;
+    border-color: var(--bevel-border);
+    border-radius: var(--radius);
+    background: var(--figure-bg);
+    box-shadow: var(--shadow-2);
+    overflow: hidden;
+  }
+  .gif {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  /* Recordings move; people who ask for less motion get the still mock instead. */
+  .still {
+    display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gif {
+      display: none;
+    }
+    .still {
+      display: block;
+    }
+  }
+  figcaption {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .steps {
+    list-style: none;
+    padding: 0;
+    counter-reset: step;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+  .steps li {
+    position: relative;
+    padding-left: 48px;
+    min-width: 0;
+    counter-increment: step;
+  }
+  .steps li + li {
+    margin-top: 0;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: -2px;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--line-2);
+    background: var(--panel-2);
+    color: var(--accent);
+    font: 500 14px/1 var(--font-mono);
+  }
+  .steps strong {
+    display: block;
+    color: var(--fg);
+  }
+  .steps p {
+    margin-top: 4px;
+  }
+  .steps :global(.code) {
+    margin-top: 10px;
+  }
+  .facts {
+    padding-left: 22px;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 12px;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px;
+    border: 1px solid;
+    border-color: var(--bevel-border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+    color: var(--fg);
+    text-decoration: none !important;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-3);
+  }
+  .card span {
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+  .cta {
+    margin-top: 48px;
+    padding: 22px;
+    border: 1px solid;
+    border-color: var(--bevel-border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow-3);
+  }
+  .cta h2 {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 22px;
+  }
+  .cta p {
+    margin: 8px 0 16px;
+  }
+  .cta .btn {
+    text-decoration: none;
+  }
+</style>

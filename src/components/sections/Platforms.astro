@@ -1,0 +1,143 @@
+---
+/** #platforms. Logo grid of supported Postgres hosts with a one-line note each (PLATFORMS in landing-content.ts). */
+import SectionHead from "../ui/SectionHead.astro";
+import { PLATFORMS } from "../../data/landing-content";
+import { FACTS } from "../../data/site";
+// These two files ship without their <style> block (every shape renders black),
+// so they are inlined and coloured here. Shapes use classes st0..st5.
+import googlecloudRaw from "../../../public/assets/platform-icons/googlecloud.svg?raw";
+import alloydbRaw from "../../../public/assets/platform-icons/alloydb.svg?raw";
+
+const inline: Record<string, string> = {
+  "googlecloud.svg": googlecloudRaw.replace(/<\?xml[^>]*>/, ""),
+  "alloydb.svg": alloydbRaw.replace(/<\?xml[^>]*>/, ""),
+};
+---
+
+<section class="band wrap" id="platforms" aria-labelledby="platforms-title">
+  <SectionHead center id="platforms-title">
+    If it speaks the Postgres wire protocol, <span class="serif-em">it works</span>.
+    <Fragment slot="lede">
+      Tested against PostgreSQL {FACTS.pgVersions} every release, with version-gated fallbacks for managed platforms.
+    </Fragment>
+  </SectionHead>
+  <ul class="grid">
+    {
+      PLATFORMS.map((p) => (
+        <li class="platform">
+          <span class="logo">
+            {inline[p.icon] ? (
+              <span class="svg" aria-hidden="true" set:html={inline[p.icon]} />
+            ) : (
+              <img src={`/assets/platform-icons/${p.icon}`} alt="" width="26" height="26" loading="lazy" />
+            )}
+          </span>
+          <span class="text">
+            <b>{p.name}</b>
+            <span>{p.note}</span>
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .band {
+    padding-block: 56px;
+  }
+  @media (min-width: 720px) {
+    .band {
+      padding-block: 80px;
+    }
+  }
+  .grid {
+    list-style: none;
+    margin: 36px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media (min-width: 560px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+  .platform {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+  }
+  @media (min-width: 960px) {
+    .platform {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+    }
+  }
+  .logo {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    background: #f4f1f7;
+    box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 rgba(72, 36, 88, 0.12);
+  }
+  .logo img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+  }
+  .svg {
+    display: grid;
+    width: 26px;
+    height: 26px;
+  }
+  .svg :global(svg) {
+    width: 26px;
+    height: 26px;
+  }
+  .svg :global(.st0) {
+    fill: none;
+  }
+  .svg :global(.st1),
+  .svg :global(.st4) {
+    fill: #1a73e8;
+  }
+  .svg :global(.st2) {
+    fill: #4285f4;
+  }
+  .svg :global(.st3),
+  .svg :global(.st5) {
+    fill: #669df6;
+  }
+  .text {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+  }
+  .text b {
+    font-weight: 600;
+    font-size: 15.5px;
+  }
+  .text span {
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+</style>

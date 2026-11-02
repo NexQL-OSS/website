@@ -1,0 +1,73 @@
+---
+/**
+ * Section opener: a mono eyebrow, an h2 with one serif-italic word, and a lede.
+ *
+ * Props
+ *  - eyebrow: string, optional. Mono label above the heading.
+ *  - id:      string, optional. Put on the h2 so the section can use aria-labelledby.
+ *  - center:  boolean, optional. Centre the block (default left).
+ *  - level:   2 | 3, optional. Heading level, default 2.
+ *
+ * Slots
+ *  - default: the heading text. Wrap the one emphasised word in
+ *             <span class="serif-em">word</span>.
+ *  - lede:    optional paragraph under the heading.
+ *
+ * Example:
+ *   <SectionHead eyebrow="Pricing" id="pricing-title">
+ *     Free is genuinely <span class="serif-em">free</span>.
+ *     <Fragment slot="lede">Subscriptions fund the work.</Fragment>
+ *   </SectionHead>
+ */
+interface Props {
+  eyebrow?: string;
+  id?: string;
+  center?: boolean;
+  level?: 2 | 3;
+}
+const { eyebrow, id, center = false, level = 2 } = Astro.props;
+const Tag = level === 3 ? "h3" : "h2";
+const hasLede = Astro.slots.has("lede");
+---
+
+<div class:list={["section-head", { center }]}>
+  {eyebrow && <p class="mono-label eyebrow">{eyebrow}</p>}
+  <Tag id={id}><slot /></Tag>
+  {hasLede && <p class="lede"><slot name="lede" /></p>}
+</div>
+
+<style>
+  .section-head {
+    max-width: 46rem;
+  }
+  .section-head.center {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .eyebrow {
+    margin-bottom: 12px;
+  }
+  .section-head :global(h2),
+  .section-head :global(h3) {
+    font-size: clamp(28px, 3.6vw, 42px);
+    font-weight: 700;
+    margin-bottom: 12px;
+    max-width: 22em;
+  }
+  .center :global(h2),
+  .center :global(h3) {
+    margin-inline: auto;
+  }
+  .section-head :global(.serif-em) {
+    color: var(--accent);
+    font-size: 1.1em;
+  }
+  .lede {
+    color: var(--muted);
+    font-size: 17.5px;
+    max-width: 40em;
+  }
+  .center .lede {
+    margin-inline: auto;
+  }
+</style>

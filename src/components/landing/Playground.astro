@@ -1,0 +1,286 @@
+---
+/**
+ * The interactive workspace. Owned by the shell agent.
+ *
+ * Section id: #playground (header, hero and footer link to it).
+ * The workbench is NOT in this page. It lives at /demo/ (pages/demo.astro) and
+ * is embedded here in an iframe that is created only when the visitor opens it
+ * ("Open the interactive workspace"), when the section scrolls near the
+ * viewport (not on Save-Data connections), or when the URL carries
+ * ?demo=1[&file=query&panel=nexql] (deep links from /features/*).
+ * Other sections can open it with any element carrying `data-landing-open-demo`
+ * (optionally data-demo-file / data-demo-panel), which scrolls here and loads it.
+ */
+import StopHead from "../ui/StopHead.astro";
+import { THEMES_URL } from "../../data/site";
+---
+
+<section class="playground wrap" id="playground" aria-labelledby="playground-title">
+  <StopHead label="Playground" time="No install" />
+  <h2 id="playground-title">Try the workspace before you <span class="serif-em">install</span> it.</h2>
+  <p class="lede">
+    This is the NexQL workbench running on sample data: the explorer, a notebook, the SQL assistant and the status bar.
+    It never connects to a real database. Pick any of the 39 editor themes from the bar above the window.
+  </p>
+
+  <div class="demo" data-demo>
+    <div class="demo-poster" data-demo-poster>
+      <div class="window" aria-hidden="true">
+        <div class="window-bar">
+          <span class="d"></span><span class="d"></span><span class="d"></span>
+          <span class="window-title">query.pgsql</span>
+        </div>
+        <pre class="window-body"><span class="c">-- Why is daily revenue slow?</span>
+<span class="k">SELECT</span> date_trunc(<span class="s">'day'</span>, created_at) <span class="k">AS</span> day,
+       <span class="k">count</span>(*) <span class="k">AS</span> orders,
+       <span class="k">sum</span>(total) <span class="k">AS</span> revenue
+  <span class="k">FROM</span> orders
+ <span class="k">GROUP BY</span> 1 <span class="k">ORDER BY</span> 1 <span class="k">DESC</span>;</pre>
+      </div>
+      <div class="poster-actions">
+        <button class="btn btn-primary" type="button" data-demo-open>Open the interactive workspace</button>
+        <button class="btn" type="button" data-demo-open data-demo-tour>Take the guided tour</button>
+      </div>
+      <p class="poster-status" data-demo-status role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="demo-live" data-demo-live hidden>
+      <div class="demo-controls">
+        <span class="mono-label">Interactive workspace</span>
+        <button class="btn close" type="button" data-demo-close>Close workspace</button>
+      </div>
+      <div class="demo-frame">
+        <iframe title="NexQL interactive workspace demo" data-demo-frame referrerpolicy="no-referrer"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">
+    Prefer your own palette? <a href={THEMES_URL} target="_blank" rel="noopener noreferrer">Browse all 39 themes ↗</a>
+  </p>
+</section>
+
+<style>
+  .playground {
+    padding-top: 24px;
+    padding-bottom: 8px;
+    scroll-margin-top: calc(var(--header-h) + 8px);
+  }
+  h2 {
+    font-size: clamp(28px, 3.6vw, 42px);
+    font-weight: 700;
+    margin-bottom: 12px;
+    max-width: 22em;
+  }
+  h2 .serif-em {
+    color: var(--accent);
+    font-size: 1.1em;
+  }
+  .lede {
+    color: var(--muted);
+    font-size: 17.5px;
+    max-width: 40em;
+  }
+  .demo {
+    margin-top: 32px;
+  }
+  .demo-poster[hidden],
+  .demo-live[hidden] {
+    display: none;
+  }
+
+  /* ---------- Poster, shown until the workspace is opened ---------- */
+  .demo-poster {
+    display: grid;
+    justify-items: center;
+    gap: 24px;
+    padding: 32px 16px 28px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--surface);
+    box-shadow: var(--shadow-3);
+  }
+  .window {
+    width: min(100%, 560px);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--code-bg);
+    box-shadow: var(--shadow-2);
+    overflow: hidden;
+  }
+  .window-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel-2);
+  }
+  .d {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--line-2);
+  }
+  .window-title {
+    margin-left: 8px;
+    font: 500 12px/1 var(--font-mono);
+    color: var(--faint);
+  }
+  .window-body {
+    margin: 0;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--fg);
+    white-space: pre;
+  }
+  .window-body .c {
+    color: var(--comment);
+  }
+  .window-body .k {
+    color: var(--kw);
+  }
+  .window-body .s {
+    color: var(--str);
+  }
+  .poster-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  .poster-status {
+    min-height: 1.4em;
+    margin: -8px 0 0;
+    font: 500 12.5px/1.4 var(--font-mono);
+    color: var(--muted);
+  }
+
+  /* ---------- Live workspace ---------- */
+  .demo-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .close {
+    min-height: 36px;
+    padding: 6px 14px;
+    font-size: 14px;
+  }
+  .demo-frame {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: #0b0e14;
+    box-shadow: var(--shadow-4);
+    overflow: hidden;
+  }
+  iframe {
+    display: block;
+    width: 100%;
+    height: clamp(560px, 82vh, 800px);
+    border: 0;
+    background: #0b0e14;
+  }
+  .note {
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-demo]");
+  const section = document.getElementById("playground");
+  if (root && section) {
+    const poster = root.querySelector<HTMLElement>("[data-demo-poster]")!;
+    const live = root.querySelector<HTMLElement>("[data-demo-live]")!;
+    const frame = root.querySelector<HTMLIFrameElement>("[data-demo-frame]")!;
+    const status = root.querySelector<HTMLElement>("[data-demo-status]")!;
+    const openers = root.querySelectorAll<HTMLElement>("[data-demo-open]");
+    let loaded = false;
+
+    function show(focus: boolean) {
+      poster.hidden = true;
+      live.hidden = false;
+      if (focus) frame.focus();
+    }
+
+    function load(opts: { file?: string; panel?: string; tour?: boolean; focus?: boolean } = {}) {
+      if (loaded && !opts.file && !opts.tour) {
+        show(!!opts.focus);
+        return;
+      }
+      const params = new URLSearchParams({ demo: "1" });
+      if (opts.file) params.set("file", opts.file);
+      if (opts.panel) params.set("panel", opts.panel);
+      if (opts.tour) params.set("tour", "1");
+      status.textContent = "Loading the workspace…";
+      frame.addEventListener(
+        "load",
+        () => {
+          status.textContent = "";
+        },
+        { once: true },
+      );
+      frame.src = `/demo/?${params.toString()}`;
+      loaded = true;
+      show(!!opts.focus);
+    }
+
+    function close() {
+      frame.removeAttribute("src");
+      loaded = false;
+      live.hidden = true;
+      poster.hidden = false;
+      status.textContent = "";
+      section!.scrollIntoView({ block: "start" });
+      root!.querySelector<HTMLElement>("[data-demo-open]")?.focus({ preventScroll: true });
+    }
+
+    openers.forEach((b) =>
+      b.addEventListener("click", () => load({ tour: b.hasAttribute("data-demo-tour"), focus: true })),
+    );
+    root.querySelector("[data-demo-close]")?.addEventListener("click", close);
+
+    // Other sections can open the workspace with data-landing-open-demo.
+    document.addEventListener("click", (e) => {
+      const el = (e.target as HTMLElement).closest<HTMLElement>("[data-landing-open-demo]");
+      if (!el) return;
+      e.preventDefault();
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      load({ file: el.dataset.demoFile, panel: el.dataset.demoPanel, focus: false });
+    });
+
+    // The workbench asks us to close when its own close controls are used.
+    window.addEventListener("message", (e) => {
+      if (e.origin !== location.origin) return;
+      if (e.data && e.data.source === "nexql-demo" && e.data.type === "close") close();
+    });
+
+    // Deep link from /features/*: /?demo=1&file=query&panel=nexql
+    const q = new URLSearchParams(location.search);
+    if (q.get("demo") === "1") {
+      load({ file: q.get("file") ?? "query", panel: q.get("panel") ?? "nexql" });
+      requestAnimationFrame(() => section.scrollIntoView({ block: "start" }));
+    } else if ("IntersectionObserver" in window) {
+      // Load when the section is about to scroll into view, unless the visitor asked to save data.
+      const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+      if (!conn?.saveData) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((en) => en.isIntersecting)) {
+              io.disconnect();
+              if (!loaded) load();
+            }
+          },
+          { rootMargin: "500px 0px" },
+        );
+        io.observe(section);
+      }
+    }
+  }
+</script>

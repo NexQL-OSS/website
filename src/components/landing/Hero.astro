@@ -1,0 +1,219 @@
+---
+/**
+ * Landing hero. Owned by the shell agent; the section agents should not edit it.
+ *
+ * Headline, lede, release pill (links to #changelog), the two CTAs, the install
+ * command, and a "What you get" ticket whose rows link to the story stops
+ * (ids come from STOPS in data/site.ts: #connect #explore #ask #watch #guard).
+ */
+import Code from "../ui/Code.astro";
+import { STOPS, VERSION, FACTS, MARKETPLACE_URL, INSTALL_CMD } from "../../data/site";
+
+const pad = (n: number) => String(n).padStart(2, "0");
+const command = `<span class="c"># VS Code: Ctrl+P, then paste</span>\n${INSTALL_CMD}`;
+---
+
+<section class="hero wrap" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <a class="pill release" href="#changelog">
+      <span class="live-dot" aria-hidden="true"></span>
+      v{VERSION} · NexQL Bot and smarter MCP setup
+    </a>
+    <h1 id="hero-title">
+      Postgres never leaves your{" "}
+      <span class="serif-em grad-text">editor</span>.
+    </h1>
+    <p class="lede">
+      Explorer, SQL notebooks, a live dashboard and an AI assistant that reads your schema, in the VS Code window you
+      already have open. No second app, no second window.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer">
+        Install from Marketplace
+      </a>
+      <a class="btn" href="#playground">Open the playground</a>
+    </div>
+    <div class="hero-code">
+      <Code html={command} label="Copy the install command" />
+    </div>
+  </div>
+
+  <aside class="ticket" aria-label="What you get">
+    <div class="ticket-head">
+      <span class="mono-label">What you get</span>
+      <span class="mono-label">{STOPS.length} stops</span>
+    </div>
+    <ol class="route">
+      {
+        STOPS.map((s, i) => (
+          <li>
+            <a href={`#${s.id}`}>
+              <span class="route-dot" />
+              <span class="route-no">{pad(i + 1)}</span>
+              <span class="route-label">{s.label}</span>
+              <span class="route-min">{s.minutes}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="ticket-foot">
+      <span>PostgreSQL {FACTS.pgVersions}</span>
+      <span>{FACTS.license}</span>
+      <span>Free AI, no key</span>
+    </div>
+  </aside>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+    padding-top: 56px;
+    padding-bottom: 72px;
+    align-items: center;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: -48px -8% -20px;
+    background-image: var(--dot-grid);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse at 22% 35%, #000 0%, transparent 68%);
+    -webkit-mask-image: radial-gradient(ellipse at 22% 35%, #000 0%, transparent 68%);
+    pointer-events: none;
+  }
+  .hero > * {
+    position: relative;
+    min-width: 0;
+  }
+  @media (min-width: 960px) {
+    .hero {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr);
+      padding-top: 88px;
+      padding-bottom: 104px;
+      gap: 64px;
+    }
+  }
+  .release {
+    max-width: 100%;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .release:hover {
+    text-decoration: none;
+    border-color: var(--accent);
+    color: var(--fg);
+  }
+  h1 {
+    font-size: clamp(38px, 6vw, 68px);
+    font-weight: 700;
+    margin: 22px 0 20px;
+    letter-spacing: -0.02em;
+  }
+  h1 .serif-em {
+    font-size: 1.08em;
+    padding-right: 0.06em;
+  }
+  .lede {
+    color: var(--muted);
+    font-size: clamp(17px, 1.6vw, 19px);
+    max-width: 40em;
+  }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .hero-code {
+    margin-top: 24px;
+    max-width: 34rem;
+  }
+
+  /* Ticket: the stops, as a boarding pass */
+  .ticket {
+    position: relative;
+    background: var(--ticket-bg);
+    border: 1px solid var(--edge);
+    border-radius: 18px;
+    padding: 22px 22px 18px;
+    box-shadow: var(--shadow-ticket);
+  }
+  .ticket::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 18px;
+    padding: 1px;
+    background: var(--nex-grad);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: var(--ticket-edge);
+    pointer-events: none;
+  }
+  .ticket-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .ticket-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 6px 12px;
+    border-top: 1px dashed var(--line-2);
+    margin-top: 16px;
+    padding-top: 14px;
+    font: 500 12px/1.4 var(--font-mono);
+    color: var(--faint);
+  }
+  .route {
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+    position: relative;
+  }
+  .route::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 14px;
+    bottom: 14px;
+    width: 3px;
+    border-radius: 3px;
+    background: var(--nex-grad-v);
+  }
+  .route a {
+    display: grid;
+    grid-template-columns: 17px 30px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 8px 9px 0;
+    color: var(--fg);
+    border-radius: 8px;
+  }
+  .route a:hover {
+    text-decoration: none;
+    background: var(--hover);
+  }
+  .route-dot {
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 3px solid var(--fg);
+    position: relative;
+    z-index: 1;
+  }
+  .route-no,
+  .route-min {
+    font: 500 12.5px/1 var(--font-mono);
+    color: var(--faint);
+  }
+  .route-label {
+    font-weight: 500;
+  }
+</style>

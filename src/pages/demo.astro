@@ -1,0 +1,95 @@
+---
+/**
+ * /demo/ : the interactive workbench, meant to be embedded by the home page's
+ * Playground in an iframe (it also works standalone). Not indexed.
+ *
+ * Why a separate document: the workbench is built on ~6k lines of legacy CSS
+ * and global-ish scripts. In its own document they cannot restyle the
+ * marketing page, and the NexQL theme picker below (theme-loader.mjs paints
+ * :root of THIS document) repaints only the demo.
+ *
+ * Query params: ?demo=1&file=query&panel=nexql opens a file and sidebar panel.
+ */
+import Workbench from "../components/demo/Workbench.astro";
+import TourOverlay from "../components/demo/TourOverlay.astro";
+import { THEMES_URL } from "../data/site";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>NexQL workspace demo</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <base target="_top" />
+    <link rel="icon" type="image/png" href="/assets/NexQL.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles/demo.css" />
+  </head>
+  <body class="demo-open demo-embed">
+    <div class="demo-bar" role="toolbar" aria-label="Demo controls">
+      <span class="demo-bar-title">Sample data, no real database</span>
+      <button class="demo-bar-btn" id="play-tour" type="button" aria-label="Start guided product tour">
+        Take the tour
+      </button>
+      <div class="theme-picker" id="theme-picker">
+        <button
+          type="button"
+          class="theme-picker-trigger"
+          id="theme-picker-trigger"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-controls="theme-picker-menu"
+          aria-label="Demo color theme"
+        >
+          <span class="theme-picker-dot" id="theme-picker-dot" aria-hidden="true"></span>
+          <span class="theme-picker-label" id="theme-picker-label">Loading…</span>
+          <svg class="theme-picker-chevron" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+        <div class="theme-picker-menu" id="theme-picker-menu" role="listbox" aria-label="NexQL themes" hidden></div>
+      </div>
+      <a class="demo-bar-link" href={THEMES_URL} target="_blank" rel="noopener noreferrer">All 39 themes ↗</a>
+    </div>
+
+    <main class="site-main" id="main">
+      <section class="hero-shell" aria-label="NexQL interactive workspace demo">
+        <div class="demo-shell-stage">
+          <div class="demo-shell-frame">
+            <div class="demo-shell-halo" aria-hidden="true"></div>
+            <Workbench />
+          </div>
+        </div>
+
+        <div class="toast" id="startup-toast" role="status" aria-live="polite">
+          <img class="toast-icon toast-icon-image" src="/assets/NexQL.png" alt="" />
+          <span>NexQL activated — demo_db connected</span>
+          <button class="toast-close" id="toast-close-btn" aria-label="Dismiss notification">×</button>
+        </div>
+      </section>
+    </main>
+
+    <TourOverlay />
+
+    <!-- Deferred scripts run in document order; the module (theme-loader) sits
+         before bootstrap.js, which awaits window.NexqlThemes.ready. -->
+    <script is:inline defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script is:inline defer src="/js/core-state.js"></script>
+    <script is:inline defer src="/js/workbench.js"></script>
+    <script is:inline defer src="/js/demo-embed.js"></script>
+    <script is:inline defer src="/js/assistant.js"></script>
+    <script is:inline defer src="/js/tour.js"></script>
+    <script is:inline defer src="/js/visuals.js"></script>
+    <script is:inline defer src="/js/landing-capabilities.js"></script>
+    <script is:inline defer src="/js/feature-story.js"></script>
+    <script is:inline type="module" src="/js/theme-loader.mjs"></script>
+    <script is:inline defer src="/js/bootstrap.js"></script>
+  </body>
+</html>

@@ -1,0 +1,154 @@
+---
+/**
+ * #changelog. Open-core note plus the latest three entries of RELEASES, with a
+ * link to the full CHANGELOG. The hero's version pill links to this id.
+ */
+import SectionHead from "../ui/SectionHead.astro";
+import { RELEASES } from "../../data/landing-content";
+import { CHANGELOG_URL, REPO_URL, OPENVSX_URL } from "../../data/site";
+
+const latest = RELEASES.slice(0, 3);
+---
+
+<section class="band wrap" id="changelog" aria-labelledby="changelog-title">
+  <div class="grid">
+    <div class="open-core">
+      <SectionHead eyebrow="Open core" id="changelog-title">
+        MIT, and shipping <span class="serif-em">weekly</span>.
+        <Fragment slot="lede">
+          The core builds a fully working free extension that anyone may fork, rebrand and publish. Stable releases
+          ship from version tags. A nightly pre-release publishes on every merge to <code>main</code>.
+        </Fragment>
+      </SectionHead>
+      <div class="actions">
+        <a class="btn" href={REPO_URL} target="_blank" rel="noopener noreferrer">Read the source</a>
+        <a class="btn" href={OPENVSX_URL} target="_blank" rel="noopener noreferrer">Also on Open VSX</a>
+      </div>
+    </div>
+
+    <div class="log">
+      <div class="log-head">
+        <span class="mono-label">Latest releases</span>
+        <a href={CHANGELOG_URL} target="_blank" rel="noopener noreferrer">Full changelog</a>
+      </div>
+      <ol>
+        {
+          latest.map((r) => (
+            <li class="release">
+              <div class="meta">
+                <span class="v">{r.v}</span>
+                <span class:list={["tag", r.tag]}>{r.tag}</span>
+                <time datetime={r.date}>{r.date}</time>
+              </div>
+              <h3>{r.title}</h3>
+              <p>{r.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .band {
+    padding-block: 56px;
+  }
+  @media (min-width: 720px) {
+    .band {
+      padding-block: 80px;
+    }
+  }
+  .grid {
+    display: grid;
+    gap: 36px;
+  }
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 56px;
+      align-items: start;
+    }
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .log {
+    min-width: 0;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+    overflow: hidden;
+  }
+  .log-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px dashed var(--line-2);
+  }
+  .log-head a {
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .log-head a:hover {
+    color: var(--accent-hover);
+  }
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .release {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .release:last-child {
+    border-bottom: 0;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font: 500 12.5px/1.3 var(--font-mono);
+    color: var(--faint);
+  }
+  .v {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .tag {
+    padding: 2px 8px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    color: var(--muted);
+  }
+  .tag.nightly {
+    border-color: var(--warn-line);
+    color: var(--warn);
+    background: var(--warn-wash);
+  }
+  .tag.milestone {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .release h3 {
+    font-size: 16.5px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .release p {
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+</style>

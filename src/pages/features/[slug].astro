@@ -1,7 +1,8 @@
 ---
-import FeatureLayout from "../../layouts/FeatureLayout.astro";
+import DocsLayout from "../../layouts/DocsLayout.astro";
 import FeatureStory from "../../components/FeatureStory.astro";
-import { FEATURES, getFeature } from "../../data/feature-stories";
+import { FEATURES, FEATURES_ORDERED, getFeature, featureHref, plainTitle } from "../../data/feature-stories";
+import { SITE_URL } from "../../data/site";
 
 export function getStaticPaths() {
   return FEATURES.map((f) => ({ params: { slug: f.slug } }));
@@ -9,45 +10,23 @@ export function getStaticPaths() {
 
 const { slug } = Astro.params;
 const feature = getFeature(slug!);
+if (!feature) return Astro.redirect("/features/");
 
-if (!feature) {
-  return Astro.redirect("/features/");
-}
+const i = FEATURES_ORDERED.findIndex((f) => f.slug === feature.slug);
+const prev = FEATURES_ORDERED[i - 1];
+const next = FEATURES_ORDERED[i + 1];
 
-const title = `${feature.kicker} — ${feature.title} ${feature.titleEm ?? ""} | NexQL`;
-const description = feature.lede;
-const canonical = `https://nexql.astrx.dev/features/${feature.slug}/`;
-const demoFile = feature.tryDemo.file;
-const demoPanel = feature.tryDemo.panel ?? "nexql";
+const title = `${plainTitle(feature.title)} | NexQL`;
+const canonical = `${SITE_URL}/features/${feature.slug}`;
 ---
 
-<FeatureLayout {title} {description} {canonical}>
-  <main class="feature-page" style={`--story-ink:${feature.ink};--story-tint:${feature.tint}`}>
-    <header class="feature-page-header">
-      <div class="feature-story-hero-mark" style={`background:${feature.tint};color:${feature.ink}`}
-        >{feature.mark}</div
-      >
-      <p class="story-kicker">{feature.kicker}</p>
-      <span class="feature-tier" data-tier={feature.tier}>{feature.tierLabel}</span>
-      <h1 class="story-title">
-        {feature.title}
-        {feature.titleEm ? <em> {feature.titleEm}</em> : null}
-      </h1>
-      <p class="story-lede">{feature.lede}</p>
-      <div class="feature-page-actions">
-        <button
-          type="button"
-          class="min-cta primary"
-          data-feature-try-demo
-          data-demo-file={demoFile}
-          data-demo-panel={demoPanel}
-          data-demo-home="/">Try in live demo</button
-        >
-        <a class="min-cta secondary" href="/features/">All features</a>
-        <a class="min-cta tertiary" href="/">Homepage</a>
-      </div>
-    </header>
-
-    <FeatureStory {feature} />
-  </main>
-</FeatureLayout>
+<DocsLayout
+  {title}
+  description={feature.lede}
+  {canonical}
+  crumbs={[{ label: "Features", href: "/features/" }, { label: feature.name }]}
+  prev={prev && { href: featureHref(prev.slug), label: prev.name }}
+  next={next && { href: featureHref(next.slug), label: next.name }}
+>
+  <FeatureStory {feature} />
+</DocsLayout>

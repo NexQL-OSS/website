@@ -1,0 +1,71 @@
+---
+/**
+ * Header row for a stop in a stop-by-stop section: "Stop 03" in mono with a
+ * serif-italic number, an optional label, and an optional time chip.
+ *
+ * Props
+ *  - no:    number | string, optional. Shown as two digits ("3" becomes "03").
+ *           Leave out for an un-numbered stop; the label then stands alone.
+ *  - label: string, optional. Mono text after the number ("Connect").
+ *  - time:  string, optional. Chip on the right ("1 min").
+ *
+ * Example: <StopHead no={1} label="Connect" time="1 min" />
+ */
+interface Props {
+  no?: number | string;
+  label?: string;
+  time?: string;
+}
+const { no, label, time } = Astro.props;
+const num = no === undefined ? undefined : String(no).padStart(2, "0");
+---
+
+<header class="stop-head">
+  {
+    num && (
+      <span class="stop-no">
+        Stop <b>{num}</b>
+      </span>
+    )
+  }
+  {label && <span class="stop-label">{label}</span>}
+  {time && <span class="stop-time">{time}</span>}
+</header>
+
+<style>
+  .stop-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-bottom: 18px;
+  }
+  .stop-no {
+    font: 500 13px/1 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .stop-no b {
+    font: 400 italic 30px/1 var(--font-serif);
+    letter-spacing: 0;
+    color: var(--accent);
+    text-transform: none;
+  }
+  .stop-label {
+    font: 500 13px/1 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .stop-time {
+    font: 500 12px/1 var(--font-mono);
+    color: var(--faint);
+    border: 1px solid var(--line);
+    border-radius: 99px;
+    padding: 5px 9px;
+  }
+</style>

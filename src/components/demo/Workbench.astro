@@ -1,0 +1,12 @@
+---
+/**
+ * The workbench mock: a VS Code look-alike with explorer, notebooks, the SQL
+ * assistant and a status bar. The markup is raw HTML (src/markup/workbench.html)
+ * driven by the classic scripts in public/js. It is rendered ONLY on /demo/
+ * (pages/demo.astro), which the home page embeds in an iframe on demand, so
+ * none of its markup or legacy CSS reaches the landing page.
+ */
+import workbenchHtml from "../../markup/workbench.html?raw";
+---
+
+<Fragment set:html={workbenchHtml} />

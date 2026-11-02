@@ -8,30 +8,28 @@ const canonical = "https://nexql.astrx.dev/privacy";
 ---
 
 <LegalLayout {title} {description} {canonical} active="privacy">
-  <main class="legal-main" id="legal-content">
-    <span class="eyebrow">Legal</span>
-    <h1 class="grad-text legal-h1">Privacy Policy</h1>
-    <p class="legal-updated">Last updated: July 19, 2026</p>
-    <p class="legal-intro">
+  <article class="legal">
+    <p class="eyebrow">Legal</p>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: July 19, 2026</p>
+    <p class="lede">
       NexQL is a local-first VS Code extension — most of what you do (connecting to databases, running
-      queries, viewing results) never leaves your machine. This page explains, in full, the data our
-      <strong>website and backend services</strong> (checkout, license activation, optional Cloud Sync,
+      queries, viewing results) never leaves your machine. This page explains, in full, the data our{" "}<strong>website and backend services</strong> (checkout, license activation, optional Cloud Sync,
       optional hosted AI) do collect, and — just as importantly — what they don't.
     </p>
 
-    <div class="legal-prose">
+    <div class="prose">
       <h2>1. What stays on your machine</h2>
       <p>
         The extension core runs entirely inside your VS Code instance. Database connection credentials
-        (hosts, usernames, passwords) are encrypted and stored locally using VS Code's built-in
-        <strong>Secret Storage</strong> (OS keychain) — they are never sent to NexQL servers, even if
+        (hosts, usernames, passwords) are encrypted and stored locally using VS Code's built-in{" "}<strong>Secret Storage</strong> (OS keychain) — they are never sent to NexQL servers, even if
         you use paid features. Query results and table data you view in NexQL never pass through our
         backend at all; they go directly between your machine and your database.
       </p>
 
       <h2>2. Data we collect, and why</h2>
-      <div class="legal-table-wrap">
-        <table class="legal-table">
+      <div class="table-wrap">
+        <table>
           <thead>
             <tr>
               <th>Data</th>
@@ -98,8 +96,7 @@ const canonical = "https://nexql.astrx.dev/privacy";
           <strong
             ><a href="https://razorpay.com/" target="_blank" rel="noopener noreferrer">Razorpay</a
             ></strong
-          > — payment processing for Sponsor/Singularity subscriptions. See their
-          <a href="https://razorpay.com/privacy/" target="_blank" rel="noopener noreferrer"
+          > — payment processing for Sponsor/Singularity subscriptions. See their{" "}<a href="https://razorpay.com/privacy/" target="_blank" rel="noopener noreferrer"
             >privacy policy</a
           >.
         </li>
@@ -138,12 +135,10 @@ const canonical = "https://nexql.astrx.dev/privacy";
         <li>Cloud Sync is entirely opt-in — the extension works fully without it.</li>
         <li>You can revoke a linked device from your account at any time.</li>
         <li
-          >You can cancel your subscription anytime; see the
-          <a href="/terms">Terms of Service</a>.</li
+          >You can cancel your subscription anytime; see the{" "}<a href="/terms">Terms of Service</a>.</li
         >
         <li>
-          To request deletion or an export of the data we hold about you, email
-          <a href="mailto:support@astrx.dev">support@astrx.dev</a> from the address on your account.
+          To request deletion or an export of the data we hold about you, email{" "}<a href="mailto:support@astrx.dev">support@astrx.dev</a> from the address on your account.
           We'll respond and act on verified requests.
         </li>
       </ul>
@@ -157,8 +152,7 @@ const canonical = "https://nexql.astrx.dev/privacy";
       <h2>8. Changes to this policy</h2>
       <p>
         If we change what we collect or how we use it, we'll update the "Last updated" date above and,
-        for material changes, note it in the
-        <a
+        for material changes, note it in the{" "}<a
           href="https://github.com/dev-asterix/NexQL/blob/main/CHANGELOG.md"
           target="_blank"
           rel="noopener noreferrer">changelog</a
@@ -167,13 +161,35 @@ const canonical = "https://nexql.astrx.dev/privacy";
 
       <h2>9. Contact</h2>
       <p>
-        Questions, data requests, or concerns:
-        <a href="mailto:support@astrx.dev">support@astrx.dev</a>.
+        Questions, data requests, or concerns:{" "}<a href="mailto:support@astrx.dev">support@astrx.dev</a>.
       </p>
     </div>
 
-    <p class="legal-footer-note">
+    <p class="note">
       See also our <a href="/terms">Terms of Service</a>. · <a href="/">Back to NexQL</a>
     </p>
-  </main>
+  </article>
 </LegalLayout>
+
+<style>
+  .updated {
+    margin-top: 10px;
+    font: 500 13px/1.4 var(--font-mono);
+    color: var(--muted);
+  }
+  .prose {
+    margin-top: 28px;
+  }
+  .prose :global(h2:first-child) {
+    margin-top: 0;
+    border-top: 0;
+    padding-top: 0;
+  }
+  .note {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+</style>

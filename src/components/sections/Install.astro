@@ -1,0 +1,93 @@
+---
+/** #install. Final call to action: Marketplace button, copyable install command, Open VSX and themes links. */
+import Code from "../ui/Code.astro";
+import { MARKETPLACE_URL, OPENVSX_URL, THEMES_URL, INSTALL_CMD } from "../../data/site";
+
+const command = `<span class="c"># VS Code: Ctrl+P, then paste</span>\n${INSTALL_CMD}`;
+---
+
+<section class="band wrap" id="install" aria-labelledby="install-title">
+  <div class="cta">
+    <span class="ribbon" aria-hidden="true"></span>
+    <h2 id="install-title">Your database is one <span class="serif-em grad-text">keystroke</span> away.</h2>
+    <p class="lede">Install, add a connection, open a notebook. That is the whole setup.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer">
+        Install from Marketplace
+      </a>
+    </div>
+    <div class="cmd">
+      <Code html={command} label="Copy the install command" />
+    </div>
+    <p class="more">
+      Also on <a href={OPENVSX_URL} target="_blank" rel="noopener noreferrer">Open VSX</a>. Pair it with
+      <a href={THEMES_URL} target="_blank" rel="noopener noreferrer">NexQL themes</a>.
+    </p>
+  </div>
+</section>
+
+<style>
+  .band {
+    padding-block: 56px 80px;
+  }
+  @media (min-width: 720px) {
+    .band {
+      padding-block: 80px 112px;
+    }
+  }
+  .cta {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 18px;
+    padding: 44px 18px 36px;
+    text-align: center;
+    border: 1px solid var(--edge);
+    border-radius: 20px;
+    background: var(--nex-grad-soft), var(--panel);
+    box-shadow: var(--shadow-3);
+    overflow: hidden;
+  }
+  @media (min-width: 720px) {
+    .cta {
+      padding: 64px 40px 52px;
+    }
+  }
+  .cta > .ribbon {
+    position: absolute;
+    inset: 0 0 auto 0;
+    border-radius: 0;
+  }
+  h2 {
+    font-size: clamp(30px, 4.6vw, 52px);
+    font-weight: 700;
+    max-width: 16em;
+  }
+  h2 .serif-em {
+    font-size: 1.1em;
+    padding-right: 0.06em;
+  }
+  .lede {
+    color: var(--muted);
+    font-size: 17.5px;
+    max-width: 34em;
+  }
+  .cmd {
+    width: 100%;
+    max-width: 30rem;
+    text-align: left;
+  }
+  .more {
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+  .more a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .more a:hover {
+    color: var(--accent-hover);
+  }
+</style>

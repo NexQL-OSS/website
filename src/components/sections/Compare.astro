@@ -1,0 +1,226 @@
+---
+/**
+ * #compare. NexQL vs pgAdmin, DBeaver and TablePlus (COMPARE in landing-content.ts).
+ * Two renderings of the same rows: a real table from 760px up, and one card
+ * per capability below that, so nothing scrolls sideways on a phone. The
+ * unused one is display:none, so assistive tech reads only one of them.
+ */
+import SectionHead from "../ui/SectionHead.astro";
+import { COMPARE } from "../../data/landing-content";
+
+const others = [
+  { key: "a", name: "pgAdmin" },
+  { key: "b", name: "DBeaver" },
+  { key: "c", name: "TablePlus" },
+] as const;
+const isNo = (v: string) => v === "—";
+---
+
+<section class="band wrap" id="compare" aria-labelledby="compare-title">
+  <SectionHead eyebrow="Compare" id="compare-title">
+    You already have the window <span class="serif-em">open</span>.
+    <Fragment slot="lede">How NexQL in VS Code stacks up against the desktop clients you may be using today.</Fragment>
+  </SectionHead>
+
+  <div class="table-wrap">
+    <table>
+      <caption class="sr">NexQL compared with pgAdmin, DBeaver and TablePlus</caption>
+      <thead>
+        <tr>
+          <th scope="col">Capability</th>
+          <th scope="col" class="us">NexQL</th>
+          {others.map((o) => <th scope="col">{o.name}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {
+          COMPARE.map((r) => (
+            <tr>
+              <th scope="row">{r.k}</th>
+              <td class="us">{r.nexql}</td>
+              {others.map((o) => (
+                <td class:list={{ no: isNo(r[o.key]) }}>
+                  {isNo(r[o.key]) ? (
+                    <>
+                      <span aria-hidden="true">—</span>
+                      <span class="sr">No</span>
+                    </>
+                  ) : (
+                    r[o.key]
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <ul class="cards">
+    {
+      COMPARE.map((r) => (
+        <li class="card">
+          <h3>{r.k}</h3>
+          <dl>
+            <div class="us">
+              <dt>NexQL</dt>
+              <dd>{r.nexql}</dd>
+            </div>
+            {others.map((o) => (
+              <div class:list={{ no: isNo(r[o.key]) }}>
+                <dt>{o.name}</dt>
+                <dd>
+                  {isNo(r[o.key]) ? (
+                    <>
+                      <span aria-hidden="true">—</span>
+                      <span class="sr">No</span>
+                    </>
+                  ) : (
+                    r[o.key]
+                  )}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .band {
+    padding-block: 56px;
+  }
+  @media (min-width: 720px) {
+    .band {
+      padding-block: 80px;
+    }
+  }
+  .sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Table, wide screens */
+  .table-wrap {
+    display: none;
+    margin-top: 32px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+    overflow: hidden;
+  }
+  @media (min-width: 760px) {
+    .table-wrap {
+      display: block;
+    }
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14.5px;
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  thead th {
+    font: 500 12px/1.3 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--faint);
+    background: color-mix(in srgb, var(--panel) 70%, transparent);
+  }
+  tbody th {
+    font-weight: 500;
+    color: var(--fg);
+  }
+  tbody tr:last-child th,
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  td {
+    color: var(--muted);
+  }
+  .us {
+    color: var(--fg);
+    background: color-mix(in srgb, var(--accent) 9%, transparent);
+  }
+  thead th.us {
+    color: var(--accent);
+  }
+  td.us {
+    font-weight: 500;
+  }
+  td.no,
+  .no dd {
+    color: var(--faint);
+  }
+
+  /* Cards, phones */
+  .cards {
+    list-style: none;
+    margin: 28px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+  .card {
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+  }
+  .card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  @media (min-width: 760px) {
+    .cards {
+      display: none;
+    }
+  }
+  dl {
+    margin: 0;
+    display: grid;
+    gap: 2px;
+  }
+  dl > div {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 10px;
+    padding: 6px 8px;
+    margin-inline: -8px;
+    border-radius: 8px;
+    font-size: 14.5px;
+  }
+  dt {
+    font: 500 12px/1.9 var(--font-mono);
+    letter-spacing: 0.04em;
+    color: var(--faint);
+  }
+  dd {
+    margin: 0;
+    color: var(--muted);
+    min-width: 0;
+  }
+  dl > .us dt {
+    color: var(--accent);
+  }
+  dl > .us dd {
+    color: var(--fg);
+    font-weight: 500;
+  }
+</style>

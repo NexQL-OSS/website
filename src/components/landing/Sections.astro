@@ -1,0 +1,27 @@
+---
+/**
+ * Lower half of the home page, in order. Each section lives in
+ * src/components/sections/ and owns its own styles. Ids that the header,
+ * footer and hero link to:
+ *   #mcp  #platforms  #compare  #pricing  #changelog  #faq  #install
+ *
+ * Pricing hooks that public/js/pricing.js and checkout.js bind to are listed
+ * at the top of sections/Pricing.astro. The scripts themselves are loaded by
+ * landing/PageScripts.astro (already on the page).
+ */
+import Mcp from "../sections/Mcp.astro";
+import Platforms from "../sections/Platforms.astro";
+import Compare from "../sections/Compare.astro";
+import Pricing from "../sections/Pricing.astro";
+import Changelog from "../sections/Changelog.astro";
+import Faq from "../sections/Faq.astro";
+import Install from "../sections/Install.astro";
+---
+
+<Mcp />
+<Platforms />
+<Compare />
+<Pricing />
+<Changelog />
+<Faq />
+<Install />

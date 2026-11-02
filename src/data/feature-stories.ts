@@ -1,16 +1,17 @@
 /**
- * Feature story content — one interactive walkthrough per capability.
- * Used by /features/* pages and the homepage workspace map.
+ * Feature pages: one entry per capability. Drives /features (hub cards),
+ * /features/<slug> (page body) and the docs sidebar (DocsLayout).
+ *
+ * Copy rules: plain, specific, sentence case. Wrap the one serif word of a
+ * title in asterisks: "Know which *database* you're on".
  */
 
 export type FeatureTier = "free" | "sponsor" | "singularity";
-export type SpineBeat = "connect" | "explore" | "query" | "analyze";
-
-export type FeatureStepVisual =
+export type FeatureGroupId = "connect" | "explore" | "query" | "analyze";
+export type FeatureMock =
   | "connect"
   | "tree"
   | "notebook"
-  | "sql"
   | "ai"
   | "safety"
   | "schema"
@@ -20,388 +21,345 @@ export type FeatureStepVisual =
 export interface FeatureStep {
   title: string;
   body: string;
-  visual: FeatureStepVisual;
-  /** Optional SQL or chat snippet shown in the demo panel */
+  /** Optional SQL or chat prompt shown under the step. */
   snippet?: string;
 }
 
 export interface FeatureStory {
   slug: string;
-  spineBeat: SpineBeat;
-  spineN: string;
-  path: string;
-  label: string;
-  kicker: string;
+  group: FeatureGroupId;
+  /** Short name used in nav, cards and related links. */
+  name: string;
+  /** Page title with the serif word in *asterisks*. */
   title: string;
-  titleEm?: string;
+  /** One sentence for hub cards. */
+  summary: string;
+  /** Opening paragraph of the page; also its meta description. */
   lede: string;
   tier: FeatureTier;
   tierLabel: string;
-  caps: string[];
-  /** Short monogram for hub cards */
-  mark: string;
-  /** Accent for hub / story chrome */
-  ink: string;
-  tint: string;
+  /** Key facts, shown as a compact list. */
+  facts: string[];
   steps: FeatureStep[];
-  tryDemo: { file: string; panel?: string };
+  /** Figure: a recorded GIF from /assets when one matches, otherwise a drawn mock. */
+  figure: {
+    mock: FeatureMock;
+    gif?: { src: string; alt: string; width: number; height: number };
+    caption: string;
+  };
   related: string[];
 }
 
-export const SPINE_BEATS: { id: SpineBeat | "all"; n: string; label: string; body: string }[] = [
-  { id: "all", n: "00", label: "All", body: "Eight workflows in one editor." },
-  { id: "connect", n: "01", label: "Connect", body: "Know which DB you're on." },
-  { id: "explore", n: "02", label: "Explore", body: "One tree for the schema." },
-  { id: "query", n: "03", label: "Query", body: "Notebooks + schema-aware AI." },
-  { id: "analyze", n: "04", label: "Analyze", body: "Plans, metrics, fixes." },
+export const GROUPS: { id: FeatureGroupId; label: string; blurb: string }[] = [
+  { id: "connect", label: "Connect", blurb: "Know where you are and keep it in sync." },
+  { id: "explore", label: "Explore", blurb: "See and change the schema." },
+  { id: "query", label: "Query", blurb: "Write SQL, or ask for it." },
+  { id: "analyze", label: "Analyze", blurb: "Plans, metrics and fixes." },
 ];
 
 export const FEATURES: FeatureStory[] = [
   {
     slug: "notebooks",
-    spineBeat: "query",
-    spineN: "03",
-    path: "workspace / notebooks",
-    label: "query.pgsql",
-    kicker: "SQL notebooks",
-    title: "Notebooks that commit",
-    titleEm: "like source.",
-    lede:
-      ".pgsql files mix SQL cells and markdown in one editor tab. Run one cell or the whole notebook — results, charts, and export land inline. Git-tracked by default.",
+    group: "query",
+    name: "SQL notebooks",
+    title: "SQL notebooks that commit like *source*",
+    summary: "Mix SQL cells and markdown in a .pgsql file, run them, and keep the file in git.",
+    lede: "A .pgsql file holds SQL cells and markdown in one editor tab. Run one cell or the whole notebook, and results, charts and exports appear inline. The file is plain text, so it commits like any other source file.",
     tier: "free",
-    tierLabel: "Free · Core",
-    caps: ["Write & run", "Inline results", "Export", "Query history"],
-    mark: "NB",
-    ink: "#7aa3f5",
-    tint: "rgba(61,111,224,.16)",
+    tierLabel: "Free",
+    facts: ["Write and run cells", "Inline results and charts", "CSV, JSON and Excel export", "Query history and saved queries"],
     steps: [
       {
         title: "Create a notebook bound to a connection",
-        body: "New Notebook → pick connection and database. The file lives in your repo as query.pgsql — not a separate client export.",
-        visual: "notebook",
+        body: "Choose New Notebook, then pick a connection and database. The file lives in your repo as query.pgsql.",
       },
       {
-        title: "Write SQL cells with schema-aware completions",
-        body: "IntelliSense knows your live catalog: tables, columns, functions. Ctrl+Enter runs the active cell through the notebook kernel.",
-        visual: "sql",
-        snippet:
-          "SELECT date_trunc('day', created_at) AS day,\n       COUNT(*) AS orders\nFROM orders\nGROUP BY day;",
+        title: "Write SQL with schema-aware completions",
+        body: "Completions come from your live catalog: tables, columns and functions. Ctrl+Enter runs the active cell.",
+        snippet: "SELECT date_trunc('day', created_at) AS day,\n       COUNT(*) AS orders\nFROM orders\nGROUP BY day;",
       },
       {
-        title: "Results render below the cell — sort, filter, edit",
-        body: "Sortable grids, column stats, in-grid edits with explicit commit SQL. Streaming fetch for large result sets.",
-        visual: "notebook",
+        title: "Read results below the cell",
+        body: "Results show in a sortable grid with column stats. You can edit cells in the grid and commit with explicit SQL. Large results stream in.",
       },
       {
-        title: "Export or save to library",
-        body: "CSV, JSON, Excel from the result footer. Save Query pushes to the Saved Queries sidebar with connection context.",
-        visual: "notebook",
+        title: "Export or save the query",
+        body: "Export CSV, JSON or Excel from the result footer. Save Query adds it to the Saved Queries sidebar with its connection.",
       },
     ],
-    tryDemo: { file: "query", panel: "nexql" },
+    figure: {
+      mock: "notebook",
+      gif: {
+        src: "/assets/04-ai-copilot.gif",
+        alt: "A .pgsql notebook in VS Code showing query results in a grid, with the SQL Assistant open beside it",
+        width: 960,
+        height: 540,
+      },
+      caption: "A notebook with results in a grid, and the SQL Assistant beside it.",
+    },
     related: ["explorer", "assistant", "plan-studio"],
   },
   {
     slug: "explorer",
-    spineBeat: "explore",
-    spineN: "02",
-    path: "workspace / explorer",
-    label: "demo_db · public",
-    kicker: "Database explorer",
-    title: "One tree for the",
-    titleEm: "whole schema.",
-    lede:
-      "Connections → databases → schemas → 16+ object types. Right-click generates correct SQL. Drag tables into notebooks or the SQL Assistant as @mentions.",
+    group: "explore",
+    name: "Database explorer",
+    title: "One tree for the whole *schema*",
+    summary: "Browse connections, databases, schemas and 16+ object types without leaving VS Code.",
+    lede: "Connections, databases, schemas, then more than 16 object types in one tree. Right-click to generate SQL with the real object names. Drag a table into a notebook or the SQL Assistant to mention it.",
     tier: "free",
-    tierLabel: "Free · Core",
-    caps: ["16+ objects", "Column insights", "Schema search", "Generated SQL"],
-    mark: "EX",
-    ink: "#4ade80",
-    tint: "rgba(34,197,94,.14)",
+    tierLabel: "Free",
+    facts: ["16+ object types", "Column insights", "Schema search", "Generated SQL from the context menu"],
     steps: [
       {
-        title: "Connect with platform presets",
-        body: "Neon, Supabase, RDS, AlloyDB — SSL and port pre-filled. SSH tunnel in Advanced when the DB is behind a bastion.",
-        visual: "connect",
+        title: "Connect with a platform preset",
+        body: "Presets for Neon, Supabase, RDS and AlloyDB fill in SSL and port. Use an SSH tunnel under Advanced when the database sits behind a bastion.",
       },
       {
-        title: "Browse the live object tree",
-        body: "Tables, views, mat views, functions, triggers, partitions, FDWs, publications, extensions — expand without leaving VS Code.",
-        visual: "tree",
+        title: "Browse the object tree",
+        body: "Tables, views, materialized views, functions, triggers, partitions, foreign data wrappers, publications and extensions all expand in place.",
       },
       {
-        title: "Inspect columns on demand",
-        body: "Click a column for null %, distinct count, min/max. Constraints and indexes sit beside the column list.",
-        visual: "tree",
+        title: "Inspect a column",
+        body: "Click a column to see null percentage, distinct count, and min and max. Constraints and indexes sit beside the column list.",
       },
       {
-        title: "Generate scripts or open operations notebooks",
-        body: "SELECT / INSERT / ALTER from context menu with real object names. Table Profile and Index Usage open as guided notebooks.",
-        visual: "sql",
+        title: "Generate scripts or open an operations notebook",
+        body: "SELECT, INSERT and ALTER scripts come from the context menu. Table Profile and Index Usage open as guided notebooks.",
         snippet: "SELECT * FROM orders\nWHERE created_at >= NOW() - INTERVAL '7 days';",
       },
     ],
-    tryDemo: { file: "query", panel: "nexql" },
+    figure: {
+      mock: "tree",
+      gif: {
+        src: "/assets/03-explorer.gif",
+        alt: "The NexQL explorer tree expanding schemas, tables and columns in VS Code",
+        width: 900,
+        height: 506,
+      },
+      caption: "Expanding the tree from a connection down to its columns.",
+    },
     related: ["notebooks", "schema-tools", "sentinel"],
   },
   {
     slug: "assistant",
-    spineBeat: "query",
-    spineN: "03",
-    path: "workspace / sql assistant",
-    label: "Ask with schema context",
-    kicker: "Schema-aware AI",
-    title: "Zero-config AI.",
-    titleEm: "No API keys.",
-    lede:
-      "NexQL Free AI (Smart / Engineer / Architect) ships by default. Or bring OpenAI, Anthropic, Gemini, GitHub Models, VS Code LM. AI never auto-runs — you insert SQL into a notebook cell and Run.",
+    group: "query",
+    name: "SQL assistant",
+    title: "AI that reads your *schema*",
+    summary: "Ask in plain English. The assistant grounds on your live schema and never runs SQL for you.",
+    lede: "NexQL Free AI (Smart, Engineer and Architect modes) works with no API key. You can also bring OpenAI, Anthropic, Gemini, GitHub Models or the VS Code language model. AI never auto-runs: you insert the SQL into a notebook cell and press Run.",
     tier: "sponsor",
-    tierLabel: "Pro · Free AI included",
-    caps: ["Text → SQL", "Explain", "Optimize", "Agentic tools"],
-    mark: "AI",
-    ink: "#f06ab0",
-    tint: "rgba(224,56,143,.16)",
+    tierLabel: "Pro, free AI included",
+    facts: ["Text to SQL, explain and optimize", "Agentic mode with read-only tools", "No API key needed for Free AI", "Bring your own provider"],
     steps: [
       {
-        title: "Open SQL Assistant beside your code",
-        body: "Activity bar panel or editor tab. @mention tables from the explorer drag-and-drop or picker.",
-        visual: "ai",
+        title: "Open the SQL Assistant beside your code",
+        body: "Use the activity bar panel or an editor tab. @mention tables by dragging from the explorer or using the picker.",
       },
       {
-        title: "Ask in plain English with live schema",
-        body: "The assistant grounds on your connected database — not invented table names.",
-        visual: "ai",
-        snippet:
-          "Top 10 customers by revenue last 30 days,\nexclude cancelled orders",
+        title: "Ask in plain English",
+        body: "The assistant grounds on your connected database, so it uses tables that exist.",
+        snippet: "Top 10 customers by revenue last 30 days,\nexclude cancelled orders",
       },
       {
-        title: "Review SQL, then insert into notebook",
-        body: "Generated SQL lands in a new cell. You control execution — production safety by design.",
-        visual: "sql",
+        title: "Review the SQL, then insert it into a notebook",
+        body: "Generated SQL lands in a new cell. You decide whether to run it.",
         snippet:
           "SELECT c.name, SUM(o.amount) AS revenue\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nWHERE o.status <> 'cancelled'\nGROUP BY c.name\nORDER BY revenue DESC LIMIT 10;",
       },
       {
-        title: "Explain, optimize, or debug from results",
-        body: "CodeLens on notebook cells: Ask AI, Explain Analyze, Optimize. Agentic mode can search schema and run read-only tools.",
-        visual: "ai",
+        title: "Explain, optimize or debug from a result",
+        body: "CodeLens on notebook cells offers Ask AI, Explain Analyze and Optimize. In agentic mode the assistant can search the schema and run read-only tools.",
       },
     ],
-    tryDemo: { file: "query", panel: "nexql" },
+    figure: {
+      mock: "ai",
+      gif: {
+        src: "/assets/04-ai-assist.gif",
+        alt: "The SQL Assistant panel under the NexQL explorer tree in VS Code, with a chat box for questions",
+        width: 900,
+        height: 506,
+      },
+      caption: "The SQL Assistant panel under the explorer tree.",
+    },
     related: ["notebooks", "plan-studio", "explorer"],
   },
   {
     slug: "sentinel",
-    spineBeat: "connect",
-    spineN: "01",
-    path: "workspace / sentinel",
-    label: "DEV / STAGE / PROD",
-    kicker: "Sentinel safety",
-    title: "Know which database",
-    titleEm: "you're on.",
-    lede:
-      "Environment tags, read-only mode, and query risk scoring before execution. Optional theme swap per environment pairs with NexQL Themes.",
+    group: "connect",
+    name: "Sentinel safety",
+    title: "Know which *database* you're on",
+    summary: "Environment tags, read-only mode and a risk score before destructive SQL runs.",
+    lede: "Tag connections DEV, STAGE or PROD, make sensitive ones read-only, and get a risk score before a destructive statement runs. Each environment can also switch the editor theme, using NexQL Themes.",
     tier: "free",
-    tierLabel: "Free · Core",
-    caps: ["Env labels", "Risk scoring", "Read-only", "Theme swap"],
-    mark: "SG",
-    ink: "#f58a5c",
-    tint: "rgba(242,107,58,.16)",
+    tierLabel: "Free",
+    facts: ["Environment labels", "Query risk scoring", "Read-only connections", "Optional theme swap per environment"],
     steps: [
       {
-        title: "Tag connections DEV / STAGE / PROD",
-        body: "Set in Settings Hub. Labels propagate to status bar, notebook strip, and tab accents when a .pgsql file is focused.",
-        visual: "safety",
+        title: "Tag connections DEV, STAGE or PROD",
+        body: "Set the tag in Settings Hub. The label shows in the status bar, the notebook strip and the tab accents when a .pgsql file is focused.",
       },
       {
-        title: "Enable read-only on sensitive connections",
-        body: "Extension-level block on writes. Auto-LIMIT still applies to SELECTs.",
-        visual: "safety",
+        title: "Turn on read-only for sensitive connections",
+        body: "The extension blocks writes on that connection. Auto-LIMIT still applies to SELECTs.",
       },
       {
-        title: "Risk score before destructive SQL runs",
-        body: "DELETE without WHERE, TRUNCATE, DROP — scored modal with Execute / Transaction / Cancel.",
-        visual: "safety",
+        title: "Check the risk score before destructive SQL",
+        body: "DELETE without WHERE, TRUNCATE and DROP open a scored dialog with Execute, Transaction and Cancel.",
         snippet: "DELETE FROM orders WHERE status = 'pending';",
       },
       {
         title: "Switch profiles for role context",
-        body: "Admin vs analyst presets from the status bar — env + read-only in one click.",
-        visual: "connect",
+        body: "Admin and analyst presets are in the status bar. One click changes the environment and read-only together.",
       },
     ],
-    tryDemo: { file: "connections", panel: "nexql" },
+    figure: {
+      mock: "safety",
+      caption: "Environment tags and a risk score on a DELETE statement.",
+    },
     related: ["explorer", "notebooks"],
   },
   {
     slug: "schema-tools",
-    spineBeat: "explore",
-    spineN: "02",
-    path: "workspace / visual tools",
-    label: "schema.diff · erd",
-    kicker: "Visual schema tools",
-    title: "Design, diff, and map",
-    titleEm: "without hand DDL.",
-    lede:
-      "Table designer, schema diff with migration SQL, auto ERD from foreign keys, CSV/JSON import wizard, and DBML import — all as editor webviews.",
+    group: "explore",
+    name: "Visual schema tools",
+    title: "Design, diff and map your *schema*",
+    summary: "Table designer, schema diff, ERD and an import wizard, all as editor tabs.",
+    lede: "A table designer, schema diff with migration SQL, an ERD built from foreign keys, a CSV and JSON import wizard, and DBML import. Each opens as a webview in the editor.",
     tier: "sponsor",
-    tierLabel: "Pro · Sponsor",
-    caps: ["Table designer", "Schema diff", "ERD", "Import wizard"],
-    mark: "ER",
-    ink: "#a78bfa",
-    tint: "rgba(167,139,250,.16)",
+    tierLabel: "Pro, Sponsor",
+    facts: ["Table designer", "Schema diff with migration SQL", "ERD export to SVG, PNG, Mermaid and DBML", "CSV and JSON import wizard"],
     steps: [
       {
         title: "Create or alter tables visually",
-        body: "Form-based columns, PK/FK/check constraints — NexQL generates correct DDL preview before you apply.",
-        visual: "schema",
+        body: "Fill in columns and PK, FK and check constraints in a form. NexQL previews the DDL before you apply it.",
       },
       {
         title: "Compare two schemas",
-        body: "Pick source and target connections. Review diff tree, copy migration script to a notebook.",
-        visual: "schema",
+        body: "Pick a source and a target connection, review the diff tree, and copy the migration script into a notebook.",
       },
       {
-        title: "Generate ERD from live FK graph",
-        body: "Pan/zoom entity map. Export SVG, PNG, Mermaid, or DBML for docs.",
-        visual: "schema",
+        title: "Generate an ERD from foreign keys",
+        body: "Pan and zoom the entity map. Export SVG, PNG, Mermaid or DBML for your docs.",
       },
       {
-        title: "Import CSV/JSON with column mapping",
-        body: "Guided type inference and preview before bulk load.",
-        visual: "schema",
+        title: "Import CSV or JSON with column mapping",
+        body: "The wizard infers types and shows a preview before the bulk load.",
       },
     ],
-    tryDemo: { file: "doc-schema", panel: "nexql" },
+    figure: {
+      mock: "schema",
+      caption: "Two tables linked by a foreign key, as the ERD shows them.",
+    },
     related: ["explorer", "notebooks"],
   },
   {
     slug: "plan-studio",
-    spineBeat: "analyze",
-    spineN: "04",
-    path: "workspace / performance",
-    label: "EXPLAIN · plans",
-    kicker: "Plan Studio",
-    title: "From slow query to",
-    titleEm: "concrete fix.",
-    lede:
-      "EXPLAIN ANALYZE in a notebook cell opens interactive plan trees, flame graphs, and diff between runs. Index recommendations tie back to your schema.",
+    group: "analyze",
+    name: "Plan Studio",
+    title: "From slow query to concrete *fix*",
+    summary: "Read EXPLAIN ANALYZE as a tree and flame graph, compare runs, and get index suggestions.",
+    lede: "Run EXPLAIN ANALYZE in a notebook cell to open an interactive plan tree, a flame graph, and a diff between runs. Index recommendations are based on your schema.",
     tier: "sponsor",
-    tierLabel: "Pro · Sponsor",
-    caps: ["Visual EXPLAIN", "Plan diff", "Flame graph", "Index hints"],
-    mark: "PL",
-    ink: "#f5b23a",
-    tint: "rgba(245,178,58,.16)",
+    tierLabel: "Pro, Sponsor",
+    facts: ["Visual EXPLAIN", "Plan diff between runs", "Flame graph", "Index suggestions", "Charts and an Analyst tab on result sets"],
     steps: [
       {
         title: "Run EXPLAIN from a notebook cell",
-        body: "CodeLens Explain Analyze appends a plan cell. Text plan for quick scan; Visual tab for structure.",
-        visual: "explain",
+        body: "The Explain Analyze CodeLens appends a plan cell. Read the text plan for a quick scan, or the Visual tab for structure.",
         snippet: "EXPLAIN (ANALYZE, BUFFERS)\nSELECT * FROM orders\nWHERE created_at >= NOW() - INTERVAL '30 days';",
       },
       {
         title: "Open Plan Studio on the result",
-        body: "Tree + flame graph highlight sequential scans and nested loops. Compare two runs side by side.",
-        visual: "explain",
+        body: "The tree and flame graph highlight sequential scans and nested loops. Compare two runs side by side.",
       },
       {
         title: "Ask AI to optimize with schema context",
-        body: "Optimize CodeLens or assistant suggests CREATE INDEX CONCURRENTLY with expected impact.",
-        visual: "ai",
-        snippet:
-          "CREATE INDEX CONCURRENTLY idx_orders_created_at\n  ON orders (created_at DESC);",
+        body: "The Optimize CodeLens or the assistant suggests an index, with the expected impact.",
+        snippet: "CREATE INDEX CONCURRENTLY idx_orders_created_at\n  ON orders (created_at DESC);",
       },
       {
-        title: "Charts and analyst on result sets",
-        body: "Bar/line/pie from query output. Pivot and histogram in the Analyst tab — optional Send to Assistant.",
-        visual: "explain",
+        title: "Chart a result set",
+        body: "Draw bar, line or pie charts from query output. The Analyst tab adds pivot and histogram, with an optional Send to Assistant.",
       },
     ],
-    tryDemo: { file: "query", panel: "nexql" },
+    figure: {
+      mock: "explain",
+      caption: "A plan with a sequential scan, and the same query after adding an index.",
+    },
     related: ["notebooks", "assistant", "dashboard"],
   },
   {
     slug: "dashboard",
-    spineBeat: "analyze",
-    spineN: "04",
-    path: "workspace / performance",
-    label: "live metrics",
-    kicker: "Live dashboard",
-    title: "Ops metrics",
-    titleEm: "without leaving VS Code.",
-    lede:
-      "Connections, active queries, locks, cache hit ratio, and top tables — refreshed from pg_stat* views. Optional AI health chat grounded on live metrics.",
+    group: "analyze",
+    name: "Live dashboard",
+    title: "Ops metrics without leaving your *editor*",
+    summary: "Connections, locks, cache hit ratio and top tables, read from pg_stat views.",
+    lede: "Connections, active queries, locks, cache hit ratio and top tables, refreshed from the pg_stat views. An optional AI health chat answers from the live metrics.",
     tier: "sponsor",
-    tierLabel: "Pro · Sponsor",
-    caps: ["Connections", "Locks", "Top queries", "AI health chat"],
-    mark: "DB",
-    ink: "#38bdf8",
-    tint: "rgba(56,189,248,.16)",
+    tierLabel: "Pro, Sponsor",
+    facts: ["Connections and active queries", "Locks and wait events", "Top queries and tables", "AI health chat", "pg_dump and pg_restore backup workspace"],
     steps: [
       {
-        title: "Open dashboard from connection or database",
-        body: "Tree → Show Database Dashboard, or Ctrl+Alt+D from palette.",
-        visual: "dashboard",
+        title: "Open the dashboard from a connection or database",
+        body: "Choose Show Database Dashboard in the tree, or press Ctrl+Alt+D from the palette.",
       },
       {
         title: "Watch throughput and contention",
-        body: "Active sessions, wait events, lock graph — spot blocking chains before they stall deploys.",
-        visual: "dashboard",
+        body: "Active sessions, wait events and the lock graph show blocking chains before they stall a deploy.",
       },
       {
         title: "Drill into slow queries",
-        body: "Jump from dashboard metrics to notebook with pre-filled investigation SQL.",
-        visual: "sql",
+        body: "Jump from a dashboard metric to a notebook with the investigation SQL filled in.",
       },
       {
-        title: "Pair with backup workspace",
-        body: "pg_dump/pg_restore with version checks and filtered table dumps — same connection context.",
-        visual: "dashboard",
+        title: "Back up from the same connection",
+        body: "The backup workspace runs pg_dump and pg_restore with version checks and filtered table dumps.",
       },
     ],
-    tryDemo: { file: "gif-dashboard", panel: "nexql" },
+    figure: {
+      mock: "dashboard",
+      gif: {
+        src: "/assets/05-dashboard.gif",
+        alt: "The NexQL database dashboard showing health, connections and blocking locks in VS Code",
+        width: 960,
+        height: 540,
+      },
+      caption: "The database dashboard: health, load, locks and connections.",
+    },
     related: ["plan-studio", "sentinel"],
   },
   {
     slug: "sync",
-    spineBeat: "connect",
-    spineN: "01",
-    path: "workspace / sync",
-    label: "team profiles",
-    kicker: "Cloud sync",
-    title: "Shared context",
-    titleEm: "for teams.",
-    lede:
-      "E2E-encrypted sync of connections, saved queries, and notebooks. Sponsor: NexQL Cloud auto-sync. Singularity: team workspaces and audit hooks.",
+    group: "connect",
+    name: "Cloud sync",
+    title: "Shared context for *teams*",
+    summary: "End-to-end encrypted sync of connections, saved queries and notebooks.",
+    lede: "End-to-end encrypted sync of connections, saved queries and notebooks. Sponsor adds NexQL Cloud auto-sync. Singularity adds team workspaces and audit hooks.",
     tier: "singularity",
-    tierLabel: "Pro · Singularity",
-    caps: ["Encrypted sync", "Team sharing", "Audit log", "BYO Postgres"],
-    mark: "SY",
-    ink: "#e0388f",
-    tint: "rgba(224,56,143,.14)",
+    tierLabel: "Pro, Singularity",
+    facts: ["Encrypted sync", "Team sharing (Singularity)", "Audit log (Singularity)", "Use NexQL Cloud or your own Postgres"],
     steps: [
       {
-        title: "Run sync setup walkthrough",
-        body: "Activate license → choose NexQL Cloud or self-hosted Postgres backend → first Sync Now.",
-        visual: "connect",
+        title: "Run the sync setup walkthrough",
+        body: "Activate your license, choose NexQL Cloud or a self-hosted Postgres backend, then run Sync Now.",
       },
       {
-        title: "Connections follow you across machines",
-        body: "Secrets stay encrypted — server stores ciphertext only.",
-        visual: "connect",
+        title: "Pick up your connections on another machine",
+        body: "Secrets stay encrypted. The server stores ciphertext only.",
       },
       {
         title: "Share notebooks and saved queries",
-        body: "Singularity: invite team, import shared workspace. Notebooks remain plain files in git.",
-        visual: "notebook",
+        body: "On Singularity, invite your team and import the shared workspace. Notebooks stay plain files in git.",
       },
       {
-        title: "Production audit log",
-        body: "Singularity gate: sensitive actions recorded for compliance review.",
-        visual: "safety",
+        title: "Review the production audit log",
+        body: "On Singularity, sensitive actions are recorded for compliance review.",
       },
     ],
-    tryDemo: { file: "readme", panel: "nexql" },
+    figure: {
+      mock: "connect",
+      caption: "Connections synced across environments.",
+    },
     related: ["sentinel", "notebooks"],
   },
 ];
@@ -414,3 +372,17 @@ export const FEATURE_BY_SLUG = Object.fromEntries(FEATURES.map((f) => [f.slug, f
   string,
   FeatureStory
 >;
+
+/** Features in sidebar order: grouped by GROUPS, original order inside a group. */
+export const FEATURES_ORDERED: FeatureStory[] = GROUPS.flatMap((g) => FEATURES.filter((f) => f.group === g.id));
+
+export const featureHref = (slug: string) => `/features/${slug}/`;
+
+/** Split "Know which *database* you're on" into [before, emphasised, after]. */
+export function titleParts(title: string): [string, string, string] {
+  const m = title.match(/^(.*?)\*(.+?)\*(.*)$/);
+  return m ? [m[1], m[2], m[3]] : [title, "", ""];
+}
+
+/** Plain-text title for <title> and meta tags. */
+export const plainTitle = (title: string) => title.replace(/\*/g, "");

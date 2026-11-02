@@ -1,0 +1,194 @@
+---
+/**
+ * Page shell for the marketing site. Modelled on the NexQL MCP site's layout.
+ *
+ * Props: title, description, canonical (defaults to the current URL),
+ * ogImage, ogTitle/ogDescription (social copy, default to title/description),
+ * noindex (true for utility pages such as the embedded demo).
+ *
+ * Provides: brand tokens + base styles (brand.css), the theme script that
+ * applies System/Dark/Light before first paint (localStorage "nexql-theme"),
+ * fonts, SEO meta, JSON-LD, the skip link and the copy-button handler for
+ * every `.code .copy` (see ui/Code.astro). Pages put their own
+ * <main id="main" tabindex="-1"> inside the default slot.
+ */
+import "../styles/brand.css";
+import { SITE_URL, VERSION, MARKETPLACE_URL, OPENVSX_URL, REPO_URL } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = "NexQL — Postgres, without leaving your editor",
+  description = "Explorer, SQL notebooks, live dashboard, visual designers and a schema-grounded AI assistant — one VS Code extension. MCP server, MIT core, PostgreSQL 12–17.",
+  canonical,
+  ogImage = `${SITE_URL}/assets/NexQL.png`,
+  ogTitle = "NexQL - PostgreSQL VS Code Extension with SQL Notebooks and AI",
+  ogDescription = "Run PostgreSQL workflows in VS Code with notebooks, explorer tree, AI SQL help, schema tools, and query performance insights.",
+  noindex = false,
+} = Astro.props;
+
+const pageUrl = canonical ?? new URL(Astro.url.pathname, SITE_URL).href;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "NexQL",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "Windows, macOS, Linux",
+  description:
+    "PostgreSQL management inside VS Code with SQL notebooks, database explorer, AI assistance, schema design, and performance tools.",
+  url: `${SITE_URL}/`,
+  downloadUrl: MARKETPLACE_URL,
+  softwareVersion: VERSION,
+  keywords: "postgresql vscode extension, sql notebooks, ai sql assistant, schema explorer, query optimization",
+  featureList: [
+    "Interactive .pgsql SQL notebooks",
+    "PostgreSQL database explorer",
+    "AI assistant for SQL generation and optimization",
+    "Visual schema tools and ERD diagrams",
+    "Safety controls for production databases",
+  ],
+  sameAs: [REPO_URL, OPENVSX_URL, MARKETPLACE_URL],
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="postgresql vscode extension, sql notebooks, postgres explorer, ai sql assistant, query optimization, explain analyze, schema designer, erd diagram, dbeaver alternative, pgadmin alternative, github models sql"
+    />
+    <meta
+      name="robots"
+      content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
+    />
+    <link rel="canonical" href={pageUrl} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="NexQL" />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content="NexQL database management logo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/NexQL.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/NexQL.png" />
+    <link rel="apple-touch-icon" href="/assets/NexQL.png" />
+    <meta name="theme-color" content="#07080e" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f4f2f8" media="(prefers-color-scheme: light)" />
+    <meta id="theme-color-force" name="theme-color" content="#07080e" media="not all" />
+    <script is:inline>
+      (function () {
+        var KEY = "nexql-theme";
+        var stored = null;
+        try {
+          stored = localStorage.getItem(KEY);
+        } catch (e) {
+          stored = null;
+        }
+        if (stored !== "light" && stored !== "dark" && stored !== "system") stored = "system";
+        var mq = window.matchMedia("(prefers-color-scheme: light)");
+        function paint(choice) {
+          var root = document.documentElement;
+          root.setAttribute("data-theme-choice", choice);
+          if (choice === "system") root.removeAttribute("data-theme");
+          else root.setAttribute("data-theme", choice);
+          var theme = choice === "system" ? (mq.matches ? "light" : "dark") : choice;
+          var force = document.getElementById("theme-color-force");
+          if (!force) return;
+          if (choice === "system") {
+            force.setAttribute("media", "not all");
+          } else {
+            force.removeAttribute("media");
+            force.setAttribute("content", theme === "light" ? "#f4f2f8" : "#07080e");
+          }
+        }
+        paint(stored);
+        mq.addEventListener("change", function () {
+          if (document.documentElement.getAttribute("data-theme-choice") === "system") paint("system");
+        });
+        window.__nexqlSetTheme = function (choice) {
+          if (choice !== "light" && choice !== "dark" && choice !== "system") return;
+          try {
+            localStorage.setItem(KEY, choice);
+          } catch (e) {
+            /* private mode: the choice lasts for this page only */
+          }
+          paint(choice);
+        };
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <slot />
+  </body>
+</html>
+
+<script>
+  // Copy buttons: `.code .copy` copies the block's text, minus prompt (.p) and comment (.c) spans.
+  async function copyText(text: string, btn: HTMLElement) {
+    try {
+      await navigator.clipboard.writeText(text);
+      btn.dataset.done = "";
+      btn.textContent = "Copied";
+      setTimeout(() => {
+        delete btn.dataset.done;
+        btn.textContent = "Copy";
+      }, 1600);
+    } catch {
+      btn.textContent = "Select and copy";
+    }
+  }
+  document.querySelectorAll<HTMLButtonElement>(".code .copy").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      const pre = btn.parentElement?.querySelector("pre");
+      if (!pre) return;
+      const clone = pre.cloneNode(true) as HTMLElement;
+      clone.querySelectorAll(".p, .c").forEach((n) => n.remove());
+      const text = (clone.textContent ?? "")
+        .split("\n")
+        .map((l) => l.trimEnd())
+        .filter((l) => l.trim() !== "")
+        .join("\n");
+      copyText(text, btn);
+    }),
+  );
+</script>

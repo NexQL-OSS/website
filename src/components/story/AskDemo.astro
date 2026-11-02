@@ -1,0 +1,308 @@
+---
+/**
+ * The scripted SQL playground (id #ask-demo). Nothing here calls a model: the
+ * three PLAYGROUND_QUERIES are canned, typed out by public/js/playground.js,
+ * which is loaded on the page by landing/PageScripts.astro and looks for
+ * the data-nx-* hooks below plus the JSON in #nx-playground-data. If you
+ * rename a hook, rename it in that script too. The script injects rows and
+ * bars with the classes styled under :global() at the bottom.
+ */
+import { PLAYGROUND_QUERIES } from "../../data/story";
+---
+
+<div class="pg" id="ask-demo" data-nx-playground>
+  <div class="prompts">
+    <p class="mono-label">Pick a question</p>
+    {
+      PLAYGROUND_QUERIES.map((q, i) => (
+        <button type="button" class:list={["prompt", i === 0 && "is-active"]} data-nx-prompt={i} aria-pressed={i === 0 ? "true" : "false"}>
+          <span class="p-title"><span class="p-num">0{i + 1}</span>{q.title}</span>
+          <span class="p-ask">“{q.ask}”</span>
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="panel">
+    <div class="hdr">
+      <img src="/assets/NexQL-chat-vsc-icon.png" alt="" width="20" height="20" />
+      <span class="h-title">SQL Assistant</span>
+      <span class="chip">nexql-free · smart</span>
+      <div class="tabs" role="tablist" aria-label="Result view">
+        <button type="button" role="tab" data-nx-tab="table" aria-selected="true" class="is-active">Table</button>
+        <button type="button" role="tab" data-nx-tab="chart" aria-selected="false">Chart</button>
+      </div>
+    </div>
+
+    <div class="chat">
+      <div class="user" data-nx-ask></div>
+      <p class="reply" data-nx-reply></p>
+      <div class="cell">
+        <div class="cell-bar">
+          <span class="run" aria-hidden="true">▶</span>Cell 1 · pgsql
+          <span class="state" data-nx-run-state>writing…</span>
+        </div>
+        <pre class="sql" data-nx-sql aria-live="polite"></pre>
+      </div>
+    </div>
+
+    <div class="results">
+      <div class="meta" data-nx-meta></div>
+      <div data-nx-result="table" class="scroll">
+        <table>
+          <thead><tr data-nx-cols></tr></thead>
+          <tbody data-nx-rows></tbody>
+        </table>
+      </div>
+      <div data-nx-result="chart" hidden>
+        <div class="chart" data-nx-bars></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">
+    <b>Safe by default.</b> Generated SQL lands in a notebook cell. Auto-LIMIT caps runaway SELECTs, and writes against a
+    prod-tagged connection need explicit confirmation.
+  </p>
+
+  <script type="application/json" id="nx-playground-data" set:html={JSON.stringify(PLAYGROUND_QUERIES)} />
+</div>
+
+<style>
+  .pg {
+    margin-top: 28px;
+    display: grid;
+    gap: 16px;
+  }
+  @media (min-width: 860px) {
+    .pg {
+      grid-template-columns: minmax(0, 250px) minmax(0, 1fr);
+      align-items: start;
+    }
+    .note {
+      grid-column: 1 / -1;
+    }
+  }
+  .prompts {
+    display: grid;
+    gap: 8px;
+  }
+  .prompt {
+    text-align: left;
+    display: grid;
+    gap: 4px;
+    padding: 12px 14px;
+    min-height: 44px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--prose);
+    cursor: pointer;
+    font: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .prompt:hover {
+    border-color: var(--line-2);
+  }
+  .prompt.is-active {
+    border-color: var(--accent);
+    box-shadow: var(--selected-shadow);
+    background: var(--surface);
+  }
+  .p-title {
+    font-weight: 600;
+    color: var(--fg);
+    font-size: 15px;
+  }
+  .p-num {
+    font: 500 12px var(--font-mono);
+    color: var(--accent);
+    margin-right: 8px;
+  }
+  .p-ask {
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+
+  .panel {
+    min-width: 0;
+    border-radius: 14px;
+    border: 1px solid;
+    border-color: var(--bevel-border);
+    background: var(--chat-bg);
+    box-shadow: var(--shadow-chat);
+    overflow: hidden;
+  }
+  .hdr {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    padding: 10px 14px;
+    background: var(--chat-top);
+    border-bottom: 1px solid var(--line);
+  }
+  .h-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--fg);
+  }
+  .chip {
+    font: 500 11.5px var(--font-mono);
+    color: var(--muted);
+    border: 1px solid var(--line);
+    border-radius: 99px;
+    padding: 3px 9px;
+  }
+  .tabs {
+    margin-left: auto;
+    display: flex;
+    gap: 4px;
+  }
+  .tabs button {
+    font: 500 13px var(--font-mono);
+    min-height: 32px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .tabs button.is-active {
+    color: var(--fg);
+    border-color: var(--line-2);
+    background: var(--panel-2);
+  }
+  .chat {
+    padding: 14px;
+    display: grid;
+    gap: 10px;
+  }
+  .user {
+    justify-self: end;
+    max-width: 90%;
+    padding: 8px 14px;
+    border-radius: 14px 14px 4px 14px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-size: 14.5px;
+  }
+  .reply {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14.5px;
+    min-height: 3em;
+  }
+  .cell {
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--code-bg);
+    overflow: hidden;
+  }
+  .cell-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    font: 500 12px var(--font-mono);
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+  }
+  .run {
+    color: var(--ok);
+  }
+  .state {
+    margin-left: auto;
+    color: var(--faint);
+  }
+  .sql {
+    margin: 0;
+    padding: 12px 14px;
+    min-height: 10.5em;
+    overflow-x: auto;
+    font: 400 13px/1.55 var(--font-mono);
+    color: var(--prose);
+    white-space: pre;
+  }
+  .results {
+    padding: 0 14px 14px;
+  }
+  .meta {
+    font: 500 12px var(--font-mono);
+    color: var(--ok);
+    margin-bottom: 8px;
+  }
+  .scroll {
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font: 400 13px var(--font-mono);
+  }
+  .results :global(th) {
+    text-align: left;
+    padding: 6px 10px;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--line-2);
+    white-space: nowrap;
+  }
+  .results :global(td) {
+    padding: 6px 10px;
+    color: var(--prose);
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    height: 170px;
+    padding-top: 8px;
+  }
+  .chart :global(.pg-chart-col) {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 4px;
+  }
+  .chart :global(.pg-chart-bar) {
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    background: var(--nex-grad-v);
+    min-height: 2px;
+  }
+  .chart :global(.pg-chart-v) {
+    font: 500 11px var(--font-mono);
+    color: var(--prose);
+  }
+  .chart :global(.pg-chart-l) {
+    font: 500 10.5px var(--font-mono);
+    color: var(--muted);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .note {
+    color: var(--muted);
+    font-size: 14.5px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    margin: 0;
+  }
+  .note b {
+    color: var(--fg);
+  }
+  button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+</style>

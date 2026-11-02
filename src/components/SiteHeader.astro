@@ -1,133 +1,391 @@
 ---
-/** Shared marketing header — matches demo-shell topbar; works on / and /features/*. */
-const { home = "/" } = Astro.props;
-const isHome = home === "/";
+/**
+ * Sticky site header: brand mark, name and version chip, the section nav, the
+ * System/Dark/Light switch (applied by the theme script in BaseLayout) and a
+ * mobile menu. Links use "/#anchor" so the header also works off the home page.
+ * The version comes from data/site.ts.
+ */
+import { VERSION, REPO_URL, THEMES_URL, MARKETPLACE_URL } from "../data/site";
+
+const links = [
+  { href: "/#connect", label: "Tour" },
+  { href: "/#playground", label: "Playground" },
+  { href: "/features", label: "Features" },
+  { href: "/#mcp", label: "MCP" },
+  { href: "/#pricing", label: "Pricing" },
+  { href: THEMES_URL, label: "Themes", external: true },
+  { href: REPO_URL, label: "GitHub", external: true },
+];
 ---
 
-<header class="site-header landing-topbar" role="banner">
-  <div class="release-banner" id="release-banner">
-    <span class="release-banner-copy">
-      <span class="release-banner-full"
-        >NexQL v2.4.0 — <strong>NexQL Bot + smarter MCP setup</strong> — agent-ready database tools.</span
-      >
-      <span class="release-banner-short">v2.4.0 — <strong>NexQL Bot</strong></span>
-      <a
-        href="https://github.com/dev-asterix/NexQL/blob/main/CHANGELOG.md"
-        target="_blank"
-        rel="noopener noreferrer">See what's new →</a
-      >
-    </span>
-    <button class="banner-close-btn" id="btn-close-banner" aria-label="Dismiss banner"
-      >&times;</button
-    >
-  </div>
-  <div class="site-header-inner">
-    <button
-      class="site-header-menu-btn mobile-menu-btn"
-      id="btn-toggle-topbar"
-      type="button"
-      aria-label="Toggle navigation"
-      aria-expanded="false"
-      aria-controls="site-nav"
-      ><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" aria-hidden="true"
-        ><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line
-          x1="3"
-          y1="18"
-          x2="21"
-          y2="18"></line></svg
-      ></button
-    >
-    <a href={home} class="site-logo" aria-label="NexQL — home">
-      <img class="site-logo-img" src="/assets/NexQL.png" alt="" width="34" height="34" />
-      <span class="site-logo-text brand-gradient">NexQL</span>
-      <span class="site-logo-badge">v2.4.0</span>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/" aria-label={`NexQL home, version ${VERSION}`}>
+      <img class="mark" src="/assets/NexQL.png" alt="" width="24" height="24" />
+      <span class="word">NexQL</span>
+      <span class="chip">v{VERSION}</span>
     </a>
-    <nav class="site-nav landing-topbar-nav-collapsible" id="site-nav" aria-label="Site">
-      {
-        isHome ? (
-          <>
-            <a href="#playground">Playground</a>
-            <a href="#features">Features</a>
-            <a href="#mcp">MCP</a>
-            <a href="#compare">Compare</a>
-            <a href="#pricing">Pricing</a>
-            <a href="/features/">Stories</a>
-          </>
-        ) : (
-          <>
-            <a href="/">Home</a>
-            <a href="/features/">Features</a>
-            <a href="/#pricing">Pricing</a>
-            <a href="/#install">Install</a>
-          </>
-        )
-      }
-      <a
-        href="https://nexql-themes.astrx.dev/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="site-nav-external">Themes ↗</a
-      >
-      <a
-        class="site-nav-mobile-only"
-        href="https://github.com/dev-asterix/NexQL"
-        target="_blank"
-        rel="noopener noreferrer">GitHub</a
-      >
-      <a
-        class="site-nav-mobile-only site-nav-install"
-        href="https://marketplace.visualstudio.com/items?itemName=ric-v.postgres-explorer"
-        target="_blank"
-        rel="noopener noreferrer">Install — free</a
-      >
-    </nav>
-    <div class="site-header-actions">
-      <div class="theme-picker" id="theme-picker">
-        <button
-          type="button"
-          class="theme-picker-trigger"
-          id="theme-picker-trigger"
-          aria-haspopup="listbox"
-          aria-expanded="false"
-          aria-controls="theme-picker-menu"
-          aria-label="NexQL color theme"
-        >
-          <span class="theme-picker-dot" id="theme-picker-dot" aria-hidden="true"></span>
-          <span class="theme-picker-label" id="theme-picker-label">Loading…</span>
-          <svg class="theme-picker-chevron" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M6 9l6 6 6-6"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"></path>
-          </svg>
-        </button>
-        <div
-          class="theme-picker-menu"
-          id="theme-picker-menu"
-          role="listbox"
-          aria-label="NexQL themes"
-          hidden
-        >
-        </div>
-      </div>
-      {
-        isHome ? (
-          <button
-            class="topbar-icon-btn play-tour-btn"
-            id="play-tour"
-            type="button"
-            aria-label="Start guided product tour"
-            data-tooltip="Play product tour"
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <polygon points="9,7 18,12 9,17" />
-            </svg>
-          </button>
-        ) : null
-      }
+    <div class="theme-switch" role="radiogroup" aria-label="Color theme">
+      <button type="button" role="radio" data-choice="system" aria-checked="true" aria-label="Match system" title="Match system">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.75" y="2.75" width="12.5" height="8.5" rx="1.5" /><path d="M5.5 13.75h5M8 11.25v2.5" /></svg>
+      </button>
+      <button type="button" role="radio" data-choice="dark" aria-checked="false" tabindex="-1" aria-label="Dark" title="Dark">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.25 9.6A5.5 5.5 0 0 1 6.4 2.75a5.5 5.5 0 1 0 6.85 6.85Z" /></svg>
+      </button>
+      <button type="button" role="radio" data-choice="light" aria-checked="false" tabindex="-1" aria-label="Light" title="Light">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.75" /><path d="M8 1.25v1.5M8 13.25v1.5M1.25 8h1.5M13.25 8h1.5M3.2 3.2l1.06 1.06M11.74 11.74l1.06 1.06M3.2 12.8l1.06-1.06M11.74 4.26l1.06-1.06" /></svg>
+      </button>
     </div>
+    <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav" hidden>
+      <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="menu-label">Menu</span>
+    </button>
+    <nav id="site-nav" aria-label="Main">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            class="nav-link"
+            {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+          >
+            {l.label}
+            {l.external && l.label === "Themes" && <span aria-hidden="true"> ↗</span>}
+          </a>
+        ))
+      }
+      <a class="btn btn-primary install" href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer">Install — free</a>
+    </nav>
   </div>
+  <div class="ribbon"></div>
 </header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    /* Opaque unless blur is actually supported, so scrolled text cannot show through. */
+    background: var(--header-bg-solid);
+    border-bottom: 1px solid var(--line);
+  }
+  @supports (backdrop-filter: blur(1px)) {
+    .site-header {
+      background: var(--header-bg);
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+    }
+    .site-header.is-stuck {
+      background: var(--header-bg-stuck);
+    }
+  }
+  .site-header.is-stuck {
+    box-shadow: var(--header-shadow-stuck);
+  }
+  .ribbon {
+    height: 2px;
+    border-radius: 0;
+    opacity: 0.85;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    height: var(--header-h);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--fg);
+    font-weight: 700;
+    font-size: 17px;
+    text-decoration: none;
+    flex: none;
+  }
+  .mark {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    box-shadow: var(--mark-glow);
+  }
+  .chip {
+    font: 600 11px/1 var(--font-mono);
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    border-radius: 6px;
+    padding: 4px 6px;
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    margin-left: auto;
+    order: 1;
+  }
+  .theme-switch {
+    order: 2;
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+    padding: 3px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--well);
+    box-shadow: var(--well-shadow);
+  }
+  .theme-switch button {
+    appearance: none;
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 28px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s, box-shadow 0.15s;
+  }
+  .theme-switch svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .theme-switch button[aria-checked="true"] {
+    background: var(--btn-primary-bg);
+    color: var(--accent-ink);
+    box-shadow: var(--btn-primary-shadow);
+  }
+  .theme-switch button:hover {
+    color: var(--fg);
+  }
+  .theme-switch button[aria-checked="true"]:hover {
+    color: var(--accent-ink);
+  }
+  .install {
+    min-height: 38px;
+    padding: 6px 14px;
+    margin-left: 6px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  .nav-link {
+    color: var(--muted);
+    font-size: 14.5px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+  .nav-link:hover {
+    color: var(--fg);
+    text-decoration: none;
+    background: var(--hover);
+  }
+  /* The page you're on sits raised, like a pressed-out key. */
+  .nav-link[aria-current="page"] {
+    color: var(--fg);
+    text-decoration: none;
+    background: var(--control-bg);
+    box-shadow: var(--control-shadow);
+  }
+  .menu-btn {
+    display: none;
+    align-items: center;
+    order: 3;
+    gap: 9px;
+    margin-left: 8px;
+    padding: 8px 12px;
+    border: 1px solid;
+    border-color: var(--bevel-border);
+    border-radius: 9px;
+    background: var(--control-bg);
+    color: var(--fg);
+    font: 500 14px/1 var(--font-body);
+    cursor: pointer;
+    box-shadow: var(--control-shadow);
+    transition: background 0.15s, box-shadow 0.15s, color 0.15s, transform 0.15s;
+  }
+  .menu-btn:hover {
+    background: var(--control-bg-hover);
+    box-shadow: var(--control-shadow-hover);
+  }
+  .menu-btn:active,
+  .menu-btn[aria-expanded="true"] {
+    box-shadow: var(--control-shadow-active);
+  }
+  .bars {
+    position: relative;
+    width: 16px;
+    height: 12px;
+  }
+  .bars span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform 0.2s, opacity 0.2s, top 0.2s;
+  }
+  .bars span:nth-child(1) {
+    top: 0;
+  }
+  .bars span:nth-child(2) {
+    top: 5px;
+  }
+  .bars span:nth-child(3) {
+    top: 10px;
+  }
+  .menu-btn[aria-expanded="true"] .bars span:nth-child(1) {
+    top: 5px;
+    transform: rotate(45deg);
+  }
+  .menu-btn[aria-expanded="true"] .bars span:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-btn[aria-expanded="true"] .bars span:nth-child(3) {
+    top: 5px;
+    transform: rotate(-45deg);
+  }
+
+  /* Narrow screens: every link moves into a menu under the header. Without JS
+     the button stays hidden and the short inline nav below is used instead. */
+  @media (max-width: 1040px) {
+    .site-header.has-menu .menu-btn {
+      display: inline-flex;
+    }
+    .site-header.has-menu nav {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 2px;
+      padding: 10px 16px 18px;
+      background: var(--bg-deep);
+      border-bottom: 1px solid var(--line);
+      box-shadow: var(--menu-shadow);
+      max-height: calc(100dvh - var(--header-h));
+      overflow-y: auto;
+    }
+    .site-header.has-menu.open nav {
+      display: flex;
+    }
+    .site-header.has-menu .nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 14px;
+      font-size: 16px;
+    }
+    .site-header.has-menu .install {
+      margin-top: 10px;
+      justify-content: center;
+    }
+    /* No JS: the menu cannot open, so keep only the install button inline. */
+    .site-header:not(.has-menu) .nav-link {
+      display: none;
+    }
+  }
+  @media (max-width: 1040px) {
+    nav {
+      margin-left: 0;
+    }
+    .theme-switch {
+      margin-left: auto;
+    }
+  }
+  @media (max-width: 480px) {
+    .menu-label {
+      display: none;
+    }
+    .menu-btn {
+      padding: 10px 12px;
+    }
+    .site-header:not(.has-menu) .word {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>(".site-header");
+  const btn = header?.querySelector<HTMLButtonElement>(".menu-btn");
+  if (header && btn) {
+    const nav = header.querySelector<HTMLElement>("nav")!;
+    header.classList.add("has-menu");
+    btn.hidden = false;
+    const set = (open: boolean) => {
+      header.classList.toggle("open", open);
+      btn.setAttribute("aria-expanded", String(open));
+    };
+    btn.addEventListener("click", () => set(!header.classList.contains("open")));
+    nav.addEventListener("click", (e) => {
+      if ((e.target as HTMLElement).closest("a")) set(false);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && header.classList.contains("open")) {
+        set(false);
+        btn.focus();
+      }
+    });
+    document.addEventListener("click", (e) => {
+      if (!header.contains(e.target as Node)) set(false);
+    });
+    matchMedia("(min-width: 1041px)").addEventListener("change", (e) => e.matches && set(false));
+    const onScroll = () => header.classList.toggle("is-stuck", window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+</script>
+
+<script is:inline>
+  (function () {
+    var group = document.querySelector(".theme-switch");
+    if (!group) return;
+    var buttons = [].slice.call(group.querySelectorAll("[data-choice]"));
+    function current() {
+      return document.documentElement.getAttribute("data-theme-choice") || "system";
+    }
+    function sync(focus) {
+      var choice = current();
+      buttons.forEach(function (b) {
+        var on = b.getAttribute("data-choice") === choice;
+        b.setAttribute("aria-checked", on ? "true" : "false");
+        b.tabIndex = on ? 0 : -1;
+        if (on && focus) b.focus();
+      });
+    }
+    function setTheme(choice, focus) {
+      var apply = window.__nexqlSetTheme;
+      if (typeof apply === "function") apply(choice);
+      sync(focus);
+    }
+    buttons.forEach(function (b, i) {
+      b.addEventListener("click", function () {
+        setTheme(b.getAttribute("data-choice"), false);
+      });
+      b.addEventListener("keydown", function (e) {
+        var step = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
+        if (!step) return;
+        e.preventDefault();
+        var next = buttons[(i + step + buttons.length) % buttons.length];
+        setTheme(next.getAttribute("data-choice"), true);
+      });
+    });
+    sync(false);
+  })();
+</script>

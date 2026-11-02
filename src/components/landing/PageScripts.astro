@@ -1,0 +1,39 @@
+---
+/**
+ * Loads the classic scripts the home page still needs outside the workbench
+ * demo. They load after the page is idle, independent of the demo:
+ *   - /js/playground.js   the scripted SQL playground in the Ask stop
+ *                         (components/story/AskDemo.astro)
+ *   - Razorpay checkout   third-party, used by checkout.js
+ *   - /js/pricing.js      billing toggle and price labels
+ *   - /js/checkout.js     subscription checkout, licence lookup, cancel
+ * Order matters for the last three. The workbench scripts are NOT here: they
+ * live on /demo/ (see pages/demo.astro).
+ */
+---
+
+<script is:inline>
+  (function () {
+    var SCRIPTS = [
+      "/js/playground.js",
+      "https://checkout.razorpay.com/v1/checkout.js",
+      "/js/pricing.js",
+      "/js/checkout.js",
+    ];
+    function load(i) {
+      if (i >= SCRIPTS.length) return;
+      var s = document.createElement("script");
+      s.src = SCRIPTS[i];
+      s.async = false;
+      s.onload = s.onerror = function () {
+        load(i + 1);
+      };
+      document.body.appendChild(s);
+    }
+    function start() {
+      load(0);
+    }
+    if ("requestIdleCallback" in window) requestIdleCallback(start, { timeout: 2000 });
+    else setTimeout(start, 300);
+  })();
+</script>

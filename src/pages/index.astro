@@ -1,16 +1,34 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import DemoShell from "../components/DemoShell.astro";
-import LandingStory from "../components/LandingStory.astro";
-import TourOverlay from "../components/TourOverlay.astro";
-import DemoBoot from "../islands/DemoBoot";
+/**
+ * Home page. Order: header, hero, story, playground, sections, footer.
+ * Section components live in src/components/landing/ (see each file's header
+ * comment for who owns it and what it must contain).
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import Hero from "../components/landing/Hero.astro";
+import Story from "../components/landing/Story.astro";
+import Playground from "../components/landing/Playground.astro";
+import Sections from "../components/landing/Sections.astro";
+import PageScripts from "../components/landing/PageScripts.astro";
 ---
 
-<Layout>
-  <main class="site-main">
-    <DemoShell />
-    <LandingStory />
+<BaseLayout>
+  <SiteHeader />
+  <main id="main" tabindex="-1">
+    <Hero />
+    <Story />
+    <Playground />
+    <Sections />
   </main>
-  <TourOverlay />
-  <DemoBoot client:load />
-</Layout>
+  <SiteFooter />
+  <PageScripts />
+</BaseLayout>
+
+<style>
+  /* The hero's dot grid bleeds past its box; clip, not hidden, so sticky still works. */
+  main {
+    overflow-x: clip;
+  }
+</style>
