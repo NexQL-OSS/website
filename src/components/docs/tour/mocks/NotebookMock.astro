@@ -1,0 +1,119 @@
+---
+/** Stop 4: a .pgsql notebook with one cell, its result grid and the result footer (decorative). */
+import MockFrame from "./MockFrame.astro";
+---
+
+<MockFrame title="first-look.pgsql · shop-prod · shop" max="680px">
+  <div class="nb">
+    <div class="cell">
+      <div class="run">▶</div>
+      <pre><span class="k">SELECT</span> table_schema, table_name
+<span class="k">FROM</span>   information_schema.tables
+<span class="k">WHERE</span>  table_schema <span class="k">NOT IN</span> (<span class="s">'pg_catalog'</span>, <span class="s">'information_schema'</span>)
+<span class="k">ORDER BY</span> <span class="n">1</span>, <span class="n">2</span>;</pre>
+    </div>
+    <div class="out">
+      <table>
+        <thead><tr><th>table_schema</th><th>table_name</th></tr></thead>
+        <tbody>
+          <tr><td>public</td><td>customers</td></tr>
+          <tr><td>public</td><td>orders</td></tr>
+          <tr><td>public</td><td>products</td></tr>
+        </tbody>
+      </table>
+      <div class="foot">
+        <span class="btns"><span>All</span><span>Copy</span><span>Import</span><span class="on">Export</span><span>Ask AI</span></span>
+        <span class="meta">3 rows</span>
+      </div>
+    </div>
+  </div>
+</MockFrame>
+
+<style>
+  .nb {
+    padding: 14px;
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+  }
+  .cell {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background: var(--well);
+    box-shadow: var(--well-shadow);
+    min-width: 0;
+  }
+  .run {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-size: 11px;
+  }
+  pre {
+    margin: 0;
+    overflow-x: auto;
+    font: 400 13px/1.6 var(--font-mono);
+    color: var(--fg);
+    min-width: 0;
+  }
+  .k { color: var(--kw); }
+  .s { color: var(--str); }
+  .n { color: var(--num); }
+  .out {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    min-width: 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font: 400 13px/1.3 var(--font-mono);
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--line);
+    color: var(--prose);
+    white-space: nowrap;
+  }
+  th {
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    background: var(--panel-2);
+  }
+  .foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    font: 500 12px/1 var(--font-mono);
+    color: var(--faint);
+  }
+  .btns {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .btns span {
+    padding: 5px 9px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    color: var(--muted);
+  }
+  .btns .on {
+    border-color: var(--accent);
+    color: var(--fg);
+  }
+</style>

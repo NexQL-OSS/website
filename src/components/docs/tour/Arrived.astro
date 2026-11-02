@@ -1,0 +1,101 @@
+---
+/**
+ * The ending of a docs tour: a ribbon card, "You've arrived", and a grid of
+ * onward links.
+ *
+ * Props
+ *  - links: { href, title, desc, ext? }[]. ext opens in a new tab.
+ *  - lede:  string, optional.
+ */
+interface Props {
+  links: readonly { href: string; title: string; desc: string; ext?: boolean }[];
+  lede?: string;
+}
+const { links, lede = "That is the first fifteen minutes. Here is where to go next." } = Astro.props;
+---
+
+<section class="arrived" id="arrived" aria-labelledby="arrived-title">
+  <div class="ribbon"></div>
+  <h2 id="arrived-title">You’ve <span class="serif-em grad-text">arrived</span>.</h2>
+  <p class="lede">{lede}</p>
+  <ul class="links">
+    {
+      links.map((l) => (
+        <li>
+          <a href={l.href} {...(l.ext ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+            <strong>
+              {l.title} <span aria-hidden="true">{l.ext ? "↗" : "→"}</span>
+            </strong>
+            <span>{l.desc}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .arrived {
+    position: relative;
+    padding: 40px 28px 32px;
+    border-radius: 20px;
+    border: 1px solid var(--edge);
+    background: var(--nex-grad-soft), var(--panel);
+    box-shadow: var(--shadow-3);
+    overflow: hidden;
+  }
+  .ribbon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+  }
+  h2 {
+    font-size: clamp(28px, 3.6vw, 40px);
+    margin-bottom: 12px;
+  }
+  .lede {
+    color: var(--muted);
+    font-size: 17.5px;
+    max-width: 40em;
+    margin: 0;
+  }
+  .links {
+    list-style: none;
+    margin: 26px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 12px;
+  }
+  .links a {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    height: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid;
+    border-color: var(--bevel-border);
+    background: var(--surface);
+    box-shadow: var(--shadow-1);
+    color: var(--muted);
+    font-size: 14.5px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .links a:hover {
+    text-decoration: none;
+    border-color: var(--accent);
+    box-shadow: var(--shadow-2);
+  }
+  .links strong {
+    color: var(--fg);
+    font-size: 16px;
+  }
+  @media (max-width: 719px) {
+    .arrived {
+      padding: 32px 16px 24px;
+    }
+  }
+</style>

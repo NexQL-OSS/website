@@ -1,0 +1,252 @@
+---
+import DocsLayout from "../../../layouts/DocsLayout.astro";
+import FilterBar from "../../../components/docs/FilterBar.astro";
+import AreaJump from "../../../components/docs/AreaJump.astro";
+import ProBadge from "../../../components/docs/ProBadge.astro";
+import { AREAS, COMMANDS, INTERNAL_COMMANDS, MANIFEST, areaAnchor, commandsIn, settingsIn, whereList, formatKey, type DocCommand } from "../../../data/docs";
+import { SITE_URL } from "../../../data/site";
+
+const title = `NexQL commands: all ${COMMANDS.length} commands and where to find them`;
+const description = `Every NexQL command for VS Code, by area: its title, command id, where it appears (Command Palette, right-click menus, toolbars) and its keyboard shortcut.`;
+const canonical = `${SITE_URL}/docs/reference/commands`;
+
+const byLabel = (a: DocCommand, b: DocCommand) => a.label.localeCompare(b.label, "en", { sensitivity: "base" });
+const search = (c: DocCommand) =>
+  [c.label, c.id, c.area.name, c.pro ? "pro" : "", ...whereList(c).map((w) => w.text), ...(c.keybindings ?? []).flatMap((k) => [k.key, k.mac ?? ""])]
+    .join(" ")
+    .toLowerCase();
+const counts = Object.fromEntries(AREAS.map((a) => [a.id, commandsIn(a.id).length]));
+---
+
+<DocsLayout
+  {title}
+  {description}
+  {canonical}
+  crumbs={[{ label: "Docs", href: "/docs" }, { label: "Reference", href: "/docs/reference" }, { label: "Commands" }]}
+  width="wide"
+>
+  <p class="eyebrow">Reference</p>
+  <h1>All {COMMANDS.length} <span class="serif-em grad-text">commands</span>.</h1>
+  <p class="lede">
+    Generated from the NexQL {MANIFEST.version} extension manifest. Every command is listed in the Command Palette (Ctrl+Shift+P, or Cmd+Shift+P on macOS) unless the manifest hides it;
+    the other places it appears are shown beside it. Commands marked Pro are part of NexQL Pro.
+  </p>
+
+  <FilterBar label="Filter commands by name, id or place" noun="commands" total={COMMANDS.length} />
+  <AreaJump {counts} />
+
+  {
+    AREAS.filter((a) => counts[a.id] > 0).map((a) => (
+      <section class="area" id={areaAnchor(a.id)} data-filter-section aria-labelledby={`${areaAnchor(a.id)}-h`}>
+        <h2 id={`${areaAnchor(a.id)}-h`}>
+          {a.name} <span class="n">{counts[a.id]}</span>
+        </h2>
+        <p class="intro">{a.intro}</p>
+        {settingsIn(a.id).length > 0 && (
+          <p class="also">
+            <a href={`/docs/reference/settings#${areaAnchor(a.id)}`}>{settingsIn(a.id).length} {settingsIn(a.id).length === 1 ? "setting" : "settings"} in this area →</a>
+          </p>
+        )}
+        <ul class="cmds">
+          {commandsIn(a.id).sort(byLabel).map((c) => (
+            <li class="cmd" id={c.id} data-filter-item data-search={search(c)}>
+              <div class="head">
+                <h3>
+                  {c.label}
+                  {c.pro && <ProBadge />}
+                  {c.deprecated && <span class="dep">Deprecated</span>}
+                </h3>
+                <p class="id">
+                  <a href={`#${c.id}`} aria-label={`Link to ${c.label}`}><code>{c.id}</code></a>
+                </p>
+              </div>
+              <div class="meta">
+                <ul class="where" aria-label="Where to find it">
+                  {whereList(c).map((w) => (
+                    <li class={w.kind}>
+                      {w.more ? (
+                        <details>
+                          <summary>{w.head}</summary>
+                          <p>{w.more.join(", ")}</p>
+                        </details>
+                      ) : (
+                        w.text
+                      )}
+                    </li>
+                  ))}
+                </ul>
+                {c.keybindings && c.keybindings.length > 0 && (
+                  <p class="keys">
+                    {c.keybindings.map((k) => (
+                      <span class="kb">
+                        <kbd>{formatKey(k.key)}</kbd> <span class="os">Windows, Linux</span> <kbd>{formatKey(k.mac)}</kbd> <span class="os">macOS</span>
+                      </span>
+                    ))}
+                  </p>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+
+  {
+    INTERNAL_COMMANDS.length > 0 && (
+      <section class="area" data-filter-section>
+        <details>
+          <summary>Internal commands ({INTERNAL_COMMANDS.length})</summary>
+          <p class="intro">Declared by the extension, but with no title or hidden from every menu.</p>
+          <ul class="internal">
+            {INTERNAL_COMMANDS.map((c) => (
+              <li data-filter-item data-search={c.id.toLowerCase()}><code>{c.id}</code></li>
+            ))}
+          </ul>
+        </details>
+      </section>
+    )
+  }
+</DocsLayout>
+
+<style>
+  [hidden] {
+    display: none !important;
+  }
+  .area {
+    margin-top: 52px;
+    scroll-margin-top: calc(var(--header-h) + 16px);
+  }
+  h2 {
+    font-size: 26px;
+  }
+  .n {
+    margin-left: 6px;
+    font: 400 14px/1 var(--font-mono);
+    color: var(--muted);
+  }
+  .intro {
+    color: var(--muted);
+    margin-top: 8px;
+    max-width: 76ch;
+  }
+  .also {
+    margin-top: 8px;
+    font-size: 14.5px;
+  }
+  .cmds {
+    list-style: none;
+    margin: 18px 0 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .cmd {
+    display: grid;
+    gap: 10px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: calc(var(--header-h) + 16px);
+  }
+  @media (min-width: 860px) {
+    .cmd {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: 28px;
+    }
+  }
+  .cmd:target {
+    background: var(--hover);
+    box-shadow: -3px 0 0 var(--accent);
+    padding-left: 12px;
+  }
+  .head h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 16.5px;
+    font-weight: 600;
+  }
+  .id {
+    margin-top: 4px;
+  }
+  .id a {
+    color: var(--muted);
+  }
+  .id code {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+  }
+  .dep {
+    font: 500 11px/1.5 var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    padding: 1px 7px;
+  }
+  .meta {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14.5px;
+    color: var(--prose);
+  }
+  .where {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .where li {
+    overflow-wrap: anywhere;
+  }
+  .where summary {
+    cursor: pointer;
+  }
+  .where details p {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+  .keys {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .kb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+  }
+  kbd {
+    padding: 1px 7px;
+    border: 1px solid var(--line-2);
+    border-bottom-width: 2px;
+    border-radius: 6px;
+    background: var(--panel-2);
+    color: var(--fg);
+    font-size: 12.5px;
+  }
+  .os {
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+  .internal {
+    padding-left: 20px;
+    margin-top: 10px;
+    overflow-wrap: anywhere;
+  }
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+  }
+</style>

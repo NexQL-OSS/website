@@ -27,7 +27,9 @@ const columns: { title: string; links: FooterLink[] }[] = [
     links: [
       { href: "/#connect", label: "Tour" },
       { href: "/#playground", label: "Playground" },
-      { href: "/features/", label: "Feature stories" },
+      { href: "/docs", label: "Docs" },
+      { href: "/docs/getting-started", label: "Getting started" },
+      { href: "/features", label: "Feature stories" },
       { href: "/#mcp", label: "MCP server" },
       { href: "/#pricing", label: "Pricing" },
     ],
@@ -35,6 +37,8 @@ const columns: { title: string; links: FooterLink[] }[] = [
   {
     title: "Resources",
     links: [
+      { href: "/docs/reference/commands", label: "Commands" },
+      { href: "/docs/reference/settings", label: "Settings" },
       { href: `${REPO_URL}/blob/main/docs/COMPATIBILITY.md`, label: "Compatibility", external: true },
       { href: `${REPO_URL}/blob/main/docs/ARCHITECTURE.md`, label: "Architecture", external: true },
       { href: CHANGELOG_URL, label: "Changelog", external: true },

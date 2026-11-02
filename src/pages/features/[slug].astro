@@ -24,7 +24,7 @@ const canonical = `${SITE_URL}/features/${feature.slug}`;
   {title}
   description={feature.lede}
   {canonical}
-  crumbs={[{ label: "Features", href: "/features/" }, { label: feature.name }]}
+  crumbs={[{ label: "Docs", href: "/docs" }, { label: "Features", href: "/features" }, { label: feature.name }]}
   prev={prev && { href: featureHref(prev.slug), label: prev.name }}
   next={next && { href: featureHref(next.slug), label: next.name }}
 >

@@ -1,0 +1,125 @@
+---
+/** Stop 3: the Connections tree with the right-click menu on a table (decorative). */
+import MockFrame from "./MockFrame.astro";
+---
+
+<MockFrame title="NexQL · Connections" max="640px">
+  <div class="grid">
+    <ul class="tree">
+      <li class="l0">▾ <b>shop-prod</b> <span class="env">PRODUCTION</span></li>
+      <li class="l1">▾ shop</li>
+      <li class="l2">▾ public</li>
+      <li class="l3">▸ Tables <span class="n">12</span></li>
+      <li class="l4 sel">▪ orders <span class="icons">▦ ⓘ ⌥ ✦</span></li>
+      <li class="l4">▪ customers</li>
+      <li class="l4">▪ products</li>
+      <li class="l3">▸ Views</li>
+      <li class="l3">▸ Functions</li>
+    </ul>
+    <ul class="menu">
+      <li>New PostgreSQL Notebook</li>
+      <li>Table Operations</li>
+      <li class="sub">Scripts <span>▸</span></li>
+      <li class="sub">Maintenance <span>▸</span></li>
+      <li class="rule"></li>
+      <li>View Table Profile</li>
+      <li>View Table Activity</li>
+      <li>View Index Usage</li>
+      <li class="rule"></li>
+      <li>Export Table Data</li>
+      <li class="danger">Drop Table</li>
+    </ul>
+  </div>
+</MockFrame>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 200px);
+    gap: 14px;
+    padding: 14px;
+    align-items: start;
+  }
+  @media (max-width: 479px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .tree {
+    font: 400 13px/1.3 var(--font-mono);
+    color: var(--muted);
+    display: grid;
+    gap: 2px;
+  }
+  .tree li {
+    padding: 4px 8px;
+    border-radius: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tree b {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .l1 { padding-left: 22px !important; }
+  .l2 { padding-left: 36px !important; }
+  .l3 { padding-left: 50px !important; }
+  .l4 { padding-left: 64px !important; }
+  .sel {
+    background: var(--rail-active);
+    color: var(--fg);
+  }
+  .icons {
+    float: right;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+  }
+  .n {
+    color: var(--faint);
+  }
+  .env {
+    margin-left: 6px;
+    padding: 1px 7px;
+    border-radius: 4px;
+    background: #ff8f6b;
+    color: var(--on-grad);
+    font-size: 10.5px;
+    font-weight: 700;
+  }
+  .menu {
+    border-radius: 10px;
+    border: 1px solid var(--line-2);
+    background: var(--panel);
+    box-shadow: var(--menu-shadow);
+    padding: 6px;
+    font-size: 13px;
+    color: var(--prose);
+  }
+  .menu li {
+    padding: 5px 8px;
+    border-radius: 5px;
+  }
+  .menu li:first-child {
+    background: var(--panel-2);
+    color: var(--fg);
+  }
+  .sub {
+    display: flex;
+    justify-content: space-between;
+  }
+  .rule {
+    height: 1px;
+    padding: 0 !important;
+    margin: 4px 0;
+    background: var(--line);
+  }
+  .danger {
+    color: #ff8f6b;
+  }
+</style>

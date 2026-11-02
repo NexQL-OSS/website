@@ -1,0 +1,152 @@
+---
+import DocsLayout from "../../../layouts/DocsLayout.astro";
+import DocCard from "../../../components/docs/DocCard.astro";
+import ProBadge from "../../../components/docs/ProBadge.astro";
+import { MANIFEST, COMMANDS, SETTINGS, REFERENCE_LINKS, viewArea, viewCommandCount, containerTitle, areaAnchor } from "../../../data/docs";
+import { SITE_URL } from "../../../data/site";
+
+const title = "NexQL reference: commands, settings, shortcuts and views";
+const description = `Reference for NexQL ${MANIFEST.version}, generated from the extension manifest: ${COMMANDS.length} commands, ${SETTINGS.length} settings, keyboard shortcuts, sidebar views and walkthroughs.`;
+const canonical = `${SITE_URL}/docs/reference`;
+---
+
+<DocsLayout
+  {title}
+  {description}
+  {canonical}
+  crumbs={[{ label: "Docs", href: "/docs" }, { label: "Reference" }]}
+  width="wide"
+>
+  <p class="eyebrow">Reference</p>
+  <h1>The <span class="serif-em grad-text">reference</span>.</h1>
+  <p class="lede">
+    Generated from the manifest of NexQL {MANIFEST.version}, the same file VS Code reads, so it lists what the extension ships.
+    New commands and settings appear here when the site is rebuilt.
+  </p>
+
+  <div class="grid">
+    {REFERENCE_LINKS.map((l) => <DocCard href={l.href} title={l.label} body={l.summary} />)}
+  </div>
+
+  <section aria-labelledby="views-h">
+    <h2 id="views-h">Sidebar views</h2>
+    <p class="sub">
+      NexQL adds {MANIFEST.containers.length} icons to the VS Code activity bar and {MANIFEST.views.length} views inside them.
+    </p>
+    <ul class="views">
+      {
+        MANIFEST.views.map((v) => (
+          <li>
+            <h3>
+              {v.name} {v.pro && <ProBadge />}
+            </h3>
+            <p class="vm">
+              In the <strong>{containerTitle(v.container)}</strong> activity bar icon · {v.type === "webview" ? "web panel" : "tree"}
+              {v.collapsedByDefault ? " · collapsed by default" : ""}
+            </p>
+            <p class="vm">
+              <code>{v.id}</code>
+            </p>
+            <p class="vm">
+              {viewCommandCount(v.id)} {viewCommandCount(v.id) === 1 ? "command appears" : "commands appear"} in its menus and toolbar.
+              <a href={`/docs/reference/commands#${areaAnchor(viewArea(v.id).id)}`}>{viewArea(v.id).name} →</a>
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section aria-labelledby="walk-h">
+    <h2 id="walk-h">Walkthroughs</h2>
+    <p class="sub">Step-by-step walkthroughs the extension registers with VS Code.</p>
+    <div class="walks">
+      {
+        MANIFEST.walkthroughs.map((w) => (
+          <div class="walk">
+            <h3>{w.title}</h3>
+            <ol>
+              {w.steps.map((s) => (
+                <li>{s.title}</li>
+              ))}
+            </ol>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</DocsLayout>
+
+<style>
+  h1 {
+    max-width: 20ch;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 12px;
+    margin-top: 30px;
+  }
+  section {
+    margin-top: 56px;
+  }
+  h2 {
+    font-size: 26px;
+  }
+  .sub {
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .views {
+    list-style: none;
+    margin: 18px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: 12px;
+  }
+  .views li,
+  .walk {
+    padding: 16px 18px;
+    border: 1px solid;
+    border-color: var(--bevel-border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+    min-width: 0;
+  }
+  h3 {
+    font-size: 17px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .vm {
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+  }
+  .vm strong {
+    color: var(--prose);
+  }
+  .vm code {
+    word-break: break-all;
+  }
+  .walks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .walk ol {
+    margin: 10px 0 0;
+    padding-left: 22px;
+    color: var(--prose);
+    font-size: 14.5px;
+  }
+  .walk li + li {
+    margin-top: 4px;
+  }
+</style>

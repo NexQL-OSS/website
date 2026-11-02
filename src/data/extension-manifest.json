@@ -1,0 +1,6332 @@
+{
+  "version": "2.4.0",
+  "containers": [
+    {
+      "id": "postgres-explorer",
+      "title": "NexQL",
+      "location": "activitybar",
+      "pro": false
+    },
+    {
+      "id": "nexql-bot",
+      "title": "NexQL Bot",
+      "location": "activitybar",
+      "pro": true
+    }
+  ],
+  "views": [
+    {
+      "id": "postgresExplorer",
+      "name": "Connections",
+      "container": "postgres-explorer",
+      "type": "tree",
+      "collapsedByDefault": false,
+      "pro": false
+    },
+    {
+      "id": "postgresExplorer.notebooks",
+      "name": "Notebooks",
+      "container": "postgres-explorer",
+      "type": "tree",
+      "collapsedByDefault": true,
+      "pro": false
+    },
+    {
+      "id": "postgresExplorer.savedQueries",
+      "name": "Saved Queries",
+      "container": "postgres-explorer",
+      "type": "tree",
+      "collapsedByDefault": true,
+      "pro": false
+    },
+    {
+      "id": "postgresExplorer.history",
+      "name": "Query History",
+      "container": "postgres-explorer",
+      "type": "tree",
+      "collapsedByDefault": true,
+      "pro": false
+    },
+    {
+      "id": "postgresExplorer.chatView",
+      "name": "NexQL Bot",
+      "container": "nexql-bot",
+      "type": "webview",
+      "collapsedByDefault": false,
+      "pro": true
+    }
+  ],
+  "commands": [
+    {
+      "id": "nexql.bot.openTab",
+      "title": "NexQL Bot: Open in Editor Tab",
+      "category": "NexQL",
+      "icon": "$(go-to-file)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-title",
+          "view": "postgresExplorer.chatView",
+          "items": [],
+          "toolbar": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "nexql.bot.revealObject",
+      "title": "NexQL Bot: Reveal Object in Explorer",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.addColumn",
+      "title": "Add Column",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-columns"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.addColumnComment",
+      "title": "Add/Edit Column Comment",
+      "category": null,
+      "icon": "$(comment)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "column"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.addConnection",
+      "title": "Add PostgreSQL Connection",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "keybindings": [
+        {
+          "key": "ctrl+alt+a",
+          "mac": "cmd+alt+a",
+          "when": null
+        }
+      ],
+      "locations": [
+        {
+          "type": "view-title",
+          "view": "postgresExplorer",
+          "toolbar": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.addConstraint",
+      "title": "Add Constraint",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-constraints"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.addIndex",
+      "title": "Add Index",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-indexes"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.addIndexComment",
+      "title": "Add Comment",
+      "category": null,
+      "icon": "$(comment)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "index"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.addToFavorites",
+      "title": "Add to Favorites",
+      "category": null,
+      "icon": "$(star-empty)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "function",
+            "materialized-view",
+            "partition",
+            "procedure",
+            "table",
+            "view"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.aiAssist",
+      "title": "Ask AI",
+      "category": null,
+      "icon": "$(sparkle)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "notebook-cell",
+          "items": [],
+          "notebookTypes": [
+            "postgres-notebook"
+          ]
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.aiSettings",
+      "title": "AI Settings",
+      "category": null,
+      "icon": "$(sparkle)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-title",
+          "view": "postgresExplorer",
+          "toolbar": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.analyzeIndexUsage",
+      "title": "Analyze Index Usage",
+      "category": null,
+      "icon": "$(graph)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "index"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.assignConnectionColor",
+      "title": "Assign Color",
+      "category": "NexQL",
+      "icon": "$(paintcan)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection",
+            "connection-disconnected",
+            "connection-pinned",
+            "connection-pinned-disconnected"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.attachToChat",
+      "title": "Attach to NexQL Bot",
+      "category": null,
+      "icon": "$(mention)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "foreign-table",
+            "function",
+            "materialized-view",
+            "partition",
+            "procedure",
+            "schema",
+            "table",
+            "type",
+            "view"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.audit.openLog",
+      "title": "Open Production Audit Log",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.backupDatabase",
+      "title": "Backup...",
+      "category": null,
+      "icon": "$(save)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.callFunction",
+      "title": "Call Function",
+      "category": null,
+      "icon": "$(play)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "function"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.callProcedure",
+      "title": "Call Procedure",
+      "category": null,
+      "icon": "$(play)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "procedure"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.chatWithQuery",
+      "title": "Chat with Query",
+      "category": null,
+      "icon": "$(comment)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "notebook-cell",
+          "items": [],
+          "notebookTypes": [
+            "postgres-notebook"
+          ]
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.clearHistory",
+      "title": "Clear History",
+      "category": null,
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-title",
+          "view": "postgresExplorer.history",
+          "toolbar": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.connect",
+      "title": "Connect to PostgreSQL Database",
+      "category": null,
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.constraintOperations",
+      "title": "Constraint Operations",
+      "category": null,
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "constraint"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.copyColumnName",
+      "title": "Copy Column Name",
+      "category": null,
+      "icon": "$(copy)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "column"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.copyColumnNameQuoted",
+      "title": "Copy Column Name (Quoted)",
+      "category": null,
+      "icon": "$(copy)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "column"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.copyConstraintName",
+      "title": "Copy Constraint Name",
+      "category": null,
+      "icon": "$(copy)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "constraint"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.copyIndexName",
+      "title": "Copy Index Name",
+      "category": null,
+      "icon": "$(copy)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "index"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.copyQuery",
+      "title": "Copy Query",
+      "category": null,
+      "icon": "$(copy)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection-query-history-item"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.history",
+          "items": [],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.copySavedQuery",
+      "title": "📋 Copy Query",
+      "category": "NexQL: Queries",
+      "icon": "$(copy)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection-saved-query-item"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.savedQueries",
+          "items": [
+            "savedQuery"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createAggregate",
+      "title": "Create Aggregate",
+      "category": "NexQL",
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-aggregates"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createConnectionProfile",
+      "title": "Create Connection Profile",
+      "category": "NexQL: Profiles",
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-title",
+          "view": "postgresExplorer",
+          "toolbar": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createDatabase",
+      "title": "Create Database",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection",
+            "connection-pinned"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "databases-group"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createDomain",
+      "title": "Create Domain",
+      "category": "NexQL",
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-domains"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createEventTrigger",
+      "title": "Create Event Trigger",
+      "category": "NexQL",
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-event-triggers"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createForeignServer",
+      "title": "Create Foreign Server",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-foreign-data-wrappers"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createForeignTable",
+      "title": "Create Foreign Table",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-foreign-tables"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createFunction",
+      "title": "Create Function",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-functions"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createInDatabase",
+      "title": "Create Object",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createInSchema",
+      "title": "Create Object",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createMaterializedView",
+      "title": "Create Materialized View",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-materialized-views"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createPartition",
+      "title": "Create Partition",
+      "category": "NexQL",
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-partitions"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createPolicy",
+      "title": "RLS Policy Studio...",
+      "category": "NexQL",
+      "icon": "$(shield)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createProcedure",
+      "title": "Create Procedure",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-procedures"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createPublication",
+      "title": "Create Publication",
+      "category": "NexQL",
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-publications"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createReplaceFunction",
+      "title": "Edit Function Definition",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "function"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createReplaceProcedure",
+      "title": "Edit Procedure Definition",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "procedure"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createRole",
+      "title": "Create Role",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-users-roles"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createSchema",
+      "title": "Create Schema",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-schemas"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createSequence",
+      "title": "Create Sequence",
+      "category": "NexQL",
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-sequences"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createTable",
+      "title": "Create Table",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-tables"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createTableVisual",
+      "title": "Create Table (Visual)",
+      "category": "NexQL: Schema",
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "schema"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.createTrigger",
+      "title": "Create Trigger",
+      "category": "NexQL",
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-triggers"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createType",
+      "title": "Create Type",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-types"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createUserMapping",
+      "title": "Create User Mapping",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "foreign-server"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.createView",
+      "title": "Create View",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-views"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.databaseOperations",
+      "title": "Database Operations",
+      "category": null,
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dbindex.build",
+      "title": "Database Index: Build Index...",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.dbindex.clear",
+      "title": "Database Index: Clear Index...",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.dbindex.openPanel",
+      "title": "Database Index: Open Dashboard",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.ddlViewer.copyToClipboard",
+      "title": "DDL Viewer: Copy to Clipboard",
+      "category": "NexQL",
+      "icon": "$(copy)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "editor-title",
+          "when": "resourceScheme == nexql-ddl"
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.ddlViewer.executeRoutine",
+      "title": "DDL Viewer: Execute Routine Scaffold",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.ddlViewer.openEditableCopy",
+      "title": "DDL Viewer: Open as Editable Copy",
+      "category": "NexQL",
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "editor-title",
+          "when": "resourceScheme == nexql-ddl"
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.ddlViewer.toggleEnabled",
+      "title": "DDL Viewer: Toggle SQL Preview",
+      "category": "NexQL",
+      "icon": "$(file-code)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "editor-title",
+          "when": "resourceScheme == nexql-ddl"
+        },
+        {
+          "type": "view-title",
+          "view": "postgresExplorer",
+          "toolbar": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.deleteConnection",
+      "title": "Delete Connection",
+      "category": null,
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection",
+            "connection-disconnected",
+            "connection-pinned",
+            "connection-pinned-disconnected"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.deleteConnectionProfile",
+      "title": "Delete Connection Profile",
+      "category": "NexQL: Profiles",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.deleteHistoryItem",
+      "title": "Delete",
+      "category": null,
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection-query-history-item"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.history",
+          "items": [],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.deleteSavedQuery",
+      "title": "Delete Saved Query",
+      "category": "NexQL: Queries",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection-saved-query-item"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.savedQueries",
+          "items": [
+            "savedQuery"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.detachPartition",
+      "title": "Detach Partition",
+      "category": "NexQL",
+      "icon": "$(debug-disconnect)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.disableEventTrigger",
+      "title": "Disable Event Trigger",
+      "category": "NexQL",
+      "icon": "$(debug-pause)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "event-trigger"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.disableTrigger",
+      "title": "Disable Trigger",
+      "category": "NexQL",
+      "icon": "$(debug-pause)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "trigger"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.disconnect",
+      "title": "Disconnect PostgreSQL Database",
+      "category": null,
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.disconnectConnection",
+      "title": "Disconnect",
+      "category": "NexQL",
+      "icon": "$(debug-disconnect)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection",
+            "connection-pinned"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.disconnectDatabase",
+      "title": "Disconnect from database",
+      "category": null,
+      "icon": "$(plug)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropAggregate",
+      "title": "Drop Aggregate",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "aggregate"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropDatabase",
+      "title": "Drop Database",
+      "category": null,
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropDomain",
+      "title": "Drop Domain",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "domain"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropEventTrigger",
+      "title": "Drop Event Trigger",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "event-trigger"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropExtension",
+      "title": "Drop Extension",
+      "category": null,
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "extension-installed"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropForeignServer",
+      "title": "Drop Foreign Server",
+      "category": null,
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "foreign-server"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropForeignTable",
+      "title": "Drop Foreign Table",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "foreign-table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropFunction",
+      "title": "Drop Function",
+      "category": null,
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "function"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropMatView",
+      "title": "Drop Materialized View",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "materialized-view"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropPolicy",
+      "title": "Drop RLS Policy",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "policy"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropProcedure",
+      "title": "Drop Procedure",
+      "category": null,
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "procedure"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropPublication",
+      "title": "Drop Publication",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "publication"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropRole",
+      "title": "Drop Role",
+      "category": null,
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "role"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropRule",
+      "title": "Drop Rule",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "rule"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropSequence",
+      "title": "Drop Sequence",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "sequence"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropSubscription",
+      "title": "Drop Subscription",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "subscription"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropTable",
+      "title": "Drop Table",
+      "category": null,
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropTrigger",
+      "title": "Drop Trigger",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "trigger"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropType",
+      "title": "Drop Type",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "type"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropUserMapping",
+      "title": "Drop User Mapping",
+      "category": null,
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "user-mapping"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.dropView",
+      "title": "Drop View",
+      "category": null,
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "view"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.duplicateConnection",
+      "title": "Duplicate Connection",
+      "category": null,
+      "icon": "$(copy)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection",
+            "connection-disconnected",
+            "connection-pinned",
+            "connection-pinned-disconnected"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.editConnection",
+      "title": "Edit Connection",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection",
+            "connection-disconnected",
+            "connection-pinned",
+            "connection-pinned-disconnected"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.editForeignTable",
+      "title": "Edit Foreign Table",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "foreign-table"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.editMatView",
+      "title": "Edit Materialized View",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.editMaterializedView",
+      "title": "Edit Materialized View",
+      "category": "NexQL",
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "materialized-view"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.editRole",
+      "title": "Edit Role",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "role"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.editSavedQuery",
+      "title": "✏️ Edit Query",
+      "category": "NexQL: Queries",
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection-saved-query-item"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.savedQueries",
+          "items": [
+            "savedQuery"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.editTable",
+      "title": "Edit Table Definition",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.editType",
+      "title": "Edit Type",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "type"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.editViewDefinition",
+      "title": "Edit View Definition",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "view"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.enableEventTrigger",
+      "title": "Enable Event Trigger",
+      "category": "NexQL",
+      "icon": "$(play)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "event-trigger"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.enableExtension",
+      "title": "Enable Extension",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-extensions"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.enableTrigger",
+      "title": "Enable Trigger",
+      "category": "NexQL",
+      "icon": "$(play)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "trigger"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.eventTriggerOperations",
+      "title": "Event Trigger Operations",
+      "category": "NexQL",
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "event-trigger"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.explainQuery",
+      "title": "EXPLAIN Query",
+      "category": null,
+      "icon": "$(graph)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.explainQueryFromCell",
+      "title": "Explain Analyze",
+      "category": "NexQL",
+      "icon": "$(type-hierarchy-sub)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "notebook-cell",
+          "notebookTypes": [
+            "postgres-notebook"
+          ]
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.exportConnectionProfiles",
+      "title": "Export Connection Profiles…",
+      "category": "NexQL",
+      "icon": "$(export)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.exportNotebook",
+      "title": "Export Notebook (HTML / Gist)",
+      "category": "NexQL",
+      "icon": "$(export)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "notebook-toolbar",
+          "notebookTypes": [
+            "postgres-notebook",
+            "postgres-query"
+          ]
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.exportSavedQueries",
+      "title": "Export Saved Queries",
+      "category": "NexQL: Queries",
+      "icon": "$(export)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.exportTable",
+      "title": "Export Table Data",
+      "category": null,
+      "icon": "$(export)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.extensionOperations",
+      "title": "Extension Operations",
+      "category": null,
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "extension"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.foreignDataWrapperOperations",
+      "title": "FDW Operations",
+      "category": null,
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "foreign-data-wrapper"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.foreignServerOperations",
+      "title": "Server Operations",
+      "category": null,
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "foreign-server"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.foreignTableOperations",
+      "title": "Foreign Table Operations",
+      "category": "NexQL",
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "foreign-table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.formatSql",
+      "title": "Format SQL",
+      "category": "NexQL",
+      "icon": "$(symbol-keyword)",
+      "palette": true,
+      "keybindings": [
+        {
+          "key": "shift+alt+f",
+          "mac": "shift+alt+f",
+          "when": "editorLangId == sql || editorLangId == pgsql"
+        }
+      ],
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.functionOperations",
+      "title": "Function Operations",
+      "category": null,
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "function"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateAddConstraintScript",
+      "title": "ADD CONSTRAINT Templates",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateAlterColumnScript",
+      "title": "ALTER COLUMN Script",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "column"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateAlterConstraintScript",
+      "title": "ALTER CONSTRAINT Script",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "constraint"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateAlterIndexScript",
+      "title": "ALTER INDEX Script",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "index"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateCreateScript",
+      "title": "CREATE Script",
+      "category": null,
+      "icon": "$(file-code)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateDropColumnScript",
+      "title": "DROP COLUMN Script",
+      "category": null,
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "column"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateDropConstraintScript",
+      "title": "DROP CONSTRAINT Script",
+      "category": null,
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "constraint"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateDropIndexScript",
+      "title": "DROP INDEX Script",
+      "category": null,
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "index"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateIndexOnColumn",
+      "title": "CREATE INDEX Script",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "column"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateQuery",
+      "title": "AI: Generate Query",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateReindexScript",
+      "title": "REINDEX Script",
+      "category": null,
+      "icon": "$(sync)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "index"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateRenameColumnScript",
+      "title": "RENAME COLUMN Script",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "column"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateScriptCreate",
+      "title": "CREATE Script",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "index"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateSelectStatement",
+      "title": "SELECT Statement",
+      "category": null,
+      "icon": "$(code)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "column"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.generateWhereClause",
+      "title": "WHERE Clause",
+      "category": null,
+      "icon": "$(code)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "column"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.grantRevoke",
+      "title": "Grant/Revoke Privileges",
+      "category": null,
+      "icon": "$(shield)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "role"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.importConnectionFromDatabaseUrl",
+      "title": "Import Connection from DATABASE_URL (.env)",
+      "category": null,
+      "icon": "$(cloud-download)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-title",
+          "view": "postgresExplorer",
+          "toolbar": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.importConnectionProfiles",
+      "title": "Import Connection Profiles…",
+      "category": "NexQL",
+      "icon": "$(import)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.importData",
+      "title": "Import Data…",
+      "category": "NexQL",
+      "icon": "$(cloud-upload)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "schema",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.importDbml",
+      "title": "Import DBML → CREATE TABLE…",
+      "category": "NexQL: Schema",
+      "icon": "$(file-code)",
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.importSavedQueries",
+      "title": "Import Saved Queries",
+      "category": "NexQL: Queries",
+      "icon": "$(import)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.indexOperations",
+      "title": "Index Operations",
+      "category": null,
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "index"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.indexUsage",
+      "title": "View Index Usage",
+      "category": null,
+      "icon": "$(list-tree)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.insertData",
+      "title": "Insert Data",
+      "category": null,
+      "icon": "$(insert)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.installPgCron",
+      "title": "Install pg_cron Extension",
+      "category": "NexQL",
+      "icon": "$(cloud-download)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-cron-jobs"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "cron-setup"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.jumpToSection",
+      "title": "Jump to Section",
+      "category": "NexQL",
+      "icon": "$(list-unordered)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "notebook-toolbar",
+          "notebookTypes": [
+            "postgres-notebook"
+          ]
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.license.activate",
+      "title": "Activate License",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.license.manage",
+      "title": "Manage License",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.license.openUpgrade",
+      "title": "View Plans / Upgrade",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.license.showUsage",
+      "title": "Show Free Usage",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.listAggregates",
+      "title": "List Aggregates",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-aggregates"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.listCronJobs",
+      "title": "List pg_cron Jobs",
+      "category": "NexQL",
+      "icon": "$(list-unordered)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-cron-jobs",
+            "cron-setup"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.listDomains",
+      "title": "List Domains",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-domains"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.listEventTriggers",
+      "title": "List Event Triggers",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-event-triggers"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.listPartitions",
+      "title": "List Partitions",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-partitions"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.listPublications",
+      "title": "List Publications",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-publications"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.listRules",
+      "title": "List Rules",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-rules"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.listSequences",
+      "title": "List Sequences",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-sequences"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.listSubscriptions",
+      "title": "List Subscriptions",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-subscriptions"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.listTablespaces",
+      "title": "List Tablespaces",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-tablespaces"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.listTriggers",
+      "title": "List Triggers",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-triggers"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.loadSavedQuery",
+      "title": "Load Saved Query",
+      "category": "NexQL: Queries",
+      "icon": "$(folder-opened)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-title",
+          "view": "postgresExplorer",
+          "toolbar": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.loadSavedQueryUI",
+      "title": "📂 Load Saved Query",
+      "category": "NexQL: Queries",
+      "icon": "$(folder-opened)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.maintenanceAnalyze",
+      "title": "ANALYZE",
+      "category": null,
+      "icon": "$(graph)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "submenu": "Maintenance",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.maintenanceDatabase",
+      "title": "Maintenance...",
+      "category": null,
+      "icon": "$(tools)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.maintenanceReindex",
+      "title": "REINDEX",
+      "category": null,
+      "icon": "$(refresh)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "submenu": "Maintenance",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.maintenanceVacuum",
+      "title": "VACUUM",
+      "category": null,
+      "icon": "$(broom)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "submenu": "Maintenance",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.manageConnections",
+      "title": "Manage Connections",
+      "category": null,
+      "icon": "$(settings-gear)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-title",
+          "view": "postgresExplorer",
+          "toolbar": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.materializedViewOperations",
+      "title": "Materialized View Operations",
+      "category": "NexQL",
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "materialized-view"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.migrationHub",
+      "title": "Migration Hub: Detect Framework & Show Runbook",
+      "category": "NexQL",
+      "icon": "$(git-commit)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.newNotebook",
+      "title": "New PostgreSQL Notebook",
+      "category": null,
+      "icon": "$(notebook)",
+      "palette": true,
+      "keybindings": [
+        {
+          "key": "ctrl+alt+n",
+          "mac": "cmd+alt+n",
+          "when": null
+        }
+      ],
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection",
+            "connection-pinned"
+          ],
+          "inline": true
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "schema",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.notebooks.createFolder",
+      "title": "New Folder",
+      "category": "NexQL",
+      "icon": "$(new-folder)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.notebooks",
+          "items": [
+            "(empty area)",
+            "folder"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-title",
+          "view": "postgresExplorer.notebooks",
+          "toolbar": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.notebooks.delete",
+      "title": "Delete Notebook",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.notebooks",
+          "items": [
+            "notebook-file"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.notebooks",
+          "items": [
+            "notebook-file"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.notebooks.deleteFolder",
+      "title": "Delete Folder",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.notebooks",
+          "items": [
+            "folder"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.notebooks.moveNotebook",
+      "title": "Move to Folder…",
+      "category": "NexQL",
+      "icon": "$(folder-opened)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.notebooks",
+          "items": [
+            "notebook-file"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.notebooks.open",
+      "title": "Open Notebook",
+      "category": "NexQL",
+      "icon": "$(go-to-file)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.notebooks",
+          "items": [
+            "notebook-file"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.notebooks.refresh",
+      "title": "Refresh Notebooks",
+      "category": "NexQL",
+      "icon": "$(refresh)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-title",
+          "view": "postgresExplorer.notebooks",
+          "toolbar": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.notebooks.rename",
+      "title": "Rename Notebook",
+      "category": "NexQL",
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.notebooks",
+          "items": [
+            "notebook-file"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.notebooks",
+          "items": [
+            "notebook-file"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.notebooks.renameFolder",
+      "title": "Rename Folder",
+      "category": "NexQL",
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.notebooks",
+          "items": [
+            "folder"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.openBackupWorkspace",
+      "title": "Backup & Restore Workspace: Choose Connection & Database…",
+      "category": "PostgreSQL",
+      "icon": "$(archive)",
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.openDefinition",
+      "title": "Open Definition Viewer",
+      "category": "NexQL",
+      "icon": "$(file-code)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "extension",
+            "foreign-data-wrapper",
+            "foreign-server",
+            "foreign-table",
+            "function",
+            "index",
+            "materialized-view",
+            "partition",
+            "policy",
+            "procedure",
+            "role",
+            "sequence",
+            "table",
+            "trigger",
+            "type",
+            "view"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.openErd",
+      "title": "View ERD (Entity-Relationship Diagram)",
+      "category": "NexQL: Schema",
+      "icon": "$(type-hierarchy)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "schema"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.openErdMulti",
+      "title": "View ERD (pick schemas)…",
+      "category": "NexQL: Schema",
+      "icon": "$(type-hierarchy)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.openListenNotify",
+      "title": "LISTEN/NOTIFY Monitor",
+      "category": null,
+      "icon": "$(broadcast)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.openListenNotifyFromPalette",
+      "title": "LISTEN/NOTIFY Monitor: Choose Connection & Database…",
+      "category": null,
+      "icon": "$(broadcast)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.openQuery",
+      "title": "Open Query",
+      "category": null,
+      "icon": "$(go-to-file)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection-query-history-item"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.history",
+          "items": [],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.openQueryStudio",
+      "title": "Open Query Studio",
+      "category": null,
+      "icon": "$(code-oss)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection",
+            "connection-pinned",
+            "database"
+          ],
+          "inline": true
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.openQueryStudioFromPalette",
+      "title": "Query Studio: Choose Connection & Database…",
+      "category": "NexQL",
+      "icon": "$(code-oss)",
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.openRoleDesigner",
+      "title": "Role Designer (Visual)",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "role"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.openSavedQueryInNotebook",
+      "title": "📘 Open in Notebook",
+      "category": "NexQL: Queries",
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection-saved-query-item"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.savedQueries",
+          "items": [
+            "savedQuery"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.openSchemaDiff",
+      "title": "Schema Diff",
+      "category": "NexQL: Schema",
+      "icon": "$(diff)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "schema",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.openSchemaDiffFromPalette",
+      "title": "Schema Diff: Choose Connection & Schema…",
+      "category": "NexQL: Schema",
+      "icon": "$(diff)",
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.openSqlAssistantTab",
+      "title": "SQL Assistant: Open in Editor Tab (Deprecated)",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.openTableDesigner",
+      "title": "Open Table Designer (Visual)",
+      "category": "NexQL: Schema",
+      "icon": "$(layout)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.optimizeQuery",
+      "title": "AI: Optimize Query",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.pasteTable",
+      "title": "Smart Paste (create table from clipboard)",
+      "category": null,
+      "icon": "$(clippy)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "schema",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.pinConnection",
+      "title": "Pin Connection",
+      "category": "NexQL",
+      "icon": "$(pin)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection",
+            "connection-disconnected"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.procedureOperations",
+      "title": "Procedure Operations",
+      "category": null,
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "procedure"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.psqlTool",
+      "title": "PSQL Tool",
+      "category": "PostgreSQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.publicationOperations",
+      "title": "Publication Operations",
+      "category": "NexQL",
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "publication"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.queryStudio.cancel",
+      "title": "Query Studio: Cancel Query",
+      "category": "NexQL",
+      "icon": "$(debug-stop)",
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.queryStudio.explain",
+      "title": "Query Studio: Explain Query",
+      "category": "NexQL",
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.queryStudio.explainAnalyze",
+      "title": "Query Studio: Explain Analyze",
+      "category": "NexQL",
+      "icon": "$(type-hierarchy-sub)",
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.queryStudio.run",
+      "title": "Query Studio: Run Query",
+      "category": "NexQL",
+      "icon": "$(play)",
+      "palette": true,
+      "keybindings": [
+        {
+          "key": "ctrl+enter",
+          "mac": "cmd+enter",
+          "when": "nexql.queryStudioActive && editorTextFocus"
+        }
+      ],
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.queryTool",
+      "title": "Query Tool",
+      "category": null,
+      "icon": "$(terminal)",
+      "palette": true,
+      "keybindings": [
+        {
+          "key": "ctrl+alt+e",
+          "mac": "cmd+alt+e",
+          "when": null
+        }
+      ],
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection",
+            "connection-pinned",
+            "database"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.quickClone",
+      "title": "Quick Clone Table",
+      "category": null,
+      "icon": "$(files)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.quickOpenNotebook",
+      "title": "Quick Open Notebook",
+      "category": "NexQL",
+      "icon": "$(go-to-file)",
+      "palette": true,
+      "keybindings": [
+        {
+          "key": "ctrl+shift+b",
+          "mac": "cmd+shift+b",
+          "when": null
+        }
+      ],
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.reconnectConnection",
+      "title": "Connect",
+      "category": "NexQL",
+      "icon": "$(plug)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection-disconnected",
+            "connection-pinned-disconnected"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.refresh",
+      "title": "Refresh",
+      "category": null,
+      "icon": "$(refresh)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.refreshConnections",
+      "title": "Refresh Connections",
+      "category": null,
+      "icon": "$(refresh)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-title",
+          "view": "postgresExplorer",
+          "toolbar": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.refreshForeignDataWrapper",
+      "title": "Refresh FDW",
+      "category": null,
+      "icon": "$(refresh)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.refreshForeignServer",
+      "title": "Refresh Server",
+      "category": null,
+      "icon": "$(refresh)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.refreshMaterializedView",
+      "title": "Refresh Materialized View",
+      "category": "NexQL",
+      "icon": "$(refresh)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "materialized-view"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.refreshUserMapping",
+      "title": "Refresh User Mapping",
+      "category": null,
+      "icon": "$(refresh)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.removeFromFavorites",
+      "title": "Remove from Favorites",
+      "category": null,
+      "icon": "$(star-full)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "function",
+            "materialized-view",
+            "partition",
+            "procedure",
+            "table",
+            "view"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.restoreDatabase",
+      "title": "Restore...",
+      "category": null,
+      "icon": "$(cloud-upload)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.roleOperations",
+      "title": "Role Operations",
+      "category": null,
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "role"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.ruleOperations",
+      "title": "Rule Operations",
+      "category": "NexQL",
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "rule"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.saveQueryToLibrary",
+      "title": "Save Query to Library",
+      "category": "NexQL: Queries",
+      "icon": "$(save)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.saveQueryToLibraryUI",
+      "title": "Save Query to Library",
+      "category": "NexQL: Queries",
+      "icon": "$(bookmark)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "notebook-cell",
+          "notebookTypes": [
+            "postgres-notebook"
+          ]
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.scheduleCronJob",
+      "title": "Schedule New pg_cron Job",
+      "category": "NexQL",
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "category-cron-jobs"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.schemaOperations",
+      "title": "Schema Operations",
+      "category": null,
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "schema"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "schema"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.scriptAlterDatabase",
+      "title": "ALTER Script",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.scriptCreate",
+      "title": "CREATE Script",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.scriptDelete",
+      "title": "DELETE Script",
+      "category": null,
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.scriptInsert",
+      "title": "INSERT Script",
+      "category": null,
+      "icon": "$(add)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.scriptSelect",
+      "title": "SELECT Script",
+      "category": null,
+      "icon": "$(list-selection)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.scriptUpdate",
+      "title": "UPDATE Script",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.searchSavedQueries",
+      "title": "Search Saved Queries",
+      "category": "NexQL: Queries",
+      "icon": "$(search)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.searchSchema",
+      "title": "Search Schema Objects",
+      "category": "NexQL",
+      "icon": "$(search)",
+      "palette": true,
+      "keybindings": [
+        {
+          "key": "ctrl+shift+o",
+          "mac": "cmd+shift+o",
+          "when": null
+        }
+      ],
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.sentinel.openSettings",
+      "title": "Open Sentinel Settings",
+      "category": "NexQL: Sentinel",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.sentinel.toggleNotebookStrip",
+      "title": "Toggle Notebook Context Strip",
+      "category": "NexQL: Sentinel",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.sequenceNextValue",
+      "title": "Next Value",
+      "category": "NexQL",
+      "icon": "$(arrow-right)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "sequence"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.sequenceOperations",
+      "title": "Sequence Operations",
+      "category": "NexQL",
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "sequence"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.setConnectionGroup",
+      "title": "Move to Folder / Group",
+      "category": "NexQL",
+      "icon": "$(folder-active)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection",
+            "connection-disconnected",
+            "connection-pinned",
+            "connection-pinned-disconnected"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.settingsHub",
+      "title": "Open Settings",
+      "category": "NexQL",
+      "icon": "$(settings-gear)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showAggregateProperties",
+      "title": "Aggregate Properties",
+      "category": "NexQL",
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "aggregate"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showColumnProperties",
+      "title": "Show Column Properties",
+      "category": null,
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "column"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showConfiguration",
+      "title": "Show Configuration",
+      "category": "PostgreSQL",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showConstraintProperties",
+      "title": "Properties",
+      "category": null,
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "constraint"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showCronJobProperties",
+      "title": "Cron Job Details",
+      "category": "NexQL",
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "cron-job"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showDashboard",
+      "title": "Show Database Dashboard",
+      "category": null,
+      "icon": "$(dashboard)",
+      "palette": true,
+      "keybindings": [
+        {
+          "key": "ctrl+alt+d",
+          "mac": "cmd+alt+d",
+          "when": null
+        }
+      ],
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection",
+            "connection-pinned"
+          ],
+          "inline": true
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "database"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.showDashboardFromPalette",
+      "title": "Live Dashboard: Choose Connection & Database…",
+      "category": null,
+      "icon": "$(graph)",
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.showDomainProperties",
+      "title": "Domain Properties",
+      "category": "NexQL",
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "domain"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showEventTriggerProperties",
+      "title": "Event Trigger Properties",
+      "category": "NexQL",
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "event-trigger"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showForeignDataWrapperProperties",
+      "title": "Show FDW Properties",
+      "category": null,
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "foreign-data-wrapper"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showForeignServerProperties",
+      "title": "Show Server Properties",
+      "category": null,
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "foreign-server"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showForeignTableProperties",
+      "title": "Show Foreign Table Properties",
+      "category": null,
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "foreign-table"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showFunctionProperties",
+      "title": "Show Function Properties",
+      "category": null,
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "function"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showIndexProperties",
+      "title": "Properties",
+      "category": null,
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "index"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showMaterializedViewProperties",
+      "title": "Show Materialized View Properties",
+      "category": "NexQL",
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "materialized-view"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showPartitionProperties",
+      "title": "Partition Properties",
+      "category": "NexQL",
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showProcedureProperties",
+      "title": "Show Procedure Properties",
+      "category": null,
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "procedure"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showPublicationProperties",
+      "title": "Publication Properties",
+      "category": "NexQL",
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "publication"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showQueryRecommendations",
+      "title": "Show Query Recommendations",
+      "category": "NexQL: Queries",
+      "icon": "$(lightbulb)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-title",
+          "view": "postgresExplorer",
+          "toolbar": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showRoleProperties",
+      "title": "Show Role Properties",
+      "category": null,
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "role"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showRuleProperties",
+      "title": "Rule Properties",
+      "category": "NexQL",
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "rule"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showSchemaProperties",
+      "title": "Properties",
+      "category": null,
+      "icon": "$(settings)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "schema"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showSequenceProperties",
+      "title": "Sequence Properties",
+      "category": "NexQL",
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "sequence"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showSubscriptionProperties",
+      "title": "Subscription Properties",
+      "category": "NexQL",
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "subscription"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showTableProperties",
+      "title": "Show Table Properties",
+      "category": null,
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "table"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showTablespaceProperties",
+      "title": "Tablespace Properties",
+      "category": "NexQL",
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "tablespace"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showTriggerProperties",
+      "title": "Trigger Properties",
+      "category": "NexQL",
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "trigger"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showTypeProperties",
+      "title": "Show Type Properties",
+      "category": null,
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "type"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showUserMappingProperties",
+      "title": "Show User Mapping Properties",
+      "category": null,
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "user-mapping"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showViewProperties",
+      "title": "Show View Properties",
+      "category": null,
+      "icon": "$(info)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "view"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.showWhatsNew",
+      "title": "What's New in NexQL",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.smartPasteConnection",
+      "title": "Add Connection from Clipboard URL",
+      "category": null,
+      "icon": "$(clipboard)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-title",
+          "view": "postgresExplorer",
+          "toolbar": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.switchConnection",
+      "title": "Switch Connection",
+      "category": "NexQL",
+      "icon": "$(server)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.switchConnectionProfile",
+      "title": "Switch Connection Profile",
+      "category": "NexQL: Profiles",
+      "icon": "$(account)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-title",
+          "view": "postgresExplorer",
+          "toolbar": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.switchDatabase",
+      "title": "Switch Database",
+      "category": "NexQL",
+      "icon": "$(database)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.switchNotebookConnection",
+      "title": "Switch Notebook Connection",
+      "category": "NexQL",
+      "icon": "$(plug)",
+      "palette": true,
+      "keybindings": [
+        {
+          "key": "ctrl+shift+c",
+          "mac": "cmd+shift+c",
+          "when": "notebookEditorFocused && (notebookType == postgres-notebook || notebookType == postgres-query)"
+        }
+      ],
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.switchWorkspaceDefaultConnection",
+      "title": "Set Workspace Default PostgreSQL Connection",
+      "category": "NexQL",
+      "icon": "$(root-folder)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.sync.conflicts",
+      "title": "Resolve Sync Conflicts",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.diagnostics",
+      "title": "Sync Diagnostics",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.excludeItem",
+      "title": "Don't Sync This Item",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.notebooks",
+          "items": [
+            "notebook-file"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.savedQueries",
+          "items": [
+            "savedQuery"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.importShares",
+      "title": "Manage Workspaces…",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.inviteMember",
+      "title": "Invite to Workspace…",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.now",
+      "title": "Sync Now",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.pause",
+      "title": "Pause Sync",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.preview",
+      "title": "Preview Sync",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.pull",
+      "title": "Pull Only",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.push",
+      "title": "Push Only",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.rebuildIndex",
+      "title": "Rebuild Sync Index",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.repair",
+      "title": "Repair Sync",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.replaceLocal",
+      "title": "Replace Local with Cloud",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.replaceRemote",
+      "title": "Replace Cloud with Local",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.setup",
+      "title": "Set Up Sync",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.share",
+      "title": "Invite to Workspace…",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.shareWithTeam",
+      "title": "Share with Team…",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.notebooks",
+          "items": [
+            "notebook-file"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer.savedQueries",
+          "items": [
+            "savedQuery"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.showSecretKey",
+      "title": "Privacy & Security Info",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.signOut",
+      "title": "Sign Out of Sync",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.status",
+      "title": "Show Sync Status",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.sync.statusMenu",
+      "title": "Sync Menu",
+      "category": "NexQL Sync",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": true
+    },
+    {
+      "id": "postgres-explorer.tableActivity",
+      "title": "View Table Activity",
+      "category": null,
+      "icon": "$(pulse)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.tableDefinition",
+      "title": "View Table Definition",
+      "category": null,
+      "icon": "$(symbol-class)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.tableOperations",
+      "title": "Table Operations",
+      "category": null,
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.tableProfile",
+      "title": "View Table Profile",
+      "category": null,
+      "icon": "$(graph)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.tablespaceOperations",
+      "title": "Tablespace Operations",
+      "category": "NexQL",
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "tablespace"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.telemetry.openModePicker",
+      "title": "Set Telemetry Mode",
+      "category": "NexQL",
+      "icon": "$(pulse)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.telemetry.setModeBasic",
+      "title": "Telemetry: Basic",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.telemetry.setModeDetailed",
+      "title": "Telemetry: Detailed",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.telemetry.setModeOff",
+      "title": "Telemetry: Off",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.toggleFullDatasetForCell",
+      "title": "Toggle Full Dataset Mode",
+      "category": null,
+      "icon": "$(database)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.toggleFullDatasetFromCell",
+      "title": "Toggle Full Dataset Mode",
+      "category": "NexQL",
+      "icon": "$(table)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "notebook-cell",
+          "notebookTypes": [
+            "postgres-notebook"
+          ]
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.triggerOperations",
+      "title": "Trigger Operations",
+      "category": "NexQL",
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "trigger"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.truncateTable",
+      "title": "Truncate Table",
+      "category": null,
+      "icon": "$(clear-all)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.typeOperations",
+      "title": "Type Operations",
+      "category": "NexQL",
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "type"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.unpinConnection",
+      "title": "Unpin Connection",
+      "category": "NexQL",
+      "icon": "$(pinned)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "connection-pinned",
+            "connection-pinned-disconnected"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.unscheduleCronJob",
+      "title": "Unschedule Cron Job",
+      "category": "NexQL",
+      "icon": "$(trash)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "cron-job"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.updateData",
+      "title": "Update Data",
+      "category": null,
+      "icon": "$(edit)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.userMappingOperations",
+      "title": "User Mapping Operations",
+      "category": null,
+      "icon": null,
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "user-mapping"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.validateConstraint",
+      "title": "Validate Constraint",
+      "category": null,
+      "icon": "$(check)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "constraint"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.viewColumnStatistics",
+      "title": "View Column Statistics",
+      "category": null,
+      "icon": "$(graph)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "column"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.viewConstraintDependencies",
+      "title": "View Dependencies",
+      "category": null,
+      "icon": "$(references)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "constraint"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.viewForeignTableData",
+      "title": "Query Foreign Table Data",
+      "category": null,
+      "icon": "$(table)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "foreign-table"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.viewMaintenanceAnalyze",
+      "title": "ANALYZE",
+      "category": null,
+      "icon": "$(graph)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.viewMaintenanceVacuum",
+      "title": "VACUUM",
+      "category": null,
+      "icon": "$(tools)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.viewMaterializedViewData",
+      "title": "View Data",
+      "category": "NexQL",
+      "icon": "$(table)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "materialized-view"
+          ],
+          "inline": false
+        },
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "materialized-view"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.viewOperations",
+      "title": "View Operations",
+      "category": null,
+      "icon": "$(notebook)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "view"
+          ],
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.viewSavedQuery",
+      "title": "📌 View Saved Query",
+      "category": "NexQL: Queries",
+      "icon": "$(preview)",
+      "palette": true,
+      "locations": [],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.viewScriptCreate",
+      "title": "Script as CREATE",
+      "category": null,
+      "icon": "$(file-code)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "view"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.viewScriptSelect",
+      "title": "Script as SELECT",
+      "category": null,
+      "icon": "$(file-code)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "view"
+          ],
+          "submenu": "Scripts",
+          "inline": false
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.viewTableData",
+      "title": "View Table Data",
+      "category": null,
+      "icon": "$(table)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "partition",
+            "table"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgres-explorer.viewViewData",
+      "title": "View View Data",
+      "category": null,
+      "icon": "$(table)",
+      "palette": true,
+      "locations": [
+        {
+          "type": "view-item",
+          "view": "postgresExplorer",
+          "items": [
+            "view"
+          ],
+          "inline": true
+        }
+      ],
+      "pro": false
+    },
+    {
+      "id": "postgresExplorer.openColumnNotebook",
+      "title": "Open Column Analysis",
+      "category": "NexQL",
+      "icon": null,
+      "palette": true,
+      "locations": [],
+      "pro": false
+    }
+  ],
+  "settings": [
+    {
+      "key": "nexql.ddlViewer.enabled",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Enable SQL Preview (Definition Viewer) features and actions.",
+      "pro": false
+    },
+    {
+      "key": "nexql.ddlViewer.openOnSelection",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Open the Definition Viewer automatically when selecting supported tree items.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.ai.agenticMaxSteps",
+      "type": "number",
+      "default": 20,
+      "scope": "window",
+      "minimum": 1,
+      "maximum": 100,
+      "markdownDescription": "Maximum agentic tool-loop steps per NexQL Bot run. Oldest history is trimmed first when context is tight.",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.ai.chat.model",
+      "type": "string",
+      "default": "",
+      "scope": null,
+      "description": "Model for chat. Leave empty for provider default.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.ai.chat.provider",
+      "type": "string",
+      "default": "nexql-free",
+      "scope": null,
+      "enum": [
+        "nexql-free",
+        "vscode-lm",
+        "github",
+        "cursor",
+        "opencode",
+        "openai",
+        "anthropic",
+        "gemini",
+        "ollama",
+        "lmstudio",
+        "custom"
+      ],
+      "description": "AI provider for the NexQL Bot chat panel",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.ai.maxContextTokens",
+      "type": "number",
+      "default": 8000,
+      "scope": null,
+      "minimum": 512,
+      "description": "Approximate token budget for AI requests (system prompt + schema context + chat history). Oldest history is dropped first, then schema is trimmed, to keep requests within this budget.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.ai.notebook.model",
+      "type": "string",
+      "default": "",
+      "scope": null,
+      "description": "Model for notebook AI features. Leave empty for provider default.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.ai.notebook.provider",
+      "type": "string",
+      "default": "nexql-free",
+      "scope": null,
+      "enum": [
+        "nexql-free",
+        "vscode-lm",
+        "github",
+        "cursor",
+        "opencode",
+        "openai",
+        "anthropic",
+        "gemini",
+        "ollama",
+        "lmstudio",
+        "custom"
+      ],
+      "description": "AI provider for notebook assist, dashboard, and saved-query AI",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.aiApiKey",
+      "type": "string",
+      "default": "",
+      "scope": null,
+      "description": "Deprecated: API keys are stored in Secret Storage per provider via AI Settings.",
+      "deprecation": "Deprecated: API keys are stored in Secret Storage per provider via AI Settings.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.aiEndpoint",
+      "type": "string",
+      "default": "",
+      "scope": null,
+      "description": "Custom API endpoint (optional)",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.aiModel",
+      "type": "string",
+      "default": "",
+      "scope": null,
+      "description": "Deprecated: use ai.notebook.model or ai.chat.model.",
+      "deprecation": "Deprecated: use ai.notebook.model or ai.chat.model.",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.aiProvider",
+      "type": "string",
+      "default": "vscode-lm",
+      "scope": null,
+      "enum": [
+        "vscode-lm",
+        "github",
+        "cursor",
+        "openai",
+        "anthropic",
+        "gemini",
+        "custom"
+      ],
+      "description": "Deprecated: use ai.notebook.provider or ai.chat.provider. Kept for migration.",
+      "deprecation": "Deprecated: use ai.notebook.provider or ai.chat.provider. Kept for migration.",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.autoRefresh.enabled",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Enable automatic background refresh of the explorer tree and notebooks panel.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.autoRefresh.pollIntervalSeconds",
+      "type": "number",
+      "default": 30,
+      "scope": null,
+      "minimum": 10,
+      "description": "How often (in seconds) to poll PostgreSQL for schema changes.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.connections",
+      "type": "array",
+      "default": [],
+      "scope": null,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "host",
+          "port",
+          "username"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the connection"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name for the connection"
+          },
+          "host": {
+            "type": "string",
+            "description": "Hostname or IP address of the PostgreSQL server"
+          },
+          "port": {
+            "type": "number",
+            "description": "Port number of the PostgreSQL server",
+            "default": 5432
+          },
+          "username": {
+            "type": "string",
+            "description": "Username for authentication"
+          },
+          "database": {
+            "type": "string",
+            "description": "Default database to connect to"
+          },
+          "group": {
+            "type": "string",
+            "description": "Group name for organizing connections"
+          },
+          "environment": {
+            "type": "string",
+            "enum": [
+              "production",
+              "staging",
+              "development"
+            ],
+            "description": "Environment tag for safety warnings and visual indicators"
+          },
+          "readOnlyMode": {
+            "type": "boolean",
+            "default": false,
+            "description": "Force read-only transactions for this connection"
+          }
+        }
+      },
+      "description": "List of saved PostgreSQL connections",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.dbIndex.autoBuild",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Automatically build and keep the local database index up to date (structure only) in the background for connected databases. Requires Auto Database Indexing (Sponsor).",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.dbIndex.enableEmbeddings",
+      "type": "boolean",
+      "default": false,
+      "scope": null,
+      "description": "Enable vector embeddings generation for tables and views to support semantic search grounding in AI tools.",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.debug",
+      "type": "boolean",
+      "default": false,
+      "scope": "machine",
+      "markdownDescription": "Write verbose diagnostic logging to the **NexQL Debug** output channel. Off by default to keep SQL, schema, and AI payloads out of logs.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.formatter.formatOnSave",
+      "type": "boolean",
+      "default": false,
+      "scope": null,
+      "description": "Automatically format .pgsql / .sql files on save.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.formatter.indentStyle",
+      "type": "string",
+      "default": "standard",
+      "scope": null,
+      "enum": [
+        "standard",
+        "tabularLeft",
+        "tabularRight"
+      ],
+      "description": "Indent style used by the SQL formatter.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.formatter.keywordCase",
+      "type": "string",
+      "default": "upper",
+      "scope": null,
+      "enum": [
+        "upper",
+        "lower",
+        "preserve"
+      ],
+      "description": "Keyword case used by the SQL formatter.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.formatter.linesBetweenQueries",
+      "type": "number",
+      "default": 1,
+      "scope": null,
+      "minimum": 0,
+      "description": "Number of blank lines between SQL statements in the formatter output.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.formatter.tabWidth",
+      "type": "number",
+      "default": 2,
+      "scope": null,
+      "minimum": 1,
+      "description": "Number of spaces per indent level in the SQL formatter.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.formatter.useTabs",
+      "type": "boolean",
+      "default": false,
+      "scope": null,
+      "description": "Use tabs instead of spaces for SQL formatter indentation.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.license.endpoint",
+      "type": "string",
+      "default": "https://nexql.astrx.dev/api",
+      "scope": "machine",
+      "description": "Base URL for the NexQL license validation API.",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.license.enforcement",
+      "type": "string",
+      "default": "freemium",
+      "scope": "machine",
+      "enum": [
+        "off",
+        "freemium"
+      ],
+      "enumDescriptions": [
+        "No metering — all features unlimited for everyone (development / dark-ship).",
+        "Freemium: free tier gets daily/weekly per-feature allowances; paid tiers are unlimited (default)."
+      ],
+      "markdownDescription": "Controls premium feature access. `freemium` (default) gives the free tier metered daily/weekly use of premium features and unlimited use to paid subscribers. `off` disables all metering. Legacy values `soft`/`hard` are treated as `freemium`.",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.mcp.binaryPath",
+      "type": "string",
+      "default": "",
+      "scope": "window",
+      "markdownDescription": "Absolute path to a standalone `nexql-mcp` binary. Used as a fallback when Node.js/npx is not available. When empty, NexQL tries `NEXQL_MCP_BIN`, then PATH.",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.mcp.enabled",
+      "type": "boolean",
+      "default": true,
+      "scope": "window",
+      "markdownDescription": "Expose NexQL's read-only database tools as an MCP server by spawning `nexql-mcp` via `npx -y nexql-mcp@latest` (stdio). VS Code Copilot and other MCP clients discover it via the extension registry. On by default.",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.mcp.maxRows",
+      "type": "number",
+      "default": 500,
+      "scope": "window",
+      "minimum": 1,
+      "maximum": 10000,
+      "markdownDescription": "Maximum number of rows returned by AI tool queries (`run_select`). Results beyond this limit are truncated and flagged. Applies to both NexQL Bot and MCP clients.",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.mcp.toolProfile",
+      "type": "string",
+      "default": "full",
+      "scope": "window",
+      "enum": [
+        "meta",
+        "query",
+        "dba",
+        "full"
+      ],
+      "markdownDescription": "Tool surface exposed to the NexQL Bot MCP client. `full` (default) sends all tools; `meta` sends a small core set plus `discover_tools`; `query`/`dba` are intent-scoped subsets.",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.opencodeAutoApprovePermissions",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Poll the OpenCode server and auto-approve any permission prompts during NexQL Bot requests.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.opencodeAutoServe",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Automatically start and reuse a local opencode serve instance for faster NexQL Bot requests.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.opencodeCliPath",
+      "type": "string",
+      "default": "",
+      "scope": null,
+      "description": "Optional path to the OpenCode CLI binary. Auto-detected from PATH and common install locations when empty.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.opencodePreferSdk",
+      "type": "boolean",
+      "default": false,
+      "scope": null,
+      "description": "When the OpenCode CLI is not found, fall back to @opencode-ai/sdk if installed.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.opencodeServePort",
+      "type": "number",
+      "default": 0,
+      "scope": null,
+      "minimum": 0,
+      "maximum": 65535,
+      "description": "Fixed port for auto-started opencode serve (0 = pick a free port).",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.opencodeServeUrl",
+      "type": "string",
+      "default": "",
+      "scope": null,
+      "description": "OpenCode server URL (opencode serve). Auto-populated when opencodeAutoServe starts a managed server.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.opencodeShowLog",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Show the OpenCode output channel while requests are running (View → Output → OpenCode).",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.opencodeSkipPermissions",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Auto-allow OpenCode tool permissions for headless NexQL Bot runs (YOLO mode). Required when attaching to opencode serve.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.opencodeWorkingDirectory",
+      "type": "string",
+      "default": "",
+      "scope": null,
+      "description": "Working directory for OpenCode serve/run. Defaults to the VS Code workspace folder, or ~/.nexql/opencode-wd when the host folder is an IDE install path.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.parameters.cacheLastValues",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Remember the last entered SQL parameter values in this workspace.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.parameters.nullSentinel",
+      "type": "string",
+      "default": "NULL",
+      "scope": null,
+      "description": "Exact input text that is sent as SQL NULL for prompted parameters. Set empty string to disable.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.performance.defaultLimit",
+      "type": "number",
+      "default": 1000,
+      "scope": null,
+      "description": "Default row limit for SELECT queries when auto-LIMIT is enabled.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.performance.slidingWindowRowCap",
+      "type": "number",
+      "default": 100,
+      "scope": null,
+      "minimum": 10,
+      "maximum": 500,
+      "description": "Maximum rows kept in the result grid at once when sliding-window streaming is active.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.performance.slidingWindowSelects",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Use a PostgreSQL SCROLL cursor for eligible SELECT queries (no SQL parameters): stream one window of rows into the cell and fetch more on scroll—bounded RAM on host and webview.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.performance.slowQueryThresholdMs",
+      "type": "number",
+      "default": 2000,
+      "scope": null,
+      "description": "Threshold in milliseconds to flag slow queries in history and results.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.query.autoLimitEnabled",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Automatically append LIMIT clause to SELECT queries that don't have one. Always enabled in read-only mode.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.query.byteaDisplayFormat",
+      "type": "string",
+      "default": "hex0x",
+      "scope": null,
+      "enum": [
+        "hex0x",
+        "postgresql",
+        "json"
+      ],
+      "description": "Display format for binary (bytea) columns in query results: 0x-prefixed hex, PostgreSQL \\x hex, or JSON Buffer shape (debug).",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.query.defaultExperience",
+      "type": "string",
+      "default": "notebook",
+      "scope": null,
+      "enum": [
+        "notebook",
+        "queryStudio"
+      ],
+      "description": "Default SQL workspace when opening Query Tool (notebook or Query Studio).",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.query.executionFailureStrategy",
+      "type": "string",
+      "default": "continue-on-error",
+      "scope": null,
+      "enum": [
+        "continue-on-error",
+        "fail-on-error",
+        "prompt-on-error"
+      ],
+      "description": "Strategy when a statement fails in multi-statement execution: 'continue-on-error' (execute remaining, show summary), 'fail-on-error' (stop immediately), 'prompt-on-error' (ask user per failure).",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.queryHistory.maxItems",
+      "type": "number",
+      "default": 200,
+      "scope": null,
+      "minimum": 10,
+      "maximum": 1000,
+      "description": "Maximum number of query history entries to retain. Older entries are removed once the limit is reached.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.queryTimeout",
+      "type": "number",
+      "default": 0,
+      "scope": null,
+      "description": "Global query timeout in milliseconds (0 for no timeout). Can be overridden per connection.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.sentinel.chatEnvChip",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Show environment chip in the NexQL Bot context bar.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.sentinel.chromeAccent",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Tint workbench title bar, activity bar, and status bar chrome by environment.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.sentinel.enabled",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Enable Sentinel environment signaling when a tagged .pgsql notebook is focused.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.sentinel.notebookContextStrip",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Show in-notebook connection context strip with environment chip.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.sentinel.notifyOnTransition",
+      "type": "boolean",
+      "default": false,
+      "scope": null,
+      "description": "Show a notification when the active notebook environment changes (e.g. staging → production).",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.sentinel.statusBarAccent",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Tint status bar connection items by environment (production, staging, development).",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.sentinel.tabBadges",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Show [P]/[S]/[D] badges on open .pgsql notebook tabs for tagged connections.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.sentinel.themeSwap.enabled",
+      "type": "boolean",
+      "default": false,
+      "scope": null,
+      "description": "Advanced: suggest or auto-switch the entire color theme by environment.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.sentinel.themeSwap.mode",
+      "type": "string",
+      "default": "suggest",
+      "scope": null,
+      "enum": [
+        "suggest",
+        "auto"
+      ],
+      "description": "How theme swap behaves when themeSwap.enabled is true.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.sentinel.themeSwap.themes",
+      "type": "object",
+      "default": {},
+      "scope": null,
+      "description": "Map of environment (production, staging, development) to color theme label.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.sync.apiEndpoint",
+      "type": "string",
+      "default": "https://nexql.astrx.dev/api",
+      "scope": "machine",
+      "description": "Base URL for NexQL account and cloud sync API.",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.sync.auto",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Enable automatic sync (pull on activation, debounced push, periodic pull).",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.sync.notebookFolder",
+      "type": "string",
+      "default": "~/NexQLNotebooks",
+      "scope": null,
+      "description": "Folder for synced .pgsql notebooks (supports ~ for home directory).",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.sync.postgresConnectionId",
+      "type": "string",
+      "default": "",
+      "scope": "machine",
+      "description": "Connection ID for optional team Postgres sync backend (nexql_sync schema).",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.sync.pullIntervalMinutes",
+      "type": "number",
+      "default": 5,
+      "scope": null,
+      "minimum": 1,
+      "description": "Interval in minutes for periodic sync pulls.",
+      "pro": true
+    },
+    {
+      "key": "postgresExplorer.telemetry.allowPerformance",
+      "type": "boolean",
+      "default": false,
+      "scope": null,
+      "description": "Allow anonymized performance telemetry (duration/result-size buckets).",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.telemetry.allowUsage",
+      "type": "boolean",
+      "default": true,
+      "scope": null,
+      "description": "Allow anonymous usage telemetry (commands/features/session counters).",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.telemetry.flushIntervalMs",
+      "type": "number",
+      "default": 10000,
+      "scope": null,
+      "minimum": 1000,
+      "description": "Telemetry flush interval in milliseconds.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.telemetry.maxBatchSize",
+      "type": "number",
+      "default": 25,
+      "scope": null,
+      "minimum": 1,
+      "maximum": 100,
+      "description": "Maximum number of events per telemetry batch.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.telemetry.mode",
+      "type": "string",
+      "default": "basic",
+      "scope": null,
+      "enum": [
+        "off",
+        "basic",
+        "detailed"
+      ],
+      "description": "Telemetry collection mode. off disables telemetry. basic sends anonymous usage counters. detailed adds anonymized performance buckets.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.telemetry.posthogApiKey",
+      "type": "string",
+      "default": "(built in)",
+      "scope": null,
+      "description": "PostHog project API key. Keep empty to disable remote telemetry sink.",
+      "pro": false
+    },
+    {
+      "key": "postgresExplorer.telemetry.posthogHost",
+      "type": "string",
+      "default": "https://us.i.posthog.com",
+      "scope": null,
+      "description": "PostHog ingestion host used for telemetry transport.",
+      "pro": false
+    }
+  ],
+  "keybindings": [
+    {
+      "command": "editor.action.selectAll",
+      "title": null,
+      "key": "ctrl+a",
+      "mac": "cmd+a",
+      "when": "editorTextFocus && notebookEditorFocused && (notebookType == postgres-notebook || notebookType == postgres-query)",
+      "pro": false
+    },
+    {
+      "command": "postgres-explorer.addConnection",
+      "title": "Add PostgreSQL Connection",
+      "key": "ctrl+alt+a",
+      "mac": "cmd+alt+a",
+      "when": null,
+      "pro": false
+    },
+    {
+      "command": "postgres-explorer.formatSql",
+      "title": "Format SQL",
+      "key": "shift+alt+f",
+      "mac": "shift+alt+f",
+      "when": "editorLangId == sql || editorLangId == pgsql",
+      "pro": false
+    },
+    {
+      "command": "postgres-explorer.newNotebook",
+      "title": "New PostgreSQL Notebook",
+      "key": "ctrl+alt+n",
+      "mac": "cmd+alt+n",
+      "when": null,
+      "pro": false
+    },
+    {
+      "command": "postgres-explorer.queryStudio.run",
+      "title": "Query Studio: Run Query",
+      "key": "ctrl+enter",
+      "mac": "cmd+enter",
+      "when": "nexql.queryStudioActive && editorTextFocus",
+      "pro": true
+    },
+    {
+      "command": "postgres-explorer.queryTool",
+      "title": "Query Tool",
+      "key": "ctrl+alt+e",
+      "mac": "cmd+alt+e",
+      "when": null,
+      "pro": false
+    },
+    {
+      "command": "postgres-explorer.quickOpenNotebook",
+      "title": "Quick Open Notebook",
+      "key": "ctrl+shift+b",
+      "mac": "cmd+shift+b",
+      "when": null,
+      "pro": false
+    },
+    {
+      "command": "postgres-explorer.searchSchema",
+      "title": "Search Schema Objects",
+      "key": "ctrl+shift+o",
+      "mac": "cmd+shift+o",
+      "when": null,
+      "pro": false
+    },
+    {
+      "command": "postgres-explorer.showDashboard",
+      "title": "Show Database Dashboard",
+      "key": "ctrl+alt+d",
+      "mac": "cmd+alt+d",
+      "when": null,
+      "pro": true
+    },
+    {
+      "command": "postgres-explorer.switchNotebookConnection",
+      "title": "Switch Notebook Connection",
+      "key": "ctrl+shift+c",
+      "mac": "cmd+shift+c",
+      "when": "notebookEditorFocused && (notebookType == postgres-notebook || notebookType == postgres-query)",
+      "pro": false
+    }
+  ],
+  "walkthroughs": [
+    {
+      "id": "nexqlWelcome",
+      "title": "NexQL: PostgreSQL in VS Code",
+      "steps": [
+        {
+          "id": "nexqlWelcome.addConnection",
+          "title": "Add a database connection"
+        },
+        {
+          "id": "nexqlWelcome.openExplorer",
+          "title": "Open the NexQL explorer"
+        },
+        {
+          "id": "nexqlWelcome.newNotebook",
+          "title": "Create a SQL notebook"
+        }
+      ]
+    },
+    {
+      "id": "nexqlSyncSetup",
+      "title": "Set up NexQL Sync",
+      "steps": [
+        {
+          "id": "nexqlSyncSetup.openWizard",
+          "title": "Set up sync"
+        },
+        {
+          "id": "nexqlSyncSetup.chooseItems",
+          "title": "Choose what to sync"
+        },
+        {
+          "id": "nexqlSyncSetup.firstSync",
+          "title": "Run your first sync"
+        }
+      ]
+    }
+  ]
+}

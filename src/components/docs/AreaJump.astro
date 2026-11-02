@@ -1,0 +1,50 @@
+---
+/**
+ * A row of links that jump to each area section on a reference page.
+ *
+ * Props
+ *  - counts: Record<areaId, number>. Items per area; areas with 0 are left out.
+ */
+import { AREAS, areaAnchor } from "../../data/docs";
+interface Props {
+  counts: Record<string, number>;
+}
+const { counts } = Astro.props;
+---
+
+<nav class="jump" aria-label="Jump to an area">
+  {
+    AREAS.filter((a) => counts[a.id] > 0).map((a) => (
+      <a href={`#${areaAnchor(a.id)}`}>{a.name} <span>{counts[a.id]}</span></a>
+    ))
+  }
+</nav>
+
+<style>
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 32px;
+    padding: 4px 12px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    color: var(--prose);
+    font-size: 14px;
+  }
+  a:hover {
+    border-color: var(--accent);
+    color: var(--fg);
+    text-decoration: none;
+  }
+  a span {
+    font: 400 12px/1 var(--font-mono);
+    color: var(--muted);
+  }
+</style>

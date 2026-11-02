@@ -1,0 +1,73 @@
+---
+/**
+ * One stop of a docs tour: StopHead, an h2 with ONE serif-italic word, a lede,
+ * the slotted content, and the "Next stop →" link.
+ *
+ * Props
+ *  - id:    string. Anchor and scroll-spy id (matches TourShell stops).
+ *  - no:    number. Stop number.
+ *  - label: string. Stop name (StopHead).
+ *  - time:  string, optional. Time chip ("3 min").
+ *  - head:  [string, string, string]. h2 split around the serif-italic word.
+ *  - lede:  string. One or two short sentences.
+ *  - next:  { id, label }, optional. Next stop. Omit to link to #arrived.
+ *
+ * Slot: the stop content.
+ */
+import StopHead from "../../ui/StopHead.astro";
+import NextStop from "../../ui/NextStop.astro";
+
+interface Props {
+  id: string;
+  no: number;
+  label: string;
+  time?: string;
+  head: [string, string, string];
+  lede: string;
+  next?: { id: string; label: string };
+}
+const { id, no, label, time, head, lede, next } = Astro.props;
+---
+
+<section class="stop" id={id} aria-labelledby={`${id}-title`}>
+  <StopHead {no} {label} {time} />
+  <h2 id={`${id}-title`}>
+    {head[0]}<span class="serif-em">{head[1]}</span>{head[2]}
+  </h2>
+  <p class="lede">{lede}</p>
+  <slot />
+  {
+    next ? (
+      <NextStop href={`#${next.id}`} label={next.label} />
+    ) : (
+      <NextStop href="#arrived" label="You’ve arrived" verb="Final stop" />
+    )
+  }
+</section>
+
+<style>
+  .stop {
+    position: relative;
+    padding: 8px 0 64px;
+    margin-bottom: 64px;
+    border-bottom: 1px solid var(--line);
+    min-width: 0;
+  }
+  .stop h2 {
+    font-size: clamp(28px, 3.6vw, 40px);
+    font-weight: 700;
+    margin-bottom: 12px;
+    max-width: 22em;
+    overflow-wrap: break-word;
+  }
+  .stop h2 .serif-em {
+    color: var(--accent);
+    font-size: 1.1em;
+  }
+  .lede {
+    color: var(--muted);
+    font-size: 17.5px;
+    max-width: 40em;
+    margin-top: 0;
+  }
+</style>

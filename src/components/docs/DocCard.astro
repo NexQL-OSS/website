@@ -1,0 +1,77 @@
+---
+/**
+ * A linked card for docs hubs: a mono kicker, a title, a short body and an
+ * optional meta line.
+ *
+ * Props
+ *  - href:  string. Where the card goes.
+ *  - kicker: string, optional. Mono label above the title.
+ *  - title: string.
+ *  - body:  string, optional.
+ *  - meta:  string, optional. Small line at the bottom (counts).
+ *  - pro:   boolean, optional. Shows a Pro badge next to the kicker.
+ */
+import ProBadge from "./ProBadge.astro";
+interface Props {
+  href: string;
+  kicker?: string;
+  title: string;
+  body?: string;
+  meta?: string;
+  pro?: boolean;
+}
+const { href, kicker, title, body, meta, pro = false } = Astro.props;
+---
+
+<a class="card" {href}>
+  {(kicker || pro) && <span class="k">{kicker}{pro && <> <ProBadge /></>}</span>}
+  <strong>{title}</strong>
+  {body && <span class="b">{body}</span>}
+  {meta && <span class="m">{meta}</span>}
+</a>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid;
+    border-color: var(--bevel-border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+    color: var(--fg);
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .card:hover {
+      transform: translateY(-2px);
+    }
+  }
+  .card:hover {
+    border-color: var(--accent);
+    text-decoration: none;
+    box-shadow: var(--shadow-3);
+  }
+  .card:active {
+    box-shadow: var(--control-shadow-active);
+  }
+  .k {
+    font: 500 11px/1.6 var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .b {
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+  .m {
+    margin-top: auto;
+    padding-top: 6px;
+    font: 400 12.5px/1.4 var(--font-mono);
+    color: var(--muted);
+  }
+</style>

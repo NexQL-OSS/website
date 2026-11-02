@@ -1,0 +1,618 @@
+---
+/**
+ * /docs/getting-started: the first fifteen minutes with NexQL, as a guided
+ * tour. Frame and scroll-spy: components/docs/tour/TourShell.astro. Copy and
+ * data: data/getting-started.ts (every command, setting and shortcut named
+ * here is verified against the committed manifests; see that file's header).
+ *
+ * Wide layout, no sidebar: the numbered rail is this page's navigation.
+ */
+import DocsLayout from "../../layouts/DocsLayout.astro";
+import Code from "../../components/ui/Code.astro";
+import Figure from "../../components/story/Figure.astro";
+import TourShell from "../../components/docs/tour/TourShell.astro";
+import Stop from "../../components/docs/tour/Stop.astro";
+import Arrived from "../../components/docs/tour/Arrived.astro";
+import SidebarMock from "../../components/docs/tour/mocks/SidebarMock.astro";
+import FormMock from "../../components/docs/tour/mocks/FormMock.astro";
+import TreeMock from "../../components/docs/tour/mocks/TreeMock.astro";
+import NotebookMock from "../../components/docs/tour/mocks/NotebookMock.astro";
+import GuardMock from "../../components/docs/tour/mocks/GuardMock.astro";
+import { SITE_URL, MARKETPLACE_URL, OPENVSX_URL, REPO_URL } from "../../data/site";
+import {
+  TOUR_STOPS,
+  CMD_INSTALL,
+  CMD_INSTALL_CLI,
+  VIEWS,
+  ADD_WAYS,
+  SSL_MODES,
+  TABLE_MENU,
+  SCRIPTS,
+  MAINTENANCE,
+  SECOND_SQL,
+  SHORTCUTS,
+  PROVIDERS,
+  FIRST_QUESTIONS,
+  SNIPPET_LIMIT,
+  SNIPPET_SENTINEL,
+  SNIPPET_AI,
+  NEXT_LINKS,
+} from "../../data/getting-started";
+
+const title = "Getting started with NexQL: your first 15 minutes";
+const description =
+  "Install NexQL, add a connection, explore the schema, run a query in a notebook, turn on the AI assistant and set up production safety. Six stops, about fifteen minutes.";
+const canonical = `${SITE_URL}/docs/getting-started`;
+const c = (n: number) => TOUR_STOPS[n];
+const nextOf = (n: number) => (TOUR_STOPS[n + 1] ? { id: TOUR_STOPS[n + 1].id, label: TOUR_STOPS[n + 1].label } : undefined);
+const prompt = (s: string) => `<span class="p">$ </span>${s}`;
+---
+
+<DocsLayout
+  {title}
+  {description}
+  {canonical}
+  sidebar={false}
+  width="wide"
+  crumbs={[{ label: "Docs", href: "/docs" }, { label: "Getting started" }]}
+>
+  <div class="gs">
+    <p class="eyebrow">Getting started</p>
+    <h1>Your first fifteen <span class="serif-em grad-text">minutes</span>.</h1>
+    <p class="lede">
+      Six stops, from install to a safe first look at production. You need VS Code and a PostgreSQL database you can reach. Every name below is the one you will see in the editor.
+    </p>
+
+    <TourShell stops={TOUR_STOPS} label="Getting started stops">
+      <!-- 1 · Install -->
+      <Stop id={c(0).id} no={1} label={c(0).label} time={c(0).minutes} head={c(0).head} lede={c(0).lede} next={nextOf(0)}>
+        <div class="actions">
+          <a class="btn btn-primary" href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer">Install from Marketplace</a>
+          <a class="btn" href={OPENVSX_URL} target="_blank" rel="noopener noreferrer">Open VSX for VSCodium and Cursor</a>
+        </div>
+        <p class="small">Or paste this into VS Code’s Quick Open (<kbd>Ctrl</kbd>+<kbd>P</kbd>), or run the second line in a terminal.</p>
+        <div class="codes">
+          <Code html={CMD_INSTALL} label="Copy the Quick Open install command" />
+          <Code html={prompt(CMD_INSTALL_CLI)} label="Copy the terminal install command" />
+        </div>
+
+        <h3 class="sub">Where NexQL shows up</h3>
+        <p class="small">
+          A NexQL icon appears in the activity bar. It opens four views; the last three start collapsed.
+        </p>
+        <ul class="views">
+          {
+            VIEWS.map((v) => (
+              <li>
+                <strong>{v.name}</strong>
+                <span>{v.note}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="small">
+          <strong>NexQL Bot</strong>, the AI assistant, has its own icon in the activity bar. Pick the NexQL icon, add a connection in the next stop, and the Connections view fills in.
+        </p>
+        <SidebarMock />
+        <p class="note">
+          NexQL Bot, the live dashboard and the visual designers ship in the published build (Marketplace and Open VSX). The MIT-licensed <a href={REPO_URL} target="_blank" rel="noopener noreferrer">core</a> is the open-source foundation under it.
+        </p>
+      </Stop>
+
+      <!-- 2 · Connect -->
+      <Stop id={c(1).id} no={2} label={c(1).label} time={c(1).minutes} head={c(1).head} lede={c(1).lede} next={nextOf(1)}>
+        <ol class="ways">
+          {
+            ADD_WAYS.map((w, i) => (
+              <li>
+                <span class="n">{i + 1}</span>
+                <div>
+                  <h3>{w.title}</h3>
+                  <p class="where">{w.where}</p>
+                  <p>{w.body}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="note">
+          Import and Clipboard save the connection straight away, with no environment label and no SSH tunnel. Right-click the new connection and choose <strong>Edit Connection</strong> to add them.
+        </p>
+
+        <h3 class="sub">Set the environment now</h3>
+        <p class="small">
+          In the form, <strong>Environment</strong> is a dropdown: None, Development, Staging or Production. NexQL uses it to tint the status bar and to decide when to ask before a write (stop 6). Picking Production also shows a banner that offers to switch on <strong>Read-Only Mode</strong>. Try the choices below.
+        </p>
+        <FormMock />
+
+        <h3 class="sub">SSL and SSH</h3>
+        <ul class="points">
+          <li>
+            <strong>SSL Mode</strong> is under <strong>Advanced Options</strong>: <code>Default (prefer)</code>, {SSL_MODES.map((m, i) => <><code>{m}</code>{i < SSL_MODES.length - 1 ? ", " : "."}</>)} Choose <code>verify-ca</code> or <code>verify-full</code> and the form asks for a CA certificate path, plus an optional client certificate and key.
+          </li>
+          <li>
+            <strong>SSH Tunnel</strong> is its own section: tick <em>Enable SSH Tunnel</em>, then give the SSH host, port (22 by default), user and the path to your private key.
+          </li>
+          <li>Managed Postgres (Neon, Supabase, AWS RDS and others) usually wants <code>require</code> or stronger.</li>
+        </ul>
+
+        <h3 class="sub">Where the password goes</h3>
+        <p class="small">
+          The form says it under the field: <em>Stored in VS Code secret storage</em>. That is VS Code’s encrypted SecretStorage, not your settings file.
+        </p>
+      </Stop>
+
+      <!-- 3 · Explore -->
+      <Stop id={c(2).id} no={3} label={c(2).label} time={c(2).minutes} head={c(2).head} lede={c(2).lede} next={nextOf(2)}>
+        <p class="small">
+          Expand a connection to reach its databases, then schemas, then tables, views, functions and the rest. Use <strong>Refresh Connections</strong> in the view toolbar if the tree looks stale; it also polls for schema changes every 30 seconds. To jump straight to an object, run <strong>Search Schema Objects</strong> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd>).
+        </p>
+        <h3 class="sub">What right-click on a table offers</h3>
+        <TreeMock />
+        <div class="menu-groups">
+          {
+            TABLE_MENU.map((g) => (
+              <section>
+                <h4>{g.group}</h4>
+                <ul>
+                  {g.items.map((it) => (
+                    <li>{it}</li>
+                  ))}
+                </ul>
+                {g.note && <p class="tiny">{g.note}</p>}
+              </section>
+            ))
+          }
+        </div>
+        <p class="small">
+          <strong>Scripts</strong> holds {SCRIPTS.join(", ")}. <strong>Maintenance</strong> holds {MAINTENANCE.join(", ")}. Table Designer, Schema Diff, Import Data and Attach to NexQL Bot are part of the published build.
+        </p>
+
+        <h3 class="sub">Open the table’s data</h3>
+        <p class="small">
+          Click the table icon on the row, or right-click and choose <strong>View Table Data</strong>. For a SQL view of the same table, use <strong>Scripts → SELECT Script</strong>, or <strong>New PostgreSQL Notebook</strong> to start a notebook already pointed at it. Selecting an object also opens its definition in the Definition Viewer; turn that off with <code>nexql.ddlViewer.openOnSelection</code>.
+        </p>
+        <Figure
+          src="/assets/03-explorer.gif"
+          width={900}
+          height={506}
+          alt="The NexQL explorer tree expanding schemas, tables and columns in VS Code"
+          caption="Expanding the tree from a connection down to its columns."
+        />
+      </Stop>
+
+      <!-- 4 · Query -->
+      <Stop id={c(3).id} no={4} label={c(3).label} time={c(3).minutes} head={c(3).head} lede={c(3).lede} next={nextOf(3)}>
+        <ol class="steps">
+          <li>
+            Run <strong>New PostgreSQL Notebook</strong> from the Command Palette (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>N</kbd>), or use the notebook icon on a connection, schema or table. You get a <code>.pgsql</code> notebook tied to that connection.
+          </li>
+          <li>Type SQL into a cell. This one works on any database:</li>
+        </ol>
+        <Code html={SECOND_SQL} label="Copy the starter query" />
+        <ol class="steps" start="3">
+          <li>Press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> to run the cell, or <kbd>Shift</kbd>+<kbd>Enter</kbd> to run it and move to the next.</li>
+          <li>Read the result below the cell. The grid has filtering, column statistics and a transpose view; the footer has <strong>All</strong>, <strong>Copy</strong> (as CSV), <strong>Import</strong>, <strong>Export</strong> and <strong>Ask AI</strong>.</li>
+        </ol>
+        <NotebookMock />
+
+        <h3 class="sub">Export and keep</h3>
+        <ul class="points">
+          <li><strong>Export</strong> in the result footer writes the result out as CSV, JSON or Excel.</li>
+          <li>The cell toolbar has <strong>Save Query to Library</strong> (it lands in Saved Queries), <strong>Explain Analyze</strong> and <strong>Toggle Full Dataset Mode</strong>.</li>
+          <li><strong>Export Notebook (HTML / Gist)</strong> in the notebook toolbar shares the whole notebook.</li>
+          <li>Pick another database for the notebook with <strong>Switch Notebook Connection</strong>.</li>
+        </ul>
+
+        <h3 class="sub">Keyboard shortcuts</h3>
+        <div class="tbl" role="region" aria-label="Keyboard shortcuts" tabindex="0">
+          <table>
+            <thead>
+              <tr><th scope="col">Windows / Linux</th><th scope="col">macOS</th><th scope="col">Does</th></tr>
+            </thead>
+            <tbody>
+              {
+                SHORTCUTS.map((s) => (
+                  <tr>
+                    <td><kbd>{s.keys}</kbd></td>
+                    <td><kbd>{s.mac}</kbd></td>
+                    <td>{s.does}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+        <p class="tiny">Ctrl+Enter and Shift+Enter are VS Code’s notebook defaults; the rest are NexQL’s own. Query Tool opens a notebook unless <code>postgresExplorer.query.defaultExperience</code> is set to <code>queryStudio</code>.</p>
+      </Stop>
+
+      <!-- 5 · AI -->
+      <Stop id={c(4).id} no={5} label={c(4).label} time={c(4).minutes} head={c(4).head} lede={c(4).lede} next={nextOf(4)}>
+        <ul class="points">
+          <li>
+            <strong>Open NexQL Bot</strong> from its activity bar icon, or run <strong>NexQL Bot: Open in Editor Tab</strong> to give it a full tab.
+          </li>
+          <li>
+            <strong>No key needed.</strong> The default provider is NexQL Free AI (<code>postgresExplorer.ai.chat.provider</code> is <code>nexql-free</code>). Ask a question and you are done.
+          </li>
+          <li>
+            <strong>Give it your schema.</strong> Click <strong>Attach to NexQL Bot</strong> on a table, view or schema in the tree, or drag tables, columns and notebooks into the chat. The answer is grounded in what is really in your database.
+          </li>
+          <li>
+            <strong>Nothing runs until you press play.</strong> The assistant proposes SQL and you review it in a notebook cell first.
+          </li>
+        </ul>
+        <h3 class="sub">Good first questions</h3>
+        <ul class="prompts">
+          {FIRST_QUESTIONS.map((q) => <li>{q}</li>)}
+        </ul>
+        <p class="small">
+          From a notebook, the cell toolbar also has <strong>Ask AI</strong> and <strong>Chat with Query</strong>. The commands <strong>NexQL: AI: Generate Query</strong> and <strong>NexQL: AI: Optimize Query</strong> are in the Command Palette.
+        </p>
+
+        <h3 class="sub">Bring your own provider</h3>
+        <p class="small">
+          Run <strong>AI Settings</strong> from the Command Palette, pick a provider, and add its key or endpoint. Keys go into VS Code SecretStorage, never into <code>settings.json</code>. The Bot and notebook AI each have a provider setting, so you can use different ones.
+        </p>
+        <ul class="chips">
+          {PROVIDERS.map((p) => <li>{p}</li>)}
+        </ul>
+        <Code html={SNIPPET_AI} label="Copy the AI provider settings" />
+        <p class="tiny">Ollama and LM Studio run models on your own machine. Add <code>postgresExplorer.ai.chat.model</code> to pick a model; leave it empty for the provider’s default.</p>
+      </Stop>
+
+      <!-- 6 · Safe -->
+      <Stop id={c(5).id} no={6} label={c(5).label} time={c(5).minutes} head={c(5).head} lede={c(5).lede}>
+        <div class="cards">
+          <article class="card">
+            <h3>Environment label</h3>
+            <p>Set per connection (stop 2). Production turns the status bar item red, staging amber. Notebook tabs get a <code>[P]</code>, <code>[S]</code> or <code>[D]</code> badge, and a context strip in the notebook shows the environment.</p>
+          </article>
+          <article class="card">
+            <h3>Read-only connections</h3>
+            <p>Tick <strong>Read-Only Mode</strong> on the connection. Writes are refused with “Write operations are not allowed in read-only mode”, and auto-LIMIT stays on even if you turn it off.</p>
+          </article>
+          <article class="card">
+            <h3>Auto-LIMIT</h3>
+            <p>A <code>SELECT</code> with no <code>LIMIT</code> gets one appended, 1000 rows by default.</p>
+          </article>
+          <article class="card">
+            <h3>Confirm before writing</h3>
+            <p>On a Production connection every write opens a confirmation with <strong>Execute</strong> or <strong>Execute in Transaction</strong>. Destructive statements such as <code>DROP</code> and <code>TRUNCATE</code> ask on every environment.</p>
+          </article>
+        </div>
+        <GuardMock />
+
+        <h3 class="sub">The settings behind it</h3>
+        <p class="small">Open <strong>Preferences: Open User Settings (JSON)</strong> and add what you want. These are the defaults, apart from <code>queryTimeout</code>, which is off by default.</p>
+        <Code html={SNIPPET_LIMIT} label="Copy the query limit settings" />
+        <Code html={SNIPPET_SENTINEL} label="Copy the Sentinel settings" />
+        <p class="tiny">Sentinel is the name for the environment signals. <strong>NexQL: Sentinel: Toggle Notebook Context Strip</strong> and <strong>NexQL: Sentinel: Open Sentinel Settings</strong> are in the Command Palette. The environment itself, and read-only, are per connection, so they live in the connection form rather than in <code>settings.json</code>.</p>
+      </Stop>
+
+      <Arrived links={NEXT_LINKS} />
+    </TourShell>
+  </div>
+</DocsLayout>
+
+<style>
+  .gs {
+    min-width: 0;
+  }
+  h1 {
+    max-width: 16ch;
+  }
+  .gs > .lede {
+    max-width: 44em;
+  }
+
+  /* ---------- Stop content ---------- */
+  .stop :global(.sub),
+  .sub {
+    font-size: 18px;
+    margin: 40px 0 8px;
+  }
+  .small {
+    color: var(--muted);
+    font-size: 15.5px;
+    max-width: 44em;
+    margin-top: 12px;
+  }
+  .small strong,
+  .points strong,
+  .steps strong,
+  .note strong {
+    color: var(--fg);
+  }
+  .tiny {
+    color: var(--faint);
+    font-size: 13.5px;
+    max-width: 48em;
+    margin-top: 10px;
+  }
+  .note {
+    margin-top: 18px;
+    padding: 12px 16px;
+    max-width: 44em;
+    border-radius: 10px;
+    border: 1px solid var(--warn-line);
+    background: var(--warn-wash);
+    color: var(--prose);
+    font-size: 14.5px;
+  }
+  kbd {
+    font: 500 0.82em/1 var(--font-mono);
+    padding: 3px 6px;
+    border-radius: 5px;
+    border: 1px solid var(--line-2);
+    background: var(--control-bg);
+    color: var(--fg);
+    white-space: nowrap;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 22px;
+  }
+  .actions .btn {
+    text-decoration: none;
+  }
+  .codes {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+    max-width: 44em;
+  }
+  .stop :global(.code) {
+    margin-top: 12px;
+    max-width: 44em;
+  }
+
+  .views {
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+    max-width: 44em;
+  }
+  .views li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 14px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    font-size: 15px;
+  }
+  .views strong {
+    min-width: 8.5em;
+    color: var(--fg);
+  }
+  .views span {
+    color: var(--muted);
+  }
+
+  .points {
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 10px;
+    color: var(--prose);
+    max-width: 44em;
+    font-size: 15.5px;
+  }
+  .points li {
+    position: relative;
+    padding-left: 22px;
+  }
+  .points li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .ways {
+    list-style: none;
+    margin: 26px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+    max-width: 48em;
+  }
+  .ways li {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    border: 1px solid;
+    border-color: var(--bevel-border);
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+  }
+  .ways .n {
+    font: 400 italic 28px/1 var(--font-serif);
+    color: var(--accent);
+  }
+  .ways h3 {
+    font-size: 17px;
+    overflow-wrap: anywhere;
+  }
+  .ways p {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+  .ways .where {
+    font: 500 12.5px/1.5 var(--font-mono);
+    color: var(--faint);
+  }
+
+  .menu-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 12px;
+    margin-top: 22px;
+  }
+  .menu-groups section {
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+  }
+  .menu-groups h4 {
+    font: 500 11.5px/1 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 8px;
+  }
+  .menu-groups ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+    font-size: 14px;
+    color: var(--prose);
+  }
+
+  .steps {
+    margin: 22px 0 0;
+    padding-left: 24px;
+    display: grid;
+    gap: 10px;
+    color: var(--prose);
+    max-width: 44em;
+    font-size: 15.5px;
+  }
+  .steps li::marker {
+    color: var(--accent);
+    font-family: var(--font-mono);
+  }
+  .stop :global(.steps + .code),
+  .steps + :global(.code) {
+    margin-top: 12px;
+  }
+
+  .tbl {
+    margin-top: 14px;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    max-width: 44em;
+  }
+  table {
+    width: 100%;
+    min-width: 440px;
+    border-collapse: collapse;
+    font-size: 14.5px;
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--line);
+    color: var(--prose);
+  }
+  tr:last-child td {
+    border-bottom: 0;
+  }
+  th {
+    font: 500 11.5px/1.3 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 14px 0 0;
+  }
+  .chips li {
+    font: 500 13px/1 var(--font-mono);
+    padding: 8px 12px;
+    border-radius: 99px;
+    border: 1px solid var(--line-2);
+    background: var(--panel);
+    color: var(--prose);
+  }
+  .prompts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 8px;
+    max-width: 40em;
+  }
+  .prompts li {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--prose);
+    font-size: 15px;
+  }
+  .prompts li::before {
+    content: "“";
+    color: var(--accent);
+  }
+  .prompts li::after {
+    content: "”";
+    color: var(--accent);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: 14px;
+    margin-top: 26px;
+  }
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px;
+    border-radius: 14px;
+    border: 1px solid;
+    border-color: var(--bevel-border);
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+    overflow: hidden;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2px;
+    background: var(--nex-grad);
+    opacity: var(--card-edge);
+  }
+  .card h3 {
+    font-size: 17px;
+  }
+  .card p {
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+</style>
+
+<style is:global>
+  .gs > h1,
+  .gs > .eyebrow {
+    max-width: none;
+  }
+</style>

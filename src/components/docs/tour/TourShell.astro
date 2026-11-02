@@ -1,0 +1,259 @@
+---
+/**
+ * The guided-tour frame for the docs: a progress bar under the header on
+ * phones, a sticky numbered rail on wide screens, and the scroll-spy script
+ * that drives both. Same pattern as components/landing/Story.astro, but the
+ * stops are passed in and slotted, so any docs page can use it.
+ *
+ * Props
+ *  - stops: { id, label }[]. Rail entries; each id must match a <Stop id>.
+ *  - label: string, optional. aria-label of the rail. Default "Tour stops".
+ *
+ * Slot: the <Stop> sections, then an optional <Arrived>.
+ * Reads `.stop`, `.rail a[data-stop]`, `.track-fill`, `.mbar-fill`, `.mbar-label`.
+ */
+interface Props {
+  stops: { id: string; label: string }[];
+  label?: string;
+}
+const { stops, label = "Tour stops" } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, "0");
+---
+
+<div class="tour-root">
+  <div class="mbar">
+    <div class="mbar-fill"></div>
+    <span class="mbar-label">Stop 01 of {pad(stops.length)} · {stops[0].label}</span>
+  </div>
+
+  <div class="tour">
+    <nav class="rail" aria-label={label}>
+      <div class="track"><div class="track-fill"></div></div>
+      <ol>
+        {
+          stops.map((s, i) => (
+            <li>
+              <a href={`#${s.id}`} data-stop={s.id}>
+                <span class="dot" />
+                <span class="rail-text">
+                  <span class="rail-no">Stop {pad(i + 1)}</span>
+                  <span class="rail-label">{s.label}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <div class="stops"><slot /></div>
+  </div>
+</div>
+
+<style>
+  .mbar {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 40;
+    margin: 0 -16px;
+    background: color-mix(in srgb, var(--bg-deep) 92%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    padding: 9px 16px 10px;
+    font: 500 12.5px/1.2 var(--font-mono);
+    color: var(--muted);
+  }
+  @media (min-width: 720px) {
+    .mbar {
+      margin: 0 -28px;
+      padding-inline: 28px;
+    }
+  }
+  .mbar-fill {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 2px;
+    width: 0;
+    background: var(--nex-grad);
+    transition: width 0.2s;
+  }
+  @media (min-width: 960px) {
+    .mbar {
+      display: none;
+    }
+  }
+
+  .tour {
+    display: grid;
+    gap: 32px;
+    margin-top: 28px;
+  }
+  @media (min-width: 960px) {
+    .tour {
+      grid-template-columns: 200px minmax(0, 1fr);
+      gap: 48px;
+      margin-top: 40px;
+    }
+  }
+  .rail {
+    display: none;
+  }
+  @media (min-width: 960px) {
+    .rail {
+      display: block;
+      position: sticky;
+      top: calc(var(--header-h) + 40px);
+      align-self: start;
+    }
+  }
+  .rail ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+  .track {
+    position: absolute;
+    left: 8px;
+    top: 14px;
+    width: 3px;
+    height: calc(var(--rail-h, 300px) - 28px);
+    background: var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .track-fill {
+    width: 100%;
+    height: 0;
+    background: var(--nex-grad-v);
+    background-size: 100% var(--rail-h, 300px);
+    transition: height 0.15s linear;
+  }
+  .rail a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 8px 0;
+    color: var(--faint);
+    position: relative;
+    z-index: 1;
+  }
+  .rail a:hover {
+    text-decoration: none;
+    color: var(--fg);
+  }
+  .dot {
+    width: 19px;
+    height: 19px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 3px solid var(--line-2);
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .rail a.done .dot {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+  .rail a.active {
+    color: var(--fg);
+    background: var(--rail-active);
+    border-radius: 10px;
+  }
+  .rail a.active .dot {
+    border-color: var(--accent);
+    background: var(--bg);
+    box-shadow: var(--accent-glow);
+  }
+  .rail-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+  }
+  .rail-no {
+    font: 500 11px/1.4 var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+  .rail-label {
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+  .stops {
+    min-width: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .track-fill,
+    .mbar-fill {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Route progress: rail on wide screens, bar on narrow ones.
+  const root = document.querySelector<HTMLElement>(".tour-root");
+  if (root) {
+    const stops = [...root.querySelectorAll<HTMLElement>(".stop")];
+    const railLinks = [...root.querySelectorAll<HTMLAnchorElement>(".rail a[data-stop]")];
+    const railList = root.querySelector<HTMLElement>(".rail ol");
+    const fill = root.querySelector<HTMLElement>(".track-fill");
+    const mFill = root.querySelector<HTMLElement>(".mbar-fill");
+    const mLabel = root.querySelector<HTMLElement>(".mbar-label");
+    const pad = (n: number) => String(n).padStart(2, "0");
+
+    const update = () => {
+      if (!stops.length) return;
+      const mark = window.innerHeight * 0.35;
+      let active = -1;
+      stops.forEach((s, i) => {
+        if (s.getBoundingClientRect().top <= mark) active = i;
+      });
+      const idx = Math.max(0, active);
+      const r = stops[idx].getBoundingClientRect();
+      const within = active < 0 ? 0 : Math.min(1, Math.max(0, (mark - r.top) / Math.max(1, r.height)));
+      const progress = (idx + within) / stops.length;
+
+      railLinks.forEach((a, i) => {
+        a.classList.toggle("active", active >= 0 && i === active);
+        a.classList.toggle("done", i < active);
+        if (active >= 0 && i === active) a.setAttribute("aria-current", "step");
+        else a.removeAttribute("aria-current");
+      });
+      if (fill && railList && railLinks.length) {
+        const dot = (i: number) => railLinks[i].querySelector(".dot")!.getBoundingClientRect();
+        const first = dot(0);
+        const cur = dot(idx);
+        const next = dot(Math.min(idx + 1, railLinks.length - 1));
+        fill.style.height = `${Math.max(0, cur.top - first.top + (next.top - cur.top) * within)}px`;
+      }
+      if (mFill) mFill.style.width = `${progress * 100}%`;
+      if (mLabel) {
+        const label = railLinks[idx]?.querySelector(".rail-label")?.textContent ?? "";
+        mLabel.textContent = `Stop ${pad(idx + 1)} of ${pad(stops.length)} · ${label}`;
+      }
+    };
+    if (railList) {
+      const setH = () => railList.parentElement?.style.setProperty("--rail-h", `${railList.offsetHeight}px`);
+      setH();
+      window.addEventListener("resize", setH);
+    }
+    let queued = false;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+          queued = false;
+          update();
+        });
+      },
+      { passive: true },
+    );
+    window.addEventListener("resize", update);
+    update();
+  }
+</script>

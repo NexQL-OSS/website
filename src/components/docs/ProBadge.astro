@@ -1,0 +1,30 @@
+---
+/**
+ * Small "Pro" marker for commands, settings, views and areas that come from the
+ * Pro layer. Text plus a border, so it does not rely on color alone.
+ *
+ * Props
+ *  - label: string, optional. Default "Pro".
+ */
+interface Props {
+  label?: string;
+}
+const { label = "Pro" } = Astro.props;
+---
+
+<span class="pro" title="Part of NexQL Pro">{label}</span>
+
+<style>
+  .pro {
+    display: inline-block;
+    padding: 1px 7px;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    color: var(--accent);
+    font: 500 11px/1.5 var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+</style>

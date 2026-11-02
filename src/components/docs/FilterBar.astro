@@ -1,0 +1,100 @@
+---
+/**
+ * A filter box for long reference lists. Plain inline script, no framework.
+ *
+ * Mark each entry `data-filter-item` with a lowercase `data-search` string,
+ * and wrap each group of entries in `data-filter-section` so empty groups hide.
+ * The bar filters every item on the page. The query is also read from `?q=`.
+ *
+ * Props
+ *  - label:       string. Accessible name and placeholder of the box.
+ *  - noun:        string. Plural noun for the count, e.g. "commands".
+ *  - total:       number. How many items there are without a filter.
+ */
+interface Props {
+  label: string;
+  noun: string;
+  total: number;
+}
+const { label, noun, total } = Astro.props;
+---
+
+<div class="filter" data-filter-bar data-noun={noun} data-total={total}>
+  <label for="doc-filter" class="visually-hidden">{label}</label>
+  <input id="doc-filter" type="search" placeholder={label} autocomplete="off" spellcheck="false" />
+  <p class="count" role="status" aria-live="polite"><span data-filter-count>{total}</span> of {total} {noun}</p>
+</div>
+<p class="none" data-filter-none hidden>Nothing matches. Try fewer or different words.</p>
+
+<script>
+  const bar = document.querySelector<HTMLElement>("[data-filter-bar]");
+  if (bar) {
+    const input = bar.querySelector<HTMLInputElement>("input")!;
+    const count = bar.querySelector<HTMLElement>("[data-filter-count]")!;
+    const none = document.querySelector<HTMLElement>("[data-filter-none]")!;
+    const items = [...document.querySelectorAll<HTMLElement>("[data-filter-item]")];
+    const sections = [...document.querySelectorAll<HTMLElement>("[data-filter-section]")];
+    const apply = () => {
+      const words = input.value.toLowerCase().split(/\s+/).filter(Boolean);
+      let shown = 0;
+      for (const el of items) {
+        const hay = el.dataset.search ?? "";
+        const match = words.every((w) => hay.includes(w));
+        el.hidden = !match;
+        if (match) shown++;
+      }
+      for (const s of sections) s.hidden = !s.querySelector("[data-filter-item]:not([hidden])");
+      count.textContent = String(shown);
+      none.hidden = shown > 0;
+    };
+    const q = new URLSearchParams(location.search).get("q");
+    if (q) input.value = q;
+    input.addEventListener("input", apply);
+    apply();
+  }
+</script>
+
+<style>
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    margin-top: 26px;
+  }
+  input {
+    flex: 1 1 280px;
+    min-width: 0;
+    max-width: 480px;
+    min-height: 44px;
+    padding: 10px 14px;
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    background: var(--well);
+    box-shadow: var(--well-shadow);
+    color: var(--fg);
+    font: 400 15px/1.4 var(--font-body);
+  }
+  input::placeholder {
+    color: var(--muted);
+  }
+  input:focus-visible {
+    outline-offset: 1px;
+  }
+  .count {
+    font: 400 13px/1.4 var(--font-mono);
+    color: var(--muted);
+  }
+  .none {
+    margin-top: 28px;
+    color: var(--muted);
+  }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>

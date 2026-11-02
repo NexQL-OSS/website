@@ -1,9 +1,10 @@
 ---
 /**
- * Docs shell for /features/*, /privacy and /terms. Modelled on the NexQL MCP
- * docs layout: BaseLayout + SiteHeader + SiteFooter, a sidebar listing every
- * feature by group (a disclosure on phones), a breadcrumb, the page, and
- * previous / next links.
+ * Docs shell for /docs/*, /features/*, /privacy and /terms. Modelled on the
+ * NexQL MCP docs layout: BaseLayout + SiteHeader + SiteFooter, a sidebar with
+ * the docs navigation (Getting started, Guides, Features, Reference; a
+ * disclosure on phones), a breadcrumb, the page, and previous / next links.
+ * The navigation lives in data/docs.ts (DOCS_NAV).
  *
  * Props
  *  - title, description, canonical: per-page SEO (required).
@@ -18,7 +19,7 @@
 import BaseLayout from "./BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-import { GROUPS, FEATURES, featureHref } from "../data/feature-stories";
+import { DOCS_NAV } from "../data/docs";
 
 interface Link {
   href: string;
@@ -36,9 +37,12 @@ interface Props {
 }
 
 const { title, description, canonical, crumbs = [], prev, next, sidebar = true, width = "prose" } = Astro.props;
-const path = Astro.url.pathname.replace(/\/$/, "") || "/";
-const isHub = path === "/features";
+const norm = (p: string) => p.replace(/\/$/, "") || "/";
+const path = norm(Astro.url.pathname);
+const isOn = (href: string) => norm(href) === path;
 const here = crumbs.length ? crumbs[crumbs.length - 1].label : title;
+// Keep the Features group open on any /features page.
+const onFeatures = path === "/features" || path.startsWith("/features/");
 ---
 
 <BaseLayout {title} {description} {canonical}>
@@ -46,34 +50,60 @@ const here = crumbs.length ? crumbs[crumbs.length - 1].label : title;
   <div class:list={["wrap", "docs", { "docs--solo": !sidebar }]}>
     {
       sidebar && (
-        <aside class="side" aria-label="Features">
+        <aside class="side" aria-label="Documentation">
           <details class="menu" open>
             <summary class="menu-toggle">
-              <span>Features menu</span>
-              <span class="here">{isHub ? "Overview" : here}</span>
+              <span>Docs menu</span>
+              <span class="here">{path === "/docs" ? "Overview" : here}</span>
             </summary>
-            <nav class="map" aria-label="Feature pages">
-              <a class:list={["map-top", { on: isHub }]} href="/features/" aria-current={isHub ? "page" : undefined}>
-                All features
+            <nav class="map" aria-label="Docs pages">
+              <a class:list={["map-top", { on: isOn("/docs") }]} href="/docs" aria-current={isOn("/docs") ? "page" : undefined}>
+                Docs overview
               </a>
-              {GROUPS.map((g) => (
-                <>
-                  <p class="map-h">{g.label}</p>
-                  <ul>
-                    {FEATURES.filter((f) => f.group === g.id).map((f) => (
-                      <li>
-                        <a
-                          class:list={{ on: path === featureHref(f.slug).replace(/\/$/, "") }}
-                          href={featureHref(f.slug)}
-                          aria-current={path === featureHref(f.slug).replace(/\/$/, "") ? "page" : undefined}
-                        >
-                          {f.name}
-                        </a>
-                      </li>
+              {DOCS_NAV.filter((sec) => sec.links.length > 0 || sec.groups?.length).map((sec) =>
+                sec.id === "features" ? (
+                  <details class="sec" open={onFeatures}>
+                    <summary class="map-h">{sec.label}</summary>
+                    <a class:list={["map-top", { on: isOn(sec.overview!.href) }]} href={sec.overview!.href} aria-current={isOn(sec.overview!.href) ? "page" : undefined}>
+                      {sec.overview!.label}
+                    </a>
+                    {sec.groups!.map((g) => (
+                      <>
+                        <p class="map-sub">{g.label}</p>
+                        <ul>
+                          {g.links.map((l) => (
+                            <li>
+                              <a class:list={{ on: isOn(l.href) }} href={l.href} aria-current={isOn(l.href) ? "page" : undefined}>
+                                {l.label}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
                     ))}
-                  </ul>
-                </>
-              ))}
+                  </details>
+                ) : (
+                  <>
+                    <p class="map-h">{sec.label}</p>
+                    <ul>
+                      {sec.overview && (
+                        <li>
+                          <a class:list={{ on: isOn(sec.overview.href) }} href={sec.overview.href} aria-current={isOn(sec.overview.href) ? "page" : undefined}>
+                            {sec.overview.label}
+                          </a>
+                        </li>
+                      )}
+                      {sec.links.map((l) => (
+                        <li>
+                          <a class:list={{ on: isOn(l.href) }} href={l.href} aria-current={isOn(l.href) ? "page" : undefined}>
+                            {l.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ),
+              )}
             </nav>
           </details>
         </aside>
@@ -101,7 +131,7 @@ const here = crumbs.length ? crumbs[crumbs.length - 1].label : title;
       <slot />
       {
         (prev || next) && (
-          <nav class="pager" aria-label="Previous and next feature">
+          <nav class="pager" aria-label="Previous and next page">
             {prev ? (
               <a class="pg prev" href={prev.href}>
                 <span class="dir">← Previous</span>
@@ -116,9 +146,9 @@ const here = crumbs.length ? crumbs[crumbs.length - 1].label : title;
                 <strong>{next.label}</strong>
               </a>
             ) : (
-              <a class="pg next" href="/features/">
+              <a class="pg next" href="/docs">
                 <span class="dir">End of the list</span>
-                <strong>All features</strong>
+                <strong>Docs overview</strong>
               </a>
             )}
           </nav>
@@ -131,7 +161,7 @@ const here = crumbs.length ? crumbs[crumbs.length - 1].label : title;
 
 <script>
   // The menu is a disclosure on phones and always open on wide screens.
-  const menu = document.querySelector<HTMLDetailsElement>(".menu");
+  const menu = document.querySelector<HTMLDetailsElement>("details.menu");
   if (menu) {
     const wide = matchMedia("(min-width: 960px)");
     const sync = () => (menu.open = wide.matches);
@@ -250,6 +280,31 @@ const here = crumbs.length ? crumbs[crumbs.length - 1].label : title;
   .map-top {
     font-weight: 600;
   }
+  .sec > summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 32px;
+  }
+  .sec > summary::-webkit-details-marker {
+    display: none;
+  }
+  .sec > summary::after {
+    content: "+";
+    font-size: 16px;
+    color: var(--muted);
+    margin-right: 8px;
+  }
+  .sec[open] > summary::after {
+    content: "\2212";
+  }
+  .map-sub {
+    font: 500 12px/1 var(--font-mono);
+    color: var(--muted);
+    margin: 12px 8px 4px;
+  }
   .map-h {
     font: 500 11px/1 var(--font-mono);
     letter-spacing: 0.12em;
@@ -264,7 +319,7 @@ const here = crumbs.length ? crumbs[crumbs.length - 1].label : title;
   .doc--prose > :global(*) {
     max-width: 76ch;
   }
-  .docs--solo .doc {
+  .docs--solo .doc--prose {
     max-width: 76ch;
     margin: 0 auto;
     width: 100%;

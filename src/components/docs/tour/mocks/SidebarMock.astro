@@ -1,0 +1,119 @@
+---
+/** Stop 1: the NexQL activity bar icon and its four views (decorative). */
+import MockFrame from "./MockFrame.astro";
+import { VIEWS } from "../../../../data/getting-started";
+---
+
+<MockFrame title="VS Code · NexQL" max="520px">
+  <div class="shell">
+    <div class="act">
+      <span class="ic on" title="NexQL"><b>N</b></span>
+      <span class="ic" title="NexQL Bot"><b>B</b></span>
+    </div>
+    <div class="side">
+      <p class="mono-label head">NexQL</p>
+      <ul>
+        {
+          VIEWS.map((v) => (
+            <li class:list={{ open: v.open }}>
+              <span class="chev">{v.open ? "▾" : "▸"}</span>
+              <span class="nm">{v.name}</span>
+              {v.open && <span class="hint">No connections yet</span>}
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mono-label head bot">NexQL Bot</p>
+      <p class="botline">Its own icon in the activity bar</p>
+    </div>
+  </div>
+</MockFrame>
+
+<style>
+  .shell {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    min-height: 210px;
+  }
+  .act {
+    background: var(--well);
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding-top: 10px;
+  }
+  .ic {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    color: var(--faint);
+    font: 700 13px/1 var(--font-mono);
+    position: relative;
+  }
+  .ic.on {
+    color: var(--fg);
+    background: var(--rail-active);
+  }
+  .ic.on::before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--accent);
+  }
+  .side {
+    padding: 12px 14px 14px;
+    min-width: 0;
+  }
+  .head {
+    margin-bottom: 8px;
+  }
+  .head.bot {
+    margin-top: 18px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 2px;
+  }
+  li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 8px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font: 600 12.5px/1.3 var(--font-mono);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  li.open {
+    color: var(--fg);
+    background: var(--panel-2);
+  }
+  .chev {
+    color: var(--faint);
+    width: 10px;
+  }
+  .hint {
+    flex-basis: 100%;
+    padding-left: 18px;
+    font: 400 12.5px/1.4 var(--font-body);
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--faint);
+  }
+  .botline {
+    font-size: 13px;
+    color: var(--faint);
+  }
+</style>

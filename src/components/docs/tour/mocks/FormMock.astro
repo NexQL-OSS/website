@@ -1,0 +1,200 @@
+---
+/**
+ * Stop 2: the connection form, with the field labels the form really uses.
+ * Decorative. The Environment choice is pure CSS (radio inputs); the status
+ * strip shows the matching badge.
+ */
+import MockFrame from "./MockFrame.astro";
+const envs = [
+  { id: "none", label: "None" },
+  { id: "development", label: "Development" },
+  { id: "staging", label: "Staging" },
+  { id: "production", label: "Production" },
+];
+---
+
+<div class="wrap-form">
+  <MockFrame title="NexQL Settings · Connections · Add" max="640px" decorative={false}>
+    <div class="form" role="group" aria-label="Illustration of the NexQL connection form. Try the Environment choices.">
+      <div class="row">
+        <div class="field grow"><span class="k">Connection Name</span><span class="v">shop-prod</span></div>
+        <div class="field grow"><span class="k">Group</span><span class="v faint">Optional folder</span></div>
+      </div>
+      <div class="row">
+        <div class="field grow"><span class="k">Host</span><span class="v">db.example.com</span></div>
+        <div class="field port"><span class="k">Port</span><span class="v">5432</span></div>
+      </div>
+      <div class="row">
+        <div class="field grow"><span class="k">Username</span><span class="v">app_user</span></div>
+        <div class="field grow"><span class="k">Password</span><span class="v">••••••••</span></div>
+      </div>
+      <fieldset class="envs">
+        <legend class="k">Environment</legend>
+        {
+          envs.map((e) => (
+            <>
+              <input type="radio" name="gs-env" id={`gs-env-${e.id}`} checked={e.id === "production"} tabindex="-1" />
+              <label for={`gs-env-${e.id}`} class={e.id}>
+                {e.label}
+              </label>
+            </>
+          ))
+        }
+      </fieldset>
+      <div class="row opts">
+        <span class="chip ro">☑ Read-Only Mode</span>
+        <span class="chip">▸ SSH Tunnel</span>
+        <span class="chip">▸ Advanced Options · SSL Mode</span>
+      </div>
+      <div class="row actions">
+        <span class="btn-mock">Test Connection</span>
+      </div>
+    </div>
+    <div class="status">
+      <span class="s-left">⎇ nexql</span>
+      <span class="badge production">● PRODUCTION</span>
+      <span class="badge staging">● STAGING</span>
+      <span class="badge development">● DEVELOPMENT</span>
+    </div>
+  </MockFrame>
+</div>
+
+<style>
+  .wrap-form :global(.frame:has(#gs-env-production:checked)) {
+    border-color: #ff8f6b;
+  }
+  .form {
+    padding: 16px 18px 18px;
+    display: grid;
+    gap: 12px;
+  }
+  .row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .grow {
+    flex: 1 1 150px;
+  }
+  .port {
+    flex: 0 0 90px;
+  }
+  .field {
+    display: grid;
+    gap: 4px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--well);
+    box-shadow: var(--well-shadow);
+    min-width: 0;
+  }
+  .k {
+    font: 500 11.5px/1.2 var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .v {
+    font: 400 14px/1.3 var(--font-mono);
+    color: var(--prose);
+    overflow-wrap: anywhere;
+  }
+  .v.faint {
+    color: var(--faint);
+  }
+  .envs {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .envs legend {
+    float: left;
+    margin-right: 6px;
+    padding: 0;
+  }
+  .envs input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .envs label {
+    cursor: pointer;
+    padding: 7px 14px;
+    min-height: 34px;
+    border-radius: 99px;
+    border: 1px solid var(--line-2);
+    font: 600 12.5px/1.2 var(--font-mono);
+    color: var(--muted);
+    background: var(--control-bg);
+    box-shadow: var(--control-shadow);
+    display: inline-flex;
+    align-items: center;
+  }
+  .envs input:checked + label {
+    color: var(--fg);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent) inset;
+  }
+  .chip {
+    font: 500 12.5px/1.2 var(--font-mono);
+    padding: 7px 11px;
+    border-radius: 99px;
+    border: 1px dashed var(--line-2);
+    color: var(--muted);
+  }
+  .chip.ro {
+    border-style: solid;
+    color: var(--prose);
+  }
+  .opts {
+    gap: 8px;
+  }
+  .btn-mock {
+    font: 600 13px/1 var(--font-body);
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: var(--btn-primary-bg);
+    color: var(--accent-ink);
+    box-shadow: var(--btn-primary-shadow);
+  }
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 7px 16px;
+    font: 500 12px/1.2 var(--font-mono);
+    color: var(--muted);
+    background: var(--well);
+    border-top: 1px solid var(--line);
+  }
+  .s-left {
+    margin-right: auto;
+  }
+  .badge {
+    display: none;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--on-grad);
+  }
+  .badge.development {
+    background: var(--ok);
+  }
+  .badge.staging {
+    background: var(--warn);
+  }
+  .badge.production {
+    background: #ff8f6b;
+  }
+  .wrap-form :global(.frame:has(#gs-env-development:checked)) .badge.development,
+  .wrap-form :global(.frame:has(#gs-env-staging:checked)) .badge.staging,
+  .wrap-form :global(.frame:has(#gs-env-production:checked)) .badge.production {
+    display: inline-block;
+  }
+</style>

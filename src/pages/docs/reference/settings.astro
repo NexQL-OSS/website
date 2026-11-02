@@ -1,0 +1,254 @@
+---
+import DocsLayout from "../../../layouts/DocsLayout.astro";
+import FilterBar from "../../../components/docs/FilterBar.astro";
+import AreaJump from "../../../components/docs/AreaJump.astro";
+import ProBadge from "../../../components/docs/ProBadge.astro";
+import Code from "../../../components/ui/Code.astro";
+import {
+  AREAS,
+  SETTINGS,
+  MANIFEST,
+  areaAnchor,
+  commandsIn,
+  settingsIn,
+  typeLabel,
+  formatDefault,
+  settingDescription,
+  settingSnippet,
+  renderMarkdown,
+  plainText,
+  type DocSetting,
+} from "../../../data/docs";
+import { SITE_URL } from "../../../data/site";
+
+const title = `NexQL settings: all ${SETTINGS.length} settings, defaults and allowed values`;
+const description = `Every NexQL setting for VS Code, by area: key, type, default, allowed values, scope and a settings.json snippet you can copy.`;
+const canonical = `${SITE_URL}/docs/reference/settings`;
+
+const esc = (t: string) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const search = (s: DocSetting) =>
+  [s.key, s.area.name, s.pro ? "pro" : "", typeLabel(s), plainText(settingDescription(s)), ...(s.enum ?? []).map(String)].join(" ").toLowerCase();
+const counts = Object.fromEntries(AREAS.map((a) => [a.id, settingsIn(a.id).length]));
+const enumNotes = (s: DocSetting) => s.markdownEnumDescriptions ?? s.enumDescriptions;
+---
+
+<DocsLayout
+  {title}
+  {description}
+  {canonical}
+  crumbs={[{ label: "Docs", href: "/docs" }, { label: "Reference", href: "/docs/reference" }, { label: "Settings" }]}
+  width="wide"
+>
+  <p class="eyebrow">Reference</p>
+  <h1>All {SETTINGS.length} <span class="serif-em grad-text">settings</span>.</h1>
+  <p class="lede">
+    Generated from the NexQL {MANIFEST.version} extension manifest. Open Settings in VS Code and search for “NexQL”, or paste a line from here into your
+    <code>settings.json</code>. Settings marked Pro are part of NexQL Pro.
+  </p>
+
+  <FilterBar label="Filter settings by key, word or value" noun="settings" total={SETTINGS.length} />
+  <AreaJump {counts} />
+
+  {
+    AREAS.filter((a) => counts[a.id] > 0).map((a) => (
+      <section class="area" id={areaAnchor(a.id)} data-filter-section aria-labelledby={`${areaAnchor(a.id)}-h`}>
+        <h2 id={`${areaAnchor(a.id)}-h`}>
+          {a.name} <span class="n">{counts[a.id]}</span>
+        </h2>
+        <p class="intro">{a.intro}</p>
+        {commandsIn(a.id).length > 0 && (
+          <p class="also">
+            <a href={`/docs/reference/commands#${areaAnchor(a.id)}`}>{commandsIn(a.id).length} {commandsIn(a.id).length === 1 ? "command" : "commands"} in this area →</a>
+          </p>
+        )}
+        <ul class="settings">
+          {settingsIn(a.id).map((s) => {
+            const notes = enumNotes(s);
+            const snippet = settingSnippet(s);
+            return (
+              <li class="setting" id={s.key} data-filter-item data-search={search(s)}>
+                <h3>
+                  <a href={`#${s.key}`} aria-label={`Link to ${s.key}`}><code>{s.key}</code></a>
+                  {s.pro && <ProBadge />}
+                  {s.deprecation && <span class="dep">Deprecated</span>}
+                </h3>
+                <dl class="facts">
+                  <div>
+                    <dt>Type</dt>
+                    <dd><code>{typeLabel(s)}</code></dd>
+                  </div>
+                  <div>
+                    <dt>Default</dt>
+                    <dd><code>{formatDefault(s.default)}</code></dd>
+                  </div>
+                  <div>
+                    <dt>Scope</dt>
+                    <dd>{s.scope ?? "window (VS Code default)"}</dd>
+                  </div>
+                  {(s.minimum !== undefined || s.maximum !== undefined) && (
+                    <div>
+                      <dt>Range</dt>
+                      <dd>{s.minimum ?? "any"} to {s.maximum ?? "any"}</dd>
+                    </div>
+                  )}
+                </dl>
+                <div class="desc" set:html={renderMarkdown(settingDescription(s))} />
+                {s.enum && (
+                  <div class="allowed">
+                    <p class="lab">Allowed values</p>
+                    <ul class:list={{ plain: !notes }}>
+                      {s.enum.map((v, i) => (
+                        <li>
+                          <code>{String(v)}</code>
+                          {notes?.[i] && <span> {notes[i].replace(/`/g, "")}</span>}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {snippet && <Code html={esc(snippet)} label={`Copy settings.json line for ${s.key}`} />}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    ))
+  }
+</DocsLayout>
+
+<style>
+  [hidden] {
+    display: none !important;
+  }
+  .area {
+    margin-top: 52px;
+    scroll-margin-top: calc(var(--header-h) + 16px);
+  }
+  h2 {
+    font-size: 26px;
+  }
+  .n {
+    margin-left: 6px;
+    font: 400 14px/1 var(--font-mono);
+    color: var(--muted);
+  }
+  .intro {
+    color: var(--muted);
+    margin-top: 8px;
+    max-width: 76ch;
+  }
+  .also {
+    margin-top: 8px;
+    font-size: 14.5px;
+  }
+  .settings {
+    list-style: none;
+    margin: 18px 0 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .setting {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 90ch;
+    scroll-margin-top: calc(var(--header-h) + 16px);
+  }
+  .setting:target {
+    background: var(--hover);
+    box-shadow: -3px 0 0 var(--accent);
+    padding-left: 12px;
+  }
+  h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  h3 a code {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: 15px;
+    color: var(--fg);
+    overflow-wrap: anywhere;
+    word-break: break-all;
+  }
+  .dep {
+    font: 500 11px/1.5 var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    padding: 1px 7px;
+  }
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 24px;
+    margin: 0;
+    font-size: 14px;
+  }
+  .facts div {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    min-width: 0;
+  }
+  .facts dt {
+    font: 500 11px/1.4 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .facts dd {
+    margin: 0;
+    color: var(--prose);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .desc {
+    color: var(--prose);
+    font-size: 15px;
+  }
+  .desc :global(p + p) {
+    margin-top: 8px;
+  }
+  .desc :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .lab {
+    font: 500 11px/1.4 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .allowed ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 14px;
+    color: var(--prose);
+  }
+  .allowed li {
+    overflow-wrap: anywhere;
+  }
+  .allowed ul.plain {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .setting :global(.code) {
+    margin: 0;
+  }
+</style>

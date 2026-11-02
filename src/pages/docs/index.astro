@@ -1,0 +1,170 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+import DocCard from "../../components/docs/DocCard.astro";
+import { AREAS, COMMANDS, SETTINGS, GUIDES, areaAnchor, areaHasPro, commandsIn, settingsIn, guideHref } from "../../data/docs";
+import { FEATURES, GROUPS, featureHref } from "../../data/feature-stories";
+import { SITE_URL } from "../../data/site";
+
+const title = "NexQL docs: getting started, features and reference";
+const description = `Documentation for the NexQL PostgreSQL extension for VS Code: get started, how each feature works, and a reference of all ${COMMANDS.length} commands and ${SETTINGS.length} settings.`;
+const canonical = `${SITE_URL}/docs`;
+
+const plural = (n: number, one: string) => `${n} ${one}${n === 1 ? "" : "s"}`;
+const areaTarget = (id: string) => (commandsIn(id).length ? `/docs/reference/commands#${areaAnchor(id)}` : `/docs/reference/settings#${areaAnchor(id)}`);
+---
+
+<DocsLayout {title} {description} {canonical} crumbs={[{ label: "Docs" }]} width="wide">
+  <p class="eyebrow">Docs</p>
+  <h1>Everything NexQL does, <span class="serif-em grad-text">in one place</span>.</h1>
+  <p class="lede">
+    Start with the setup guide, read how a feature works, or look up any of the {COMMANDS.length} commands and{" "}
+    {SETTINGS.length} settings. The reference is generated from the extension itself, so it lists what ships.
+  </p>
+
+  <div class="starts">
+    <a class="start" href="/docs/getting-started">
+      <span class="k">New here?</span>
+      <strong>Getting started</strong>
+      <span class="s">Install NexQL, add a connection and run your first query.</span>
+    </a>
+    <a class="start" href="/docs/reference/commands">
+      <span class="k">Looking for one?</span>
+      <strong>Search all {COMMANDS.length} commands</strong>
+      <span class="s">Filter by name, id or where you find it.</span>
+    </a>
+    <a class="start" href="/docs/reference/settings">
+      <span class="k">Tuning something?</span>
+      <strong>Search all {SETTINGS.length} settings</strong>
+      <span class="s">Defaults, allowed values and a settings.json line to copy.</span>
+    </a>
+  </div>
+
+  {
+    GUIDES.length > 0 && (
+      <section aria-labelledby="guides-h">
+        <h2 id="guides-h">Guides</h2>
+        <p class="sub">Task by task, with the exact steps.</p>
+        <div class="grid">
+          {GUIDES.map((g) => (
+            <DocCard href={guideHref(g.slug)} title={g.title} body={g.summary} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section aria-labelledby="features-h">
+    <h2 id="features-h">Features</h2>
+    <p class="sub">How each part of NexQL works, step by step.</p>
+    {
+      GROUPS.map((g) => (
+        <>
+          <h3 class="gh">{g.label}</h3>
+          <div class="grid">
+            {FEATURES.filter((f) => f.group === g.id).map((f) => (
+              <DocCard href={featureHref(f.slug)} kicker={f.tierLabel} title={f.name} body={f.summary} />
+            ))}
+          </div>
+        </>
+      ))
+    }
+  </section>
+
+  <section aria-labelledby="areas-h">
+    <h2 id="areas-h">Reference, by area</h2>
+    <p class="sub">
+      Every command and setting sits in one area. Open an area to see what is in it and where to find each item.
+    </p>
+    <div class="grid">
+      {
+        AREAS.map((a) => {
+          const nc = commandsIn(a.id).length;
+          const ns = settingsIn(a.id).length;
+          return (
+            <DocCard
+              href={areaTarget(a.id)}
+              title={a.name}
+              body={a.summary}
+              meta={[nc ? plural(nc, "command") : "", ns ? plural(ns, "setting") : ""].filter(Boolean).join(" · ")}
+              pro={areaHasPro(a.id)}
+            />
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section aria-labelledby="ref-h">
+    <h2 id="ref-h">Reference</h2>
+    <div class="grid">
+      <DocCard href="/docs/reference" kicker="Overview" title="Reference" body="Commands, settings, shortcuts, sidebar views and walkthroughs." />
+      <DocCard href="/docs/reference/commands" kicker="Commands" title={`${COMMANDS.length} commands`} body="Where to find each one and its keyboard shortcut." />
+      <DocCard href="/docs/reference/settings" kicker="Settings" title={`${SETTINGS.length} settings`} body="Type, default, allowed values and a settings.json snippet." />
+      <DocCard href="/docs/reference/shortcuts" kicker="Shortcuts" title="Keyboard shortcuts" body="Default keybindings for Windows, Linux and macOS." />
+    </div>
+  </section>
+</DocsLayout>
+
+<style>
+  h1 {
+    max-width: 20ch;
+  }
+  section {
+    margin-top: 56px;
+  }
+  h2 {
+    font-size: 26px;
+  }
+  .gh {
+    margin-top: 26px;
+    font: 500 12px/1 var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .sub {
+    color: var(--muted);
+    margin-top: 6px;
+    max-width: 68ch;
+  }
+  .starts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .start {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px;
+    border: 1px solid;
+    border-color: var(--bevel-border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+    color: var(--fg);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .start:hover {
+    border-color: var(--accent);
+    text-decoration: none;
+    box-shadow: var(--shadow-3);
+  }
+  .start .k {
+    font: 500 11px/1.6 var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .start .s {
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+</style>
